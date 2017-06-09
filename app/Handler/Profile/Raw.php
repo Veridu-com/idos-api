@@ -12,7 +12,7 @@ use App\Command\CommandInterface;
 use App\Command\Profile\Raw\CreateNew;
 use App\Command\Profile\Raw\DeleteAll;
 use App\Command\Profile\Raw\ListAll;
-use App\Command\Profile\Raw\Upsert;
+use App\Command\Profile\Raw\UpsertOne;
 use App\Entity\Profile\Raw as RawEntity;
 use App\Entity\Profile\Source;
 use App\Exception\Create;
@@ -379,7 +379,7 @@ class Raw implements HandlerInterface {
     /**
      * Creates or updates a raw data in the given source.
      *
-     * @param \App\Command\Profile\Raw\Upsert $command
+     * @param \App\Command\Profile\Raw\UpsertOne $command
      *
      * @throws \App\Exception\Validate\Profile\RawException
      * @throws \App\Exception\Create\Profile\RawException
@@ -387,7 +387,7 @@ class Raw implements HandlerInterface {
      *
      * @return \App\Entity\Profile\Raw
      */
-    public function handleUpsert(Upsert $command) : RawEntity {
+    public function handleUpsertOne(UpsertOne $command) : RawEntity {
         try {
             $this->validator->assertSource($command->source, 'source');
             $this->validator->assertName($command->collection, 'collection');

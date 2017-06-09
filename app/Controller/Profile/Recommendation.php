@@ -94,20 +94,20 @@ class Recommendation implements ControllerInterface {
      * @apiEndpointRequiredParam body string result pass Recommendation result
      * @apiEndpointRequiredParam body string passed rules-passed The rules that the profile have passed
      * @apiEndpointRequiredParam body string failed rules-failed The rules that the profile have failed to pass
-     * @apiEndpointResponse 200 schema/recommendation/upsert.json
+     * @apiEndpointResponse 200 schema/recommendation/upsertOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function upsert(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+    public function upsertOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user        = $request->getAttribute('targetUser');
         $handler     = $request->getAttribute('handler');
         $company     = $request->getAttribute('company');
         $credential  = $request->getAttribute('credential');
 
-        $command = $this->commandFactory->create('Profile\\Recommendation\\Upsert');
+        $command = $this->commandFactory->create('Profile\\Recommendation\\UpsertOne');
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $user)

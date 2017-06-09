@@ -216,19 +216,19 @@ class Reviews implements ControllerInterface {
      *
      * @apiEndpointRequiredParam body int gate_id 1
      * @apiEndpointRequiredParam body boolean positive false
-     * @apiEndpointResponse 200 schema/review/upsert.json
+     * @apiEndpointResponse 200 schema/review/upsertOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function upsert(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+    public function upsertOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $identity = $request->getAttribute('identity');
 
         $user = $this->userRepository->find($request->getAttribute('decodedUserId'));
 
-        $command = $this->commandFactory->create('Profile\\Review\\Upsert');
+        $command = $this->commandFactory->create('Profile\\Review\\UpsertOne');
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $user)

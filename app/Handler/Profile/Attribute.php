@@ -10,7 +10,7 @@ namespace App\Handler\Profile;
 
 use App\Command\Profile\Attribute\CreateNew;
 use App\Command\Profile\Attribute\DeleteAll;
-use App\Command\Profile\Attribute\Upsert;
+use App\Command\Profile\Attribute\UpsertOne;
 use App\Command\Profile\Attribute\UpsertBulk;
 use App\Entity\Profile\Attribute as AttributeEntity;
 use App\Exception\Create;
@@ -146,7 +146,7 @@ class Attribute implements HandlerInterface {
     /**
      * Creates or updates attribute data for the given user.
      *
-     * @param \App\Command\Profile\Attribute\Upsert $command
+     * @param \App\Command\Profile\Attribute\UpsertOne $command
      *
      * @see \App\Repository\DBAttribute::save
      *
@@ -155,7 +155,7 @@ class Attribute implements HandlerInterface {
      *
      * @return \App\Entity\Profile\Attribute
      */
-    public function handleUpsert(Upsert $command) : AttributeEntity {
+    public function handleUpsertOne(UpsertOne $command) : AttributeEntity {
         try {
             $this->validator->assertUser($command->user, 'user');
             $this->validator->assertLongName($command->name, 'name');

@@ -12,9 +12,9 @@ use App\Command\AbstractCommand;
 use App\Command\CommandInterface;
 
 /**
- * Attribute "Upsert" Command.
+ * Attribute "Upsert One" Command.
  */
-class Upsert extends AbstractCommand {
+class UpsertOne extends AbstractCommand {
     /**
      * Attribute's user.
      *

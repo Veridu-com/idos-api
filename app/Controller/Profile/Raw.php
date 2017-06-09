@@ -197,7 +197,7 @@ class Raw implements ControllerInterface {
     /**
      * Creates or updates a raw data for a given source.
      *
-     * @apiEndpointResponse 200 schema/raw/upsert.json
+     * @apiEndpointResponse 200 schema/raw/upsertOne.json
      * @apiEndpointRequiredParam body string collection collection-name Collection name
      * @apiEndpointRequiredParam body string data data-value Data
      *
@@ -211,7 +211,7 @@ class Raw implements ControllerInterface {
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function upsert(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+    public function upsertOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user        = $request->getAttribute('targetUser');
         $handler     = $request->getAttribute('handler');
         $credential  = $request->getAttribute('credential');
@@ -219,7 +219,7 @@ class Raw implements ControllerInterface {
 
         $source = $this->sourceRepository->findOne($sourceId, $user->id);
 
-        $command = $this->commandFactory->create('Profile\\Raw\\Upsert');
+        $command = $this->commandFactory->create('Profile\\Raw\\UpsertOne');
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('credential', $credential)

@@ -12,7 +12,7 @@ use App\Command\AbstractCommand;
 use App\Command\CommandInterface;
 
 /**
- * Attribute "UpsertBulk" Command.
+ * Attribute "Upsert Bulk" Command.
  */
 class UpsertBulk extends AbstractCommand {
     /**

@@ -12,7 +12,7 @@ use App\Command\Profile\Feature\CreateNew;
 use App\Command\Profile\Feature\DeleteAll;
 use App\Command\Profile\Feature\DeleteOne;
 use App\Command\Profile\Feature\UpdateOne;
-use App\Command\Profile\Feature\Upsert;
+use App\Command\Profile\Feature\UpsertOne;
 use App\Command\Profile\Feature\UpsertBulk;
 use App\Entity\Profile\Feature as FeatureEntity;
 use App\Exception\Create;
@@ -268,11 +268,11 @@ class Feature implements HandlerInterface {
     /**
      * Creates or update a feature.
      *
-     * @param \App\Command\Profile\Feature\Upsert $command
+     * @param \App\Command\Profile\Feature\UpsertOne $command
      *
      * @return \App\Entity\Profile\Feature
      */
-    public function handleUpsert(Upsert $command) : FeatureEntity {
+    public function handleUpsertOne(UpsertOne $command) : FeatureEntity {
         try {
             $this->validator->assertUser($command->user, 'user');
             $this->validator->assertHandler($command->handler, 'handler');

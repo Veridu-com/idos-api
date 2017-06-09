@@ -227,19 +227,19 @@ class Scores implements ControllerInterface {
      * @apiEndpointRequiredParam body   string     attribute  firstName Score attribute
      * @apiEndpointRequiredParam body   string     name  overall Score name
      * @apiEndpointRequiredParam body   float     value 0.2 Score value
-     * @apiEndpointResponse 200 schema/score/upsert.json
+     * @apiEndpointResponse 200 schema/score/upsertOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function upsert(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+    public function upsertOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user       = $request->getAttribute('targetUser');
         $handler    = $request->getAttribute('handler');
         $credential = $request->getAttribute('credential');
 
-        $command = $this->commandFactory->create('Profile\\Score\\Upsert');
+        $command = $this->commandFactory->create('Profile\\Score\\UpsertOne');
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('credential', $credential)

@@ -37,7 +37,7 @@ class Gates implements RouteInterface {
             'gates:getOne',
             'gates:createNew',
             'gates:updateOne',
-            'gates:upsert',
+            'gates:upsertOne',
             'gates:deleteOne',
             'gates:deleteAll'
         ];
@@ -67,7 +67,7 @@ class Gates implements RouteInterface {
         self::getOne($app, $authMiddleware, $permissionMiddleware);
         self::createNew($app, $authMiddleware, $permissionMiddleware);
         self::updateOne($app, $authMiddleware, $permissionMiddleware);
-        self::upsert($app, $authMiddleware, $permissionMiddleware);
+        self::upsertOne($app, $authMiddleware, $permissionMiddleware);
         self::deleteOne($app, $authMiddleware, $permissionMiddleware);
         self::deleteAll($app, $authMiddleware, $permissionMiddleware);
     }
@@ -228,15 +228,15 @@ class Gates implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Gates::upsert
      */
-    private static function upsert(App $app, callable $auth, callable $permission) : void {
+    private static function upsertOne(App $app, callable $auth, callable $permission) : void {
         $app
             ->put(
                 '/profiles/{userName:[a-zA-Z0-9_-]+}/gates',
-                'App\Controller\Profile\Gates:upsert'
+                'App\Controller\Profile\Gates:upsertOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
             ->add($auth(Auth::CREDENTIAL))
-            ->setName('gates:upsert');
+            ->setName('gates:upsertOne');
     }
 
     /**

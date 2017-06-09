@@ -214,7 +214,7 @@ class Gates implements ControllerInterface {
      *
      * @apiEndpointRequiredParam body string name 18+ Gate name
      * @apiEndpointRequiredParam body string confidence_level medium Gate confidence level
-     * @apiEndpointResponse 200 schema/gate/upsert.json
+     * @apiEndpointResponse 200 schema/gate/upsertOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -223,12 +223,12 @@ class Gates implements ControllerInterface {
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function upsert(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+    public function upsertOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user       = $request->getAttribute('targetUser');
         $handler    = $request->getAttribute('handler');
         $credential = $request->getAttribute('credential');
 
-        $command = $this->commandFactory->create('Profile\\Gate\\Upsert');
+        $command = $this->commandFactory->create('Profile\\Gate\\UpsertOne');
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('credential', $credential)

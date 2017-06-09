@@ -36,7 +36,7 @@ class Reviews implements RouteInterface {
             'review:getOne',
             'review:createNew',
             'review:updateOne',
-            'review:upsert'
+            'review:upsertOne'
         ];
     }
 
@@ -67,7 +67,7 @@ class Reviews implements RouteInterface {
         self::getOne($app, $authMiddleware, $permissionMiddleware);
         self::createNew($app, $authMiddleware, $permissionMiddleware);
         self::updateOne($app, $authMiddleware, $permissionMiddleware);
-        self::upsert($app, $authMiddleware, $permissionMiddleware);
+        self::upsertOne($app, $authMiddleware, $permissionMiddleware);
     }
 
     /**
@@ -230,14 +230,14 @@ class Reviews implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Profile\Reviews::upsert
      */
-    private static function upsert(App $app, callable $auth, callable $permission) : void {
+    private static function upsertOne(App $app, callable $auth, callable $permission) : void {
         $app
             ->put(
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/profiles/{userId:[0-9]+}/reviews',
-                'App\Controller\Profile\Reviews:upsert'
+                'App\Controller\Profile\Reviews:upsertOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::IDENTITY))
-            ->setName('review:upsert');
+            ->setName('review:upsertOne');
     }
 }

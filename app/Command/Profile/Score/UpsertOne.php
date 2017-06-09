@@ -6,45 +6,45 @@
 
 declare(strict_types = 1);
 
-namespace App\Command\Profile\Gate;
+namespace App\Command\Profile\Score;
 
 use App\Command\AbstractCommand;
 use App\Command\CommandInterface;
 
 /**
- * Gate "Create New" Command.
+ * Score "Upsert One" Command.
  */
-class Upsert extends AbstractCommand {
+class UpsertOne extends AbstractCommand {
     /**
-     * Gate's user.
+     * Score's user.
      *
      * @var \App\Entity\User
      */
     public $user;
     /**
-     * Gate's creator.
+     * Score's creator.
      *
      * @var \App\Entity\Handler
      */
     public $handler;
     /**
-     * Gate's name (user input).
+     * Score's Attribute.
+     *
+     * @var \App\Entity\Profile\Attribute
+     */
+    public $attribute;
+    /**
+     * New score name.
      *
      * @var string
      */
     public $name;
     /**
-     * Gate's slug (user input).
+     * New score value.
      *
      * @var string
      */
-    public $slug;
-    /**
-     * Gate's confidence level (user input).
-     *
-     * @var string
-     */
-    public $confidenceLevel;
+    public $value;
     /**
      * Credential.
      *
@@ -64,16 +64,16 @@ class Upsert extends AbstractCommand {
             $this->handler = $parameters['handler'];
         }
 
+        if (isset($parameters['attribute'])) {
+            $this->attribute = $parameters['attribute'];
+        }
+
         if (isset($parameters['name'])) {
             $this->name = $parameters['name'];
         }
 
-        if (isset($parameters['slug'])) {
-            $this->slug = $parameters['slug'];
-        }
-
-        if (isset($parameters['confidence_level'])) {
-            $this->confidenceLevel = $parameters['confidence_level'];
+        if (isset($parameters['value'])) {
+            $this->value = $parameters['value'];
         }
 
         return $this;

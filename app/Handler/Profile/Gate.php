@@ -12,7 +12,7 @@ use App\Command\Profile\Gate\CreateNew;
 use App\Command\Profile\Gate\DeleteAll;
 use App\Command\Profile\Gate\DeleteOne;
 use App\Command\Profile\Gate\UpdateOne;
-use App\Command\Profile\Gate\Upsert;
+use App\Command\Profile\Gate\UpsertOne;
 use App\Entity\Category;
 use App\Entity\Profile\Gate as GateEntity;
 use App\Exception\Create;
@@ -239,11 +239,11 @@ class Gate implements HandlerInterface {
     /**
      * Creates or updates a gate.
      *
-     * @param \App\Command\Profile\Gate\Upsert $command
+     * @param \App\Command\Profile\Gate\UpsertOne $command
      *
      * @return \App\Entity\Profile\Gate
      */
-    public function handleUpsert(Upsert $command) : GateEntity {
+    public function handleUpsertOne(UpsertOne $command) : GateEntity {
         try {
             $this->validator->assertUser($command->user, 'user');
             $this->validator->assertHandler($command->handler, 'handler');

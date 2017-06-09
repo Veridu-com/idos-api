@@ -58,7 +58,7 @@ class UpsertTest extends AbstractFunctional {
          */
         $this->assertTrue(
             $this->validateSchema(
-                'score/upsert.json',
+                'score/upsertOne.json',
                 json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
@@ -101,7 +101,7 @@ class UpsertTest extends AbstractFunctional {
          */
         $this->assertTrue(
             $this->validateSchema(
-                'score/upsert.json',
+                'score/upsertOne.json',
                 json_decode((string) $response->getBody())
             ),
             $this->schemaErrors

@@ -73,7 +73,7 @@ class UpsertTest extends AbstractRawFunctional {
          */
         $this->assertTrue(
             $this->validateSchema(
-                'raw/upsert.json',
+                'raw/upsertOne.json',
                 json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
@@ -115,7 +115,7 @@ class UpsertTest extends AbstractRawFunctional {
          */
         $this->assertTrue(
             $this->validateSchema(
-                'raw/upsert.json',
+                'raw/upsertOne.json',
                 json_decode((string) $response->getBody())
             ),
             $this->schemaErrors

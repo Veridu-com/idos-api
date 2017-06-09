@@ -6,47 +6,47 @@
 
 declare(strict_types = 1);
 
-namespace App\Command\Profile\Score;
+namespace App\Command\Profile\Raw;
 
 use App\Command\AbstractCommand;
 use App\Command\CommandInterface;
 
 /**
- * Score "Upsert" Command.
+ * Raw "Upsert One" Command.
  */
-class Upsert extends AbstractCommand {
+class UpsertOne extends AbstractCommand {
     /**
-     * Score's user.
+     * Raw's user.
      *
      * @var \App\Entity\User
      */
     public $user;
     /**
-     * Score's creator.
+     * Raw's Handler.
      *
      * @var \App\Entity\Handler
      */
     public $handler;
     /**
-     * Score's Attribute.
+     * Raw's Source.
      *
-     * @var \App\Entity\Profile\Attribute
+     * @var \App\Entity\Profile\Source
      */
-    public $attribute;
+    public $source;
     /**
-     * New score name.
-     *
-     * @var string
-     */
-    public $name;
-    /**
-     * New score value.
+     * New raw collection name.
      *
      * @var string
      */
-    public $value;
+    public $collection;
     /**
-     * Credential.
+     * New raw data.
+     *
+     * @var string
+     */
+    public $data;
+    /**
+     * Target Credential.
      *
      * @var \App\Entity\Company\Credential
      */
@@ -60,20 +60,16 @@ class Upsert extends AbstractCommand {
             $this->user = $parameters['user'];
         }
 
-        if (isset($parameters['handler'])) {
-            $this->handler = $parameters['handler'];
+        if (isset($parameters['source'])) {
+            $this->source = $parameters['source'];
         }
 
-        if (isset($parameters['attribute'])) {
-            $this->attribute = $parameters['attribute'];
+        if (isset($parameters['collection'])) {
+            $this->collection = $parameters['collection'];
         }
 
-        if (isset($parameters['name'])) {
-            $this->name = $parameters['name'];
-        }
-
-        if (isset($parameters['value'])) {
-            $this->value = $parameters['value'];
+        if (isset($parameters['data'])) {
+            $this->data = $parameters['data'];
         }
 
         return $this;

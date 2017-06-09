@@ -12,9 +12,9 @@ use App\Command\AbstractCommand;
 use App\Command\CommandInterface;
 
 /**
- * Review Upsert Command.
+ * Review UpsertOne Command.
  */
-class Upsert extends AbstractCommand {
+class UpsertOne extends AbstractCommand {
     /**
      * User reviewed.
      *

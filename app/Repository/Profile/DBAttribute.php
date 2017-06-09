@@ -64,29 +64,6 @@ class DBAttribute extends AbstractDBRepository implements AttributeInterface {
     /**
      * {@inheritdoc}
      */
-    public function upsertOne(int $userId, string $name, string $value) : Attribute {
-        $result = $this->runRaw(
-            'INSERT INTO "attributes" ("user_id", "name", "value", "created_at") VALUES (:user_id, :name, :value, :created_at)
-            ON CONFLICT ("user_id", "name") DO UPDATE SET "value" = :value, "updated_at" = :updated_at',
-            [
-                'user_id'    => $userId,
-                'name'       => $name,
-                'value'      => $value,
-                'created_at' => date('Y-m-d H:i:s', time()),
-                'updated_at' => date('Y-m-d H:i:s', time())
-            ]
-        );
-
-        if (! $result) {
-            throw new Create\Profile\AttributeException('Error while trying to create an attribute', 500);
-        }
-
-        return $this->findOneByUserIdAndName($userId, $name);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function findByUserId(int $userId, array $filters = []) : Collection {
         $result = $this->findBy(
             [

@@ -8,7 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Handler\Profile;
 
-use App\Command\Profile\Recommendation\Upsert;
+use App\Command\Profile\Recommendation\UpsertOne;
 use App\Entity\Profile\Recommendation as RecommendationEntity;
 use App\Exception\Create;
 use App\Exception\Validate;
@@ -93,11 +93,11 @@ class Recommendation implements HandlerInterface {
     /**
      * Creates or updates a recommendation.
      *
-     * @param \App\Command\Profile\Recommendation\Upsert $command
+     * @param \App\Command\Profile\Recommendation\UpsertOne $command
      *
      * @return \App\Entity\Profile\Recommendation
      */
-    public function handleUpsert(Upsert $command) : RecommendationEntity {
+    public function handleUpsertOne(UpsertOne $command) : RecommendationEntity {
         try {
             $this->validator->assertUser($command->user, 'user');
             $this->validator->assertHandler($command->handler, 'handler');
