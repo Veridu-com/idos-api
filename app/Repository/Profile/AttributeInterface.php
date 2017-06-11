@@ -32,7 +32,7 @@ interface AttributeInterface extends RepositoryInterface {
      * @param int   $userId
      * @param array $filters
      *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Support\Collection
      */
     public function getAllByUserIdAndNames(int $userId, array $filters = []) : Collection;
 
@@ -57,17 +57,6 @@ interface AttributeInterface extends RepositoryInterface {
      * @return \App\Entity\Profile\Attribute
      */
     public function findOneByUserIdAndName(int $userId, string $attributeName) : Attribute;
-
-    /**
-     * Creates or updates an attribute.
-     *
-     * @param int    $userId
-     * @param string $name
-     * @param string $value
-     *
-     * @return \App\Entity\Profile\Attribute
-     */
-    public function upsertOne(int $userId, string $name, string $value) : Attribute;
 
     /**
      * Deletes a Attribute entity based on the user_id and name.

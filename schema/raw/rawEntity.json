@@ -4,6 +4,10 @@
     "title": "Raw",
     "type": "object",
     "properties": {
+        "source_id": {
+            "description": "Source Id",
+            "type": "integer"
+        },
         "collection": {
             "description": "Collection name of raw data",
             "type": "string",
@@ -23,6 +27,7 @@
         }
     },
     "required": [
+        "source_id",
         "collection",
         "data",
         "created_at"

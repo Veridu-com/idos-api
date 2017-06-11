@@ -127,7 +127,7 @@ class References implements ControllerInterface {
      *
      * @apiEndpointRequiredParam body string name reference-name Reference name
      * @apiEndpointRequiredParam body string value reference-value Reference value
-     * @apiEndpointResponse 201 schema/reference/referenceEntity.json
+     * @apiEndpointResponse 201 schema/reference/createNew.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response

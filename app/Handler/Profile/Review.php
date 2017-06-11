@@ -10,7 +10,7 @@ namespace App\Handler\Profile;
 
 use App\Command\Profile\Review\CreateNew;
 use App\Command\Profile\Review\UpdateOne;
-use App\Command\Profile\Review\Upsert;
+use App\Command\Profile\Review\UpsertOne;
 use App\Entity\Profile\Review as ReviewEntity;
 use App\Exception\Create;
 use App\Exception\Update;
@@ -201,7 +201,7 @@ class Review implements HandlerInterface {
     /**
      * Create or update a review from a given user.
      *
-     * @param \App\Command\Profile\Review\Upsert $command
+     * @param \App\Command\Profile\Review\UpsertOne $command
      *
      * @see \App\Repository\DBReview::findOneByUserIdAndId
      * @see \App\Repository\DBReview::save
@@ -211,7 +211,7 @@ class Review implements HandlerInterface {
      *
      * @return \App\Entity\Profile\Review
      */
-    public function handleUpsert(Upsert $command) : ReviewEntity {
+    public function handleUpsertOne(UpsertOne $command) : ReviewEntity {
         try {
             $this->validator->assertUser($command->user, 'user');
             $this->validator->assertFlag($command->positive, 'positive');

@@ -33,7 +33,7 @@ class Raw implements RouteInterface {
         return [
             'raw:listAll',
             'raw:createNew',
-            'raw:upsert',
+            'raw:upsertOne',
             'raw:deleteAll'
         ];
     }
@@ -43,13 +43,10 @@ class Raw implements RouteInterface {
      */
     public static function register(App $app) : void {
         $app->getContainer()[\App\Controller\Profile\Raw::class] = function (ContainerInterface $container) : ControllerInterface {
-            $repositoryFactory = $container->get('repositoryFactory');
-
             return new \App\Controller\Profile\Raw(
-                $repositoryFactory
-                    ->create('Profile\Raw'),
-                $repositoryFactory
-                    ->create('Profile\Source'),
+                $container
+                    ->get('repositoryFactory')
+                    ->create('Profile\\Source'),
                 $container
                     ->get('commandBus'),
                 $container
@@ -63,7 +60,7 @@ class Raw implements RouteInterface {
 
         self::listAll($app, $authMiddleware, $permissionMiddleware);
         self::createNew($app, $authMiddleware, $permissionMiddleware);
-        self::upsert($app, $authMiddleware, $permissionMiddleware);
+        self::upsertOne($app, $authMiddleware, $permissionMiddleware);
         self::deleteAll($app, $authMiddleware, $permissionMiddleware);
     }
 
@@ -188,14 +185,14 @@ class Raw implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Profile\Raw::upsert
      */
-    private static function upsert(App $app, callable $auth, callable $permission) : void {
+    private static function upsertOne(App $app, callable $auth, callable $permission) : void {
         $app
             ->put(
                 '/profiles/{userName:[a-zA-Z0-9_-]+}/raw',
-                'App\Controller\Profile\Raw:upsert'
+                'App\Controller\Profile\Raw:upsertOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::CREDENTIAL))
-            ->setName('raw:upsert');
+            ->setName('raw:upsertOne');
     }
 }

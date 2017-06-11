@@ -9,13 +9,13 @@ declare(strict_types = 1);
 namespace App\Repository\User;
 
 use App\Entity\User\RoleAccess;
-use App\Repository\AbstractSQLDBRepository;
+use App\Repository\AbstractDBRepository;
 use Illuminate\Support\Collection;
 
 /**
  * Database-based User Repository Implementation.
  */
-class DBRoleAccess extends AbstractSQLDBRepository implements RoleAccessInterface {
+class DBRoleAccess extends AbstractDBRepository implements RoleAccessInterface {
     /**
      * The table associated with the repository.
      *

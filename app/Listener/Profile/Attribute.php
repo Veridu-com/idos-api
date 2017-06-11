@@ -253,7 +253,7 @@ class Attribute extends AbstractListener {
             return;
         }
 
-        $command = $this->commandFactory->create('Profile\\Attribute\\Upsert');
+        $command = $this->commandFactory->create('Profile\\Attribute\\UpsertOne');
         $command
             ->setParameter('user', $user)
             ->setParameter('credential', $credential)

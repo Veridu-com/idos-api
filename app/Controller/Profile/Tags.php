@@ -134,7 +134,7 @@ class Tags implements ControllerInterface {
     /**
      * Creates a new Tag for the Target User.
      *
-     * @apiEndpointResponse 201 schema/tag/tagEntity.json
+     * @apiEndpointResponse 201 schema/tag/createNew.json
      * @apiEndpointRequiredParam body string name Test Tag name
      * @apiEndpointParam body string slug test-tag Tag slug
      *

@@ -31,12 +31,6 @@ class Health implements ControllerInterface {
      */
     private $sqlConnection;
     /**
-     * NoSQL database connector instance.
-     *
-     * @var callable
-     */
-    private $noSqlConnector;
-    /**
      * Command Bus instance.
      *
      * @var \League\Tactician\CommandBus
@@ -54,7 +48,6 @@ class Health implements ControllerInterface {
      *
      * @param \GearmanClient                           $gearmanClient
      * @param \Illuminate\Database\ConnectionInterface $sqlConnection
-     * @param callable                                 $noSqlConnector
      * @param \League\Tactician\CommandBus             $commandBus
      * @param \App\Factory\Command                     $commandFactory
      *
@@ -63,13 +56,11 @@ class Health implements ControllerInterface {
     public function __construct(
         \GearmanClient $gearmanClient,
         ConnectionInterface $sqlConnection,
-        callable $noSqlConnector,
         CommandBus $commandBus,
         Command $commandFactory
     ) {
         $this->gearmanClient  = $gearmanClient;
         $this->sqlConnection  = $sqlConnection;
-        $this->noSqlConnector = $noSqlConnector;
         $this->commandBus     = $commandBus;
         $this->commandFactory = $commandFactory;
     }
@@ -87,7 +78,6 @@ class Health implements ControllerInterface {
     public function check(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $queueServerStatus   = false;
         $sqlDatabaseStatus   = false;
-        $noSqlDatabaseStatus = false;
 
         try {
             $queueServerStatus = @$this->gearmanClient->ping('health-check');
@@ -99,20 +89,10 @@ class Health implements ControllerInterface {
         } catch (\Exception $e) {
         }
 
-        try {
-            $noSqlDatabaseStatus = (bool) ($this->noSqlConnector)('test', ['driver_options' => ['timeout' => 5]])
-                ->getMongoDB()
-                ->command(['ping' => 1])
-                ->toArray()[0]
-                ->ok;
-        } catch (\Exception $e) {
-        }
-
-        $status = $queueServerStatus && $sqlDatabaseStatus && $noSqlDatabaseStatus;
+        $status = $queueServerStatus && $sqlDatabaseStatus;
         $body   = [
             'queue' => $queueServerStatus,
-            'sql'   => $sqlDatabaseStatus,
-            'nosql' => $noSqlDatabaseStatus
+            'sql'   => $sqlDatabaseStatus
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');

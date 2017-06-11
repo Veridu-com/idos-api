@@ -32,7 +32,7 @@ interface TagInterface extends RepositoryInterface {
      * @param int   $userId
      * @param array $queryParams
      *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Support\Collection
      */
     public function getByUserId(int $userId, array $queryParams = []) : Collection;
 

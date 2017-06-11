@@ -6,7 +6,6 @@
 
 declare(strict_types = 1);
 
-use Apix\Cache;
 use App\Command;
 use App\Exception\AppException;
 use App\Factory;
@@ -16,14 +15,22 @@ use App\Middleware;
 use App\Middleware\Auth;
 use App\Middleware\TransactionMiddleware;
 use App\Repository;
+use Aws\S3\S3Client;
 use GuzzleHttp\Client as HttpClient;
 use Illuminate\Database\Capsule\Manager;
 use Illuminate\Database\Connection;
 use Interop\Container\ContainerInterface;
-use Jenssegers\Mongodb;
 use Jenssegers\Optimus\Optimus;
 use Lcobucci\JWT;
 use League\Event\Emitter;
+use League\Flysystem\Adapter\Local;
+use League\Flysystem\Adapter\NullAdapter;
+use League\Flysystem\AdapterInterface;
+use League\Flysystem\AwsS3v3\AwsS3Adapter;
+use League\Flysystem\Cached\CachedAdapter;
+use League\Flysystem\Cached\Storage\Stash as Cache;
+use League\Flysystem\Filesystem;
+use League\Flysystem\Plugin\ListFiles;
 use League\Tactician\CommandBus;
 use League\Tactician\Container\ContainerLocator;
 use League\Tactician\Handler\CommandHandlerMiddleware;
@@ -43,8 +50,14 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Respect\Validation\Validator;
 use Slim\HttpCache\CacheProvider;
-use Stash\Driver\FileSystem;
+use Stash\Driver\Apc;
+use Stash\Driver\Composite;
+use Stash\Driver\Ephemeral;
+use Stash\Driver\FileSystem as FileSystemCache;
+use Stash\Driver\Memcache;
 use Stash\Driver\Redis;
+use Stash\Driver\Sqlite;
+use Stash\Pool;
 use Whoops\Handler\PrettyPageHandler;
 
 if (! isset($app)) {
@@ -59,7 +72,7 @@ $container['errorHandler'] = function (ContainerInterface $container) : callable
         ServerRequestInterface $request,
         ResponseInterface $response,
         \Throwable $exception
-    ) use ($container) {
+    ) use ($container) : ResponseInterface {
         $settings = $container->get('settings');
         $response = $container
             ->get('httpCache')
@@ -185,7 +198,7 @@ $container['notFoundHandler'] = function (ContainerInterface $container) : calla
     return function (
         ServerRequestInterface $request,
         ResponseInterface $response
-    ) use ($container) {
+    ) use ($container) : ResponseInterface {
         throw new AppException('Whoopsies! Route not found!', 404);
     };
 };
@@ -196,7 +209,7 @@ $container['notAllowedHandler'] = function (ContainerInterface $container) : cal
         ServerRequestInterface $request,
         ResponseInterface $response,
         array $methods
-    ) use ($container) {
+    ) use ($container) : ResponseInterface {
         if ($request->isOptions()) {
             return $response->withStatus(204);
         }
@@ -217,7 +230,7 @@ $container['logWebProcessor'] = function (ContainerInterface $container) : calla
 
 // Monolog Logger
 $container['log'] = function (ContainerInterface $container) : callable {
-    return function ($channel = 'API') use ($container) {
+    return function ($channel = 'API') use ($container) : Logger {
         $settings = $container->get('settings');
         $logger   = new Logger($channel);
         $logger
@@ -232,23 +245,52 @@ $container['log'] = function (ContainerInterface $container) : callable {
 // Stash Cache
 $container['cache'] = function (ContainerInterface $container) : Cache\PsrCache\TaggablePool {
     $settings = $container->get('settings');
-
     if (empty($settings['cache']['driver'])) {
-        $settings['cache']['driver'] = 'filesystem';
+        throw new \RuntimeException('cache:driver is not set');
+    }
+
+    if (empty($settings['cache']['options'])) {
+        $settings['cache']['options'] = [];
     }
 
     switch ($settings['cache']['driver']) {
         case 'filesystem':
-            $options = array_merge($settings['cache']['default'], $settings['cache']['directory']);
-            $pool    = Cache\Factory::getTaggablePool(new Cache\Directory(), $options);
+            $driver = new FileSystemCache($settings['cache']['options']);
+            break;
+        case 'sqlite':
+            $driver = new Sqlite($settings['cache']['options']);
+            break;
+        case 'apc':
+            $driver = new Apc($settings['cache']['options']);
+            break;
+        case 'memcache':
+            $driver = new Memcache($settings['cache']['options']);
             break;
         case 'redis':
-            $options = array_merge($settings['cache']['default'], $settings['cache']['redis']);
-            $redis   = new \Redis();
-            $redis->connect($settings['cache']['redis']['host'], $settings['cache']['redis']['port']);
-            $pool = Cache\Factory::getTaggablePool($redis, $options);
+            $driver = new Redis($settings['cache']['options']);
             break;
+        case 'ephemeral':
+            $driver = new Ephemeral();
+            break;
+        default:
+            throw new \RuntimeException('Invalid Cache driver');
     }
+
+    if (! $driver instanceof Ephemeral) {
+        $driver = new Composite(
+            [
+                'drivers' => [
+                    new Ephemeral(),
+                    $driver
+                ]
+            ]
+        );
+    }
+
+    $logger = $container->get('log');
+    $pool   = new Pool($driver);
+    $pool->setLogger($logger('Cache'));
+    $pool->setNamespace('API');
 
     return $pool;
 };
@@ -381,7 +423,7 @@ $container['authMiddleware'] = function (ContainerInterface $container) : callab
 
 // Permission Middleware
 $container['endpointPermissionMiddleware'] = function (ContainerInterface $container) : callable {
-    return function ($permissionType, $allowedRolesBits = 0x00) use ($container) {
+    return function ($permissionType, $allowedRolesBits = 0x00) use ($container) : Middleware\EndpointPermission {
         return new Middleware\EndpointPermission(
             $container->get('repositoryFactory')->create('Company\Permission'),
             $container->get('repositoryFactory')->create('Company'),
@@ -391,19 +433,85 @@ $container['endpointPermissionMiddleware'] = function (ContainerInterface $conta
     };
 };
 
-// User Permission Middleware
-$container['userPermissionMiddleware'] = function (ContainerInterface $container) {
-    return function ($resource, $resourceAccessLevel) use ($container) {
-        $roleAccessRepository = $container->get('repositoryFactory')->create('User\RoleAccess');
+// AWS S3 Client
+$container['S3Client'] = function (ContainerInterface $container) : S3Client {
+    $settings = $container->get('settings');
 
-        return new Middleware\UserPermission($roleAccessRepository, $resource, $resourceAccessLevel);
+    return S3Client::factory(
+        [
+            'credentials' => [
+                'key'    => $settings['s3']['key'],
+                'secret' => $settings['s3']['secret']
+            ],
+            'region'  => $settings['s3']['region'],
+            'version' => $settings['s3']['version']
+        ]
+    );
+};
+
+// FlySystem
+$container['fileSystem'] = function (ContainerInterface $container) : callable {
+    return function (string $bucketName) use ($container) : Filesystem {
+        $settings = $container->get('settings');
+
+        if (empty($settings['fileSystem']['adapter'])) {
+            throw new \RuntimeException('fileSystem:adapter is not set');
+        }
+
+        switch ($settings['fileSystem']['adapter']) {
+            case 's3':
+                $adapter = new AwsS3Adapter(
+                    $container->get('S3Client'),
+                    sprintf('idOS-%s', $bucketName)
+                );
+                break;
+            case 'local':
+                $adapter = new Local(
+                    sprintf(
+                        '%s/idOS-%s',
+                        rtrim(
+                            $settings['fileSystem']['path'] ?? '/tmp',
+                            '/'
+                        ),
+                        $bucketName
+                    )
+                );
+                break;
+            case 'null':
+                $adapter = new NullAdapter();
+                break;
+            default:
+                throw new \RuntimeException('Invalid fileSystem:adapter');
+        }
+
+        if (! empty($settings['fileSystem']['cached'])) {
+            $adapter = new CachedAdapter(
+                $adapter,
+                new Cache(
+                    $container->get('cache'),
+                    sprintf('idOS-%s', $bucketName),
+                    300
+                )
+            );
+        }
+
+        $fileSystem = new Filesystem(
+            $adapter,
+            [
+                'visibility' => AdapterInterface::VISIBILITY_PRIVATE
+            ]
+        );
+
+        return $fileSystem->addPlugin(new ListFiles());
     };
 };
 
-// Permission Middleware
-$container['optimusDecodeMiddleware'] = function (ContainerInterface $container) {
-    return function ($permissionType) use ($container) {
-        return new Middleware\OptimusDecode($container->get('optimus'));
+// User Permission Middleware
+$container['userPermissionMiddleware'] = function (ContainerInterface $container) : callable {
+    return function ($resource, $resourceAccessLevel) use ($container) : Middleware\UserPermission {
+        $roleAccessRepository = $container->get('repositoryFactory')->create('User\RoleAccess');
+
+        return new Middleware\UserPermission($roleAccessRepository, $resource, $resourceAccessLevel);
     };
 };
 
@@ -417,8 +525,7 @@ $container['repositoryFactory'] = function (ContainerInterface $container) : Fac
                 $container->get('entityFactory'),
                 $container->get('optimus'),
                 $container->get('vault'),
-                $container->get('sql'),
-                $container->get('nosql')
+                $container->get('sql')
             );
     }
 
@@ -453,19 +560,9 @@ $container['jwt'] = function (ContainerInterface $container) : callable {
 // DB Access
 $container['sql'] = function (ContainerInterface $container) : Connection {
     $capsule = new Manager();
-    $capsule->addConnection($container['settings']['db']['sql']);
+    $capsule->addConnection($container['settings']['sql']);
 
     return $capsule->getConnection();
-};
-
-// MongoDB Access
-$container['nosql'] = function (ContainerInterface $container) : callable {
-    return function (string $database, array $config = []) use ($container) : Mongodb\Connection {
-        $config             = array_merge($container['settings']['db']['nosql'], $config);
-        $config['database'] = $database;
-
-        return new Mongodb\Connection($config);
-    };
 };
 
 // Respect Validator

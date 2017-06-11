@@ -6,39 +6,44 @@
 
 declare(strict_types = 1);
 
-namespace App\Command\Profile\Attribute;
+namespace App\Command\Profile\Raw;
 
 use App\Command\AbstractCommand;
 use App\Command\CommandInterface;
 
 /**
- * Attribute "Upsert Bulk" Command.
+ * Raw "List All" Command.
  */
-class UpsertBulk extends AbstractCommand {
+class ListAll extends AbstractCommand {
     /**
-     * Attribute's user.
+     * Raw's user.
      *
      * @var \App\Entity\User
      */
     public $user;
     /**
-     * Attribute array.
+     * Raw's Handler.
      *
-     * @var string
+     * @var \App\Entity\Handler
      */
-    public $attributes;
+    public $handler;
     /**
-     * Credential.
+     * Target Credential.
      *
      * @var \App\Entity\Company\Credential
      */
     public $credential;
+    /**
+     * Query parameters.
+     *
+     * @var array
+     */
+    public $queryParams;
 
     /**
      * {@inheritdoc}
      */
     public function setParameters(array $parameters) : CommandInterface {
-
         return $this;
     }
 }

@@ -6,47 +6,47 @@
 
 declare(strict_types = 1);
 
-namespace App\Command\Profile\Raw;
+namespace App\Command\Profile\Gate;
 
 use App\Command\AbstractCommand;
 use App\Command\CommandInterface;
 
 /**
- * Raw "Upsert" Command.
+ * Gate "Create New" Command.
  */
-class Upsert extends AbstractCommand {
+class UpsertOne extends AbstractCommand {
     /**
-     * Raw's user.
+     * Gate's user.
      *
      * @var \App\Entity\User
      */
     public $user;
     /**
-     * Raw's Handler.
+     * Gate's creator.
      *
      * @var \App\Entity\Handler
      */
     public $handler;
     /**
-     * Raw's Source.
-     *
-     * @var \App\Entity\Profile\Source
-     */
-    public $source;
-    /**
-     * New raw collection name.
+     * Gate's name (user input).
      *
      * @var string
      */
-    public $collection;
+    public $name;
     /**
-     * New raw data.
+     * Gate's slug (user input).
      *
      * @var string
      */
-    public $data;
+    public $slug;
     /**
-     * Target Credential.
+     * Gate's confidence level (user input).
+     *
+     * @var string
+     */
+    public $confidenceLevel;
+    /**
+     * Credential.
      *
      * @var \App\Entity\Company\Credential
      */
@@ -60,16 +60,20 @@ class Upsert extends AbstractCommand {
             $this->user = $parameters['user'];
         }
 
-        if (isset($parameters['source'])) {
-            $this->source = $parameters['source'];
+        if (isset($parameters['handler'])) {
+            $this->handler = $parameters['handler'];
         }
 
-        if (isset($parameters['collection'])) {
-            $this->collection = $parameters['collection'];
+        if (isset($parameters['name'])) {
+            $this->name = $parameters['name'];
         }
 
-        if (isset($parameters['data'])) {
-            $this->data = $parameters['data'];
+        if (isset($parameters['slug'])) {
+            $this->slug = $parameters['slug'];
+        }
+
+        if (isset($parameters['confidence_level'])) {
+            $this->confidenceLevel = $parameters['confidence_level'];
         }
 
         return $this;

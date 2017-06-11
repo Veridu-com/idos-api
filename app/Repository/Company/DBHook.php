@@ -8,13 +8,13 @@ declare(strict_types = 1);
 
 namespace App\Repository\Company;
 
-use App\Repository\AbstractSQLDBRepository;
+use App\Repository\AbstractDBRepository;
 use Illuminate\Support\Collection;
 
 /**
  * Database-based Hook Repository Implementation.
  */
-class DBHook extends AbstractSQLDBRepository implements HookInterface {
+class DBHook extends AbstractDBRepository implements HookInterface {
     /**
      * The table associated with the repository.
      *

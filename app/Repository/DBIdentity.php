@@ -15,7 +15,7 @@ use Illuminate\Support\Collection;
 /**
  * Database-based Identity Repository Implementation.
  */
-class DBIdentity extends AbstractSQLDBRepository implements IdentityInterface {
+class DBIdentity extends AbstractDBRepository implements IdentityInterface {
     /**
      * The table associated with the repository.
      *

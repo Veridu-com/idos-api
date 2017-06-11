@@ -16,6 +16,7 @@ use App\Entity\AbstractEntity;
  * @apiEntity schema/raw/rawEntity.json
  *
  * @property int    $id
+ * @property int    $source_id
  * @property string $collection
  * @property string $data
  * @property int    $created_at
@@ -24,7 +25,7 @@ class Raw extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['source', 'collection', 'data', 'created_at', 'updated_at'];
+    protected $visible = ['source_id', 'collection', 'data', 'created_at', 'updated_at'];
 
     /**
      * {@inheritdoc}
@@ -45,11 +46,4 @@ class Raw extends AbstractEntity {
      * {@inheritdoc}
      */
     protected $secure = ['data'];
-
-    /**
-     * {@inheritdoc}
-     */
-    public $relationships = [
-        'source' => 'Source'
-    ];
 }

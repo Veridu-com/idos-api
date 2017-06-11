@@ -10,13 +10,13 @@ namespace App\Repository\Company;
 
 use App\Entity\Company\Permission;
 use App\Exception\NotFound;
-use App\Repository\AbstractSQLDBRepository;
+use App\Repository\AbstractDBRepository;
 use Illuminate\Support\Collection;
 
 /**
  * Database-based Permission Repository Implementation.
  */
-class DBPermission extends AbstractSQLDBRepository implements PermissionInterface {
+class DBPermission extends AbstractDBRepository implements PermissionInterface {
     /**
      * The table associated with the repository.
      *

@@ -35,7 +35,7 @@ class Scores implements RouteInterface {
             'score:getOne',
             'score:createNew',
             'score:updateOne',
-            'score:upsert',
+            'score:upsertOne',
             'score:deleteOne',
             'score:deleteAll'
         ];
@@ -68,7 +68,7 @@ class Scores implements RouteInterface {
         self::getOne($app, $authMiddleware, $permissionMiddleware);
         self::createNew($app, $authMiddleware, $permissionMiddleware);
         self::updateOne($app, $authMiddleware, $permissionMiddleware);
-        self::upsert($app, $authMiddleware, $permissionMiddleware);
+        self::upsertOne($app, $authMiddleware, $permissionMiddleware);
         self::deleteOne($app, $authMiddleware, $permissionMiddleware);
         self::deleteAll($app, $authMiddleware, $permissionMiddleware);
     }
@@ -228,15 +228,15 @@ class Scores implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Profile\Scores::upsert
      */
-    private static function upsert(App $app, callable $auth, callable $permission) : void {
+    private static function upsertOne(App $app, callable $auth, callable $permission) : void {
         $app
             ->put(
                 '/profiles/{userName:[a-zA-Z0-9_-]+}/scores',
-                'App\Controller\Profile\Scores:upsert'
+                'App\Controller\Profile\Scores:upsertOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::CREDENTIAL))
-            ->setName('score:upsert');
+            ->setName('score:upsertOne');
     }
 
     /**

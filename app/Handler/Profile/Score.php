@@ -12,7 +12,7 @@ use App\Command\Profile\Score\CreateNew;
 use App\Command\Profile\Score\DeleteAll;
 use App\Command\Profile\Score\DeleteOne;
 use App\Command\Profile\Score\UpdateOne;
-use App\Command\Profile\Score\Upsert;
+use App\Command\Profile\Score\UpsertOne;
 use App\Entity\Profile\Score as ScoreEntity;
 use App\Exception\AppException;
 use App\Exception\Create;
@@ -211,7 +211,7 @@ class Score implements HandlerInterface {
     /**
      * Updates a score for a given attribute.
      *
-     * @param \App\Command\Profile\Score\Upsert $command
+     * @param \App\Command\Profile\Score\UpsertOne $command
      *
      * @see \App\Repository\DBScore::findOne
      * @see \App\Repository\DBScore::create
@@ -223,7 +223,7 @@ class Score implements HandlerInterface {
      *
      * @return \App\Entity\Profile\Score
      */
-    public function handleUpsert(Upsert $command) : ScoreEntity {
+    public function handleUpsertOne(UpsertOne $command) : ScoreEntity {
         try {
             $this->validator->assertUser($command->user, 'user');
             $this->validator->assertHandler($command->handler, 'handler');

@@ -41,9 +41,19 @@ interface SourceInterface extends RepositoryInterface {
      *
      * @param int $userId
      *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Support\Collection
      */
     public function getByUserId(int $userId) : Collection;
+
+    /**
+     * Return sources based on their user id and a set of filters.
+     *
+     * @param int   $userId
+     * @param array $filters
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function getByUserIdFiltered(int $userId, array $filters = []) : Collection;
 
     /**
      * Return sources based on their user id and name.
@@ -51,7 +61,7 @@ interface SourceInterface extends RepositoryInterface {
      * @param int    $userId
      * @param string $name
      *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Support\Collection
      */
     public function getByUserIdAndName(int $userId, string $name) : Collection;
 

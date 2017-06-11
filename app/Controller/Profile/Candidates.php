@@ -97,7 +97,7 @@ class Candidates implements ControllerInterface {
      * @apiEndpointRequiredParam body string attribute firstName Attribute Name
      * @apiEndpointRequiredParam body string value Jhon Candidate Value
      * @apiEndpointRequiredParam body float support 0.7 Candidate Support
-     * @apiEndpointResponse 201 schema/candidate/candidateEntity.json
+     * @apiEndpointResponse 201 schema/candidate/createNew.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response

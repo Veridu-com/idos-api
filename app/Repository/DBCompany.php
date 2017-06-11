@@ -18,7 +18,7 @@ use Illuminate\Support\Collection;
 /**
  * Database-based Company Repository Implementation.
  */
-class DBCompany extends AbstractSQLDBRepository implements CompanyInterface {
+class DBCompany extends AbstractDBRepository implements CompanyInterface {
     /**
      * The table associated with the repository.
      *

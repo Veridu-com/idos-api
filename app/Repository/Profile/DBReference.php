@@ -9,13 +9,13 @@ declare(strict_types = 1);
 namespace App\Repository\Profile;
 
 use App\Entity\Profile\Reference;
-use App\Repository\AbstractSQLDBRepository;
+use App\Repository\AbstractDBRepository;
 use Illuminate\Support\Collection;
 
 /**
  * Database-based Reference Repository Implementation.
  */
-class DBReference extends AbstractSQLDBRepository implements ReferenceInterface {
+class DBReference extends AbstractDBRepository implements ReferenceInterface {
     /**
      * The table associated with the repository.
      *

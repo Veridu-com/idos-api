@@ -35,7 +35,7 @@ class Features implements RouteInterface {
             'features:getOne',
             'features:createNew',
             'features:updateOne',
-            'features:upsert',
+            'features:upsertOne',
             'features:upsertBulk',
             'features:deleteOne',
             'features:deleteAll'
@@ -69,7 +69,7 @@ class Features implements RouteInterface {
         self::getOne($app, $authMiddleware, $permissionMiddleware);
         self::createNew($app, $authMiddleware, $permissionMiddleware);
         self::updateOne($app, $authMiddleware, $permissionMiddleware);
-        self::upsert($app, $authMiddleware, $permissionMiddleware);
+        self::upsertOne($app, $authMiddleware, $permissionMiddleware);
         self::upsertBulk($app, $authMiddleware, $permissionMiddleware);
         self::deleteOne($app, $authMiddleware, $permissionMiddleware);
         self::deleteAll($app, $authMiddleware, $permissionMiddleware);
@@ -231,15 +231,15 @@ class Features implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Profile\Features::upsert
      */
-    private static function upsert(App $app, callable $auth, callable $permission) : void {
+    private static function upsertOne(App $app, callable $auth, callable $permission) : void {
         $app
             ->put(
                 '/profiles/{userName:[a-zA-Z0-9_-]+}/features',
-                'App\Controller\Profile\Features:upsert'
+                'App\Controller\Profile\Features:upsertOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
             ->add($auth(Auth::CREDENTIAL))
-            ->setName('features:upsert');
+            ->setName('features:upsertOne');
     }
 
     /**

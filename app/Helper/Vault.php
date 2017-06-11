@@ -10,6 +10,7 @@ namespace App\Helper;
 
 use Defuse\Crypto\Crypto;
 use Defuse\Crypto\Exception\WrongKeyOrModifiedCiphertextException;
+use Defuse\Crypto\Key;
 use Defuse\Crypto\KeyProtectedByPassword;
 
 /**
@@ -32,10 +33,14 @@ class Vault {
      * @return void
      */
     public function __construct(string $encodedKey, string $secureKey = '') {
-        if ($secureKey !== '') {
-            $protectedKey = KeyProtectedByPassword::loadFromAsciiSafeString($encodedKey);
-            $this->key    = $protectedKey->unlockKey($secureKey);
+        if ($secureKey === '') {
+            $this->key = Key::loadFromAsciiSafeString($encodedKey);
+
+            return;
         }
+
+        $protectedKey = KeyProtectedByPassword::loadFromAsciiSafeString($encodedKey);
+        $this->key    = $protectedKey->unlockKey($secureKey);
     }
 
     /**

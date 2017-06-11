@@ -11,13 +11,13 @@ namespace App\Repository\Profile;
 use App\Entity\Profile\Attribute;
 use App\Exception\Create;
 use App\Exception\NotFound;
-use App\Repository\AbstractSQLDBRepository;
+use App\Repository\AbstractDBRepository;
 use Illuminate\Support\Collection;
 
 /**
  * Database-based Attribute Repository Implementation.
  */
-class DBAttribute extends AbstractSQLDBRepository implements AttributeInterface {
+class DBAttribute extends AbstractDBRepository implements AttributeInterface {
     /**
      * The table associated with the repository.
      *
@@ -60,29 +60,6 @@ class DBAttribute extends AbstractSQLDBRepository implements AttributeInterface 
             'hydrate'    => false
         ]
     ];
-
-    /**
-     * {@inheritdoc}
-     */
-    public function upsertOne(int $userId, string $name, string $value) : Attribute {
-        $result = $this->runRaw(
-            'INSERT INTO "attributes" ("user_id", "name", "value", "created_at") VALUES (:user_id, :name, :value, :created_at)
-            ON CONFLICT ("user_id", "name") DO UPDATE SET "value" = :value, "updated_at" = :updated_at',
-            [
-                'user_id'    => $userId,
-                'name'       => $name,
-                'value'      => $value,
-                'created_at' => date('Y-m-d H:i:s', time()),
-                'updated_at' => date('Y-m-d H:i:s', time())
-            ]
-        );
-
-        if (! $result) {
-            throw new Create\Profile\AttributeException('Error while trying to create an attribute', 500);
-        }
-
-        return $this->findOneByUserIdAndName($userId, $name);
-    }
 
     /**
      * {@inheritdoc}

@@ -22,7 +22,7 @@ use Jenssegers\Optimus\Optimus;
 /**
  * Abstract Database-based Repository.
  */
-abstract class AbstractSQLDBRepository extends AbstractRepository {
+abstract class AbstractDBRepository extends AbstractRepository {
     /**
      * DB Table Name.
      *
@@ -529,14 +529,21 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
      * @return \Illuminate\Database\Query\Builder The modified query
      */
     public function treatQueryModifiers(Builder $query, array $queryParams) : Builder {
-        if (isset($queryParams['filter:order']) && in_array($queryParams['filter:order'], $this->orderableKeys)) {
+        if (isset($queryParams['filter:order'])) {
+            $field = 'id';
             $order = 'ASC';
-
-            if (isset($queryParams['filter:sort']) && (in_array($queryParams['filter:sort'], ['ASC', 'DESC']))) {
-                $order = $queryParams['filter:sort'];
+            if ($queryParams['filter:order'] === 'latest') {
+                $field = 'created_at';
+                $order = 'DESC';
+            } elseif (in_array($queryParams['filter:order'], $this->orderableKeys)) {
+                $field = $queryParams['filter:order'];
+                $order = 'ASC';
+                if (isset($queryParams['filter:sort']) && (in_array(strtoupper($queryParams['filter:sort']), ['ASC', 'DESC']))) {
+                    $order = strtoupper($queryParams['filter:sort']);
+                }
             }
 
-            $query = $query->orderBy($queryParams['filter:order'], $order);
+            $query = $query->orderBy($field, $order);
         }
 
         if (isset($queryParams['filter:limit']) && (int) $queryParams['filter:limit'] > 0) {

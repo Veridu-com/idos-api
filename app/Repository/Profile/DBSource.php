@@ -9,13 +9,13 @@ declare(strict_types = 1);
 namespace App\Repository\Profile;
 
 use App\Entity\Profile\Source;
-use App\Repository\AbstractSQLDBRepository;
+use App\Repository\AbstractDBRepository;
 use Illuminate\Support\Collection;
 
 /**
  * Database-based Source Repository Implementation.
  */
-class DBSource extends AbstractSQLDBRepository implements SourceInterface {
+class DBSource extends AbstractDBRepository implements SourceInterface {
     /**
      * The table associated with the repository.
      *
@@ -74,6 +74,13 @@ class DBSource extends AbstractSQLDBRepository implements SourceInterface {
      */
     public function getByUserId(int $userId) : Collection {
         return $this->findBy(['user_id' => $userId]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getByUserIdFiltered(int $userId, array $filters = []) : Collection {
+        return $this->findBy(['user_id' => $userId], $filters);
     }
 
     /**

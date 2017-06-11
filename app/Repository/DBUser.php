@@ -18,7 +18,7 @@ use Illuminate\Support\Collection;
 /**
  * Database-based User Repository Implementation.
  */
-class DBUser extends AbstractSQLDBRepository implements UserInterface {
+class DBUser extends AbstractDBRepository implements UserInterface {
     /**
      * The table associated with the repository.
      *

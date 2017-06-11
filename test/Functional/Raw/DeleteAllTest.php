@@ -39,7 +39,7 @@ class DeleteAllTest extends AbstractRawFunctional {
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
         $this->assertArrayHasKey('deleted', $body);
-        $this->assertEquals(3, $body['deleted']);
+        $this->assertEquals(7, $body['deleted']);
         /*
          * Validates Response using the Json Schema.
          */

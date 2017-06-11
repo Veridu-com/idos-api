@@ -20,7 +20,7 @@ interface HookInterface extends RepositoryInterface {
      *
      * @param int $credentialId
      *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Support\Collection
      */
     public function getAllByCredentialId(int $credentialId) : Collection;
 

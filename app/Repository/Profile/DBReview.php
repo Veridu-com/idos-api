@@ -9,13 +9,13 @@ declare(strict_types = 1);
 namespace App\Repository\Profile;
 
 use App\Entity\Profile\Review;
-use App\Repository\AbstractSQLDBRepository;
+use App\Repository\AbstractDBRepository;
 use Illuminate\Support\Collection;
 
 /**
  * Database-based Review Repository Implementation.
  */
-class DBReview extends AbstractSQLDBRepository implements ReviewInterface {
+class DBReview extends AbstractDBRepository implements ReviewInterface {
     /**
      * The table associated with the repository.
      *

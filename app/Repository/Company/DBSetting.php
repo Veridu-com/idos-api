@@ -10,13 +10,13 @@ namespace App\Repository\Company;
 
 use App\Entity\Company\Setting;
 use App\Exception\NotFound;
-use App\Repository\AbstractSQLDBRepository;
+use App\Repository\AbstractDBRepository;
 use Illuminate\Support\Collection;
 
 /**
  * Database-based Setting Repository Implementation.
  */
-class DBSetting extends AbstractSQLDBRepository implements SettingInterface {
+class DBSetting extends AbstractDBRepository implements SettingInterface {
     /**
      * The table associated with the repository.
      *

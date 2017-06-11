@@ -32,7 +32,7 @@ class Recommendation implements RouteInterface {
     public static function getPublicNames() : array {
         return [
             'recommendation:getOne',
-            'recommendation:upsert'
+            'recommendation:upsertOne'
         ];
     }
 
@@ -57,7 +57,7 @@ class Recommendation implements RouteInterface {
         $permissionMiddleware = $container->get('endpointPermissionMiddleware');
 
         self::getOne($app, $authMiddleware, $permissionMiddleware);
-        self::upsert($app, $authMiddleware, $permissionMiddleware);
+        self::upsertOne($app, $authMiddleware, $permissionMiddleware);
     }
 
     /**
@@ -115,14 +115,14 @@ class Recommendation implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Profile\Recommendation::upsert
      */
-    private static function upsert(App $app, callable $auth, callable $permission) : void {
+    private static function upsertOne(App $app, callable $auth, callable $permission) : void {
         $app
             ->put(
                 '/profiles/{userName:[a-zA-Z0-9_-]+}/recommendation',
-                'App\Controller\Profile\Recommendation:upsert'
+                'App\Controller\Profile\Recommendation:upsertOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
             ->add($auth(Auth::CREDENTIAL))
-            ->setName('recommendation:upsert');
+            ->setName('recommendation:upsertOne');
     }
 }

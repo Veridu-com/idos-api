@@ -126,7 +126,7 @@ class Widgets implements ControllerInterface {
      * @apiEndpointRequiredParam body string type embedded-widget Type
      * @apiEndpointParam body boolean enabled true Enabled
      * @apiEndpointParam body string config ['gates' => '18+'] Settings
-     * @apiEndpointResponse 201 schema/widget/widgetEntity.json
+     * @apiEndpointResponse 201 schema/widget/createNew.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response

@@ -52,10 +52,6 @@ abstract class AbstractAuthFunctional extends AbstractFunctional {
             self::$sqlConnection = $this->middlewareApp->getContainer()->get('sql');
         }
 
-        if (! self::$noSqlConnection) {
-            self::$noSqlConnection = $this->middlewareApp->getContainer()->get('nosql');
-        }
-
         return $this->middlewareApp;
     }
 }

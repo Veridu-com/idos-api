@@ -9,13 +9,13 @@ declare(strict_types = 1);
 namespace App\Repository\Company;
 
 use App\Entity\Company\Credential;
-use App\Repository\AbstractSQLDBRepository;
+use App\Repository\AbstractDBRepository;
 use Illuminate\Support\Collection;
 
 /**
  * Database-based Credential Repository Implementation.
  */
-class DBCredential extends AbstractSQLDBRepository implements CredentialInterface {
+class DBCredential extends AbstractDBRepository implements CredentialInterface {
     /**
      * The table associated with the repository.
      *

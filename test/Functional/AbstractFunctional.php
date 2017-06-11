@@ -36,42 +36,30 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
      * @var \Slim\App
      */
     protected static $app;
-
     /**
      * Phinx Application Instance.
      *
      * @var \Phinx\Console\PhinxApplication
      */
     protected static $phinxApp;
-
     /**
      * Phinx TextWrapper Instance.
      *
      * @var \Phinx\Wrapper\TextWrapper
      */
     protected static $phinxTextWrapper;
-
     /**
      * SQL Database Connection.
      *
      * @var \Illuminate\Database\Connection
      */
     protected static $sqlConnection;
-
-    /**
-     * NoSQL Database Connection.
-     *
-     * @var callable
-     */
-    protected static $noSqlConnection;
-
     /**
      * Message of the errors of a failed schema assertion.
      *
      * @var string
      */
     protected $schemaErrors;
-
     /**
      * Entities populated via populate() method.
      *
@@ -80,21 +68,18 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
      * @var array
      */
     protected $entities;
-
     /**
      * HTTP method of the test.
      *
      * @var string
      */
     protected $httpMethod;
-
     /**
      * URI property of the test.
      *
      * @var string
      */
     protected $uri;
-
     /**
      * Username used in all routes under /profile route.
      *
@@ -141,10 +126,6 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
 
         if (! self::$sqlConnection) {
             self::$sqlConnection = self::$app->getContainer()->get('sql');
-        }
-
-        if (! self::$noSqlConnection) {
-            self::$noSqlConnection = self::$app->getContainer()->get('nosql');
         }
     }
 

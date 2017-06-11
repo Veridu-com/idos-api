@@ -241,14 +241,14 @@ class Features implements ControllerInterface {
      * @apiEndpointRequiredParam body string value 10 Feature value
      * @apiEndpointRequiredParam body string type integer Feature type
      * @apiEndpointParam body int source_id 25367 Feature source_id
-     * @apiEndpointResponse 201 schema/feature/createNew.json
+     * @apiEndpointResponse 200 schema/feature/upsertOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function upsert(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+    public function upsertOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user        = $request->getAttribute('targetUser');
         $handler     = $request->getAttribute('handler');
         $credential  = $request->getAttribute('credential');
@@ -259,7 +259,7 @@ class Features implements ControllerInterface {
             $source = $this->sourceRepository->findOne($request->getParsedBodyParam('decoded_source_id'), $user->id);
         }
 
-        $command = $this->commandFactory->create('Profile\\Feature\\Upsert');
+        $command = $this->commandFactory->create('Profile\\Feature\\UpsertOne');
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $user)
@@ -276,7 +276,6 @@ class Features implements ControllerInterface {
 
         $command = $this->commandFactory->create('ResponseDispatch');
         $command
-            ->setParameter('statusCode', isset($feature->updatedAt) ? 200 : 201)
             ->setParameter('request', $request)
             ->setParameter('response', $response)
             ->setParameter('body', $body);
@@ -288,7 +287,7 @@ class Features implements ControllerInterface {
      * Creates or updates features for the given user.
      *
      * @apiEndpointRequiredParam body array features [] Feature features
-     * @apiEndpointResponse 201 schema/feature/createNew.json
+     * @apiEndpointResponse 200 schema/feature/upsertBulk.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -311,7 +310,6 @@ class Features implements ControllerInterface {
 
         $command = $this->commandFactory->create('ResponseDispatch');
         $command
-            ->setParameter('statusCode', 201)
             ->setParameter('request', $request)
             ->setParameter('response', $response)
             ->setParameter('body', ['data' => $features->toArray()]);

@@ -10,13 +10,13 @@ namespace App\Repository\Metric;
 
 use App\Entity\Company;
 use App\Entity\Company\Credential;
-use App\Repository\AbstractSQLDBRepository;
+use App\Repository\AbstractDBRepository;
 use Illuminate\Support\Collection;
 
 /**
  * Database-based System Metric Repository Implementation.
  */
-class DBSystem extends AbstractSQLDBRepository implements SystemInterface {
+class DBSystem extends AbstractDBRepository implements SystemInterface {
     /**
      * The table associated with the repository.
      *

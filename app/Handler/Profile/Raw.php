@@ -8,22 +8,27 @@ declare(strict_types = 1);
 
 namespace App\Handler\Profile;
 
+use App\Command\CommandInterface;
 use App\Command\Profile\Raw\CreateNew;
 use App\Command\Profile\Raw\DeleteAll;
-use App\Command\Profile\Raw\Upsert;
+use App\Command\Profile\Raw\ListAll;
+use App\Command\Profile\Raw\UpsertOne;
 use App\Entity\Profile\Raw as RawEntity;
+use App\Entity\Profile\Source;
 use App\Exception\Create;
 use App\Exception\NotFound;
 use App\Exception\Update;
 use App\Exception\Validate;
+use App\Factory\Entity;
 use App\Factory\Event;
 use App\Handler\HandlerInterface;
 use App\Repository\Profile\ProcessInterface;
-use App\Repository\Profile\RawInterface;
 use App\Repository\Profile\SourceInterface;
 use App\Validator\Profile\Raw as RawValidator;
+use Illuminate\Support\Collection;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
+use League\Flysystem\Filesystem;
 use Respect\Validation\Exceptions\ValidationException;
 
 /**
@@ -31,11 +36,17 @@ use Respect\Validation\Exceptions\ValidationException;
  */
 class Raw implements HandlerInterface {
     /**
-     * Raw Repository instance.
+     * File System instance.
      *
-     * @var \App\Repository\Profile\RawInterface
+     * @var \League\Flysystem\Filesystem
      */
-    private $repository;
+    private $fileSystem;
+    /**
+     * Entity Factory instance.
+     *
+     * @var \App\Factory\Entity
+     */
+    private $entityFactory;
     /**
      * Source Repository instance.
      *
@@ -68,15 +79,67 @@ class Raw implements HandlerInterface {
     private $emitter;
 
     /**
+     * Generates a base path based on source values.
+     *
+     * @param \App\Entity\Source $source
+     *
+     * @throws \RuntimeException
+     *
+     * @return string
+     */
+    private function getBasePath(Source $source) : string {
+        if (! isset($source->id)) {
+            throw new \RuntimeException('Invalid source id');
+        }
+
+        if (! isset($source->name)) {
+            throw new \RuntimeException('Invalid source name');
+        }
+
+        return sprintf(
+            '%s/%s',
+            $source->name,
+            md5((string) $source->id)
+        );
+    }
+
+    /**
+     * Generates a file name based on command parameters.
+     *
+     * @param \App\Command\CommandInterface $command
+     *
+     * @throws \RuntimeException
+     *
+     * @return string
+     */
+    private function getFileName(CommandInterface $command) : string {
+        if (! property_exists($command, 'source')) {
+            throw new \RuntimeException('Invalid source');
+        }
+
+        if (! property_exists($command, 'collection')) {
+            throw new \RuntimeException('Invalid collection name');
+        }
+
+        return sprintf(
+            '%s/%s.data',
+            $this->getBasePath($command->source),
+            $command->collection
+        );
+    }
+
+    /**
      * {@inheritdoc}
      */
     public static function register(ContainerInterface $container) : void {
         $container[self::class] = function (ContainerInterface $container) : HandlerInterface {
+            $fileSystem        = $container->get('fileSystem');
             $repositoryFactory = $container->get('repositoryFactory');
 
             return new \App\Handler\Profile\Raw(
-                $repositoryFactory
-                    ->create('Profile\Raw'),
+                $fileSystem('raw'),
+                $container
+                    ->get('entityFactory'),
                 $repositoryFactory
                     ->create('Profile\Source'),
                 $repositoryFactory
@@ -95,7 +158,8 @@ class Raw implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\Profile\RawInterface     $repository
+     * @param \League\Flysystem\Filesystem             $fileSystem
+     * @param \App\Factory\Entity                      $entityFactory
      * @param \App\Repository\Profile\SourceInterface  $sourceRepository
      * @param \App\Repository\Profile\ProcessInterface $processRepository
      * @param \App\Validator\Profile\Raw               $validator
@@ -105,19 +169,21 @@ class Raw implements HandlerInterface {
      * @return void
      */
     public function __construct(
-        RawInterface $repository,
+        Filesystem $fileSystem,
+        Entity $entityFactory,
         SourceInterface $sourceRepository,
         ProcessInterface $processRepository,
         RawValidator $validator,
         Event $eventFactory,
         Emitter $emitter
     ) {
-        $this->repository          = $repository;
-        $this->sourceRepository    = $sourceRepository;
-        $this->processRepository   = $processRepository;
-        $this->validator           = $validator;
-        $this->eventFactory        = $eventFactory;
-        $this->emitter             = $emitter;
+        $this->fileSystem        = $fileSystem;
+        $this->entityFactory     = $entityFactory;
+        $this->sourceRepository  = $sourceRepository;
+        $this->processRepository = $processRepository;
+        $this->validator         = $validator;
+        $this->eventFactory      = $eventFactory;
+        $this->emitter           = $emitter;
     }
 
     /**
@@ -140,32 +206,34 @@ class Raw implements HandlerInterface {
             $this->validator->assertUser($command->user, 'user');
             $this->validator->assertName($command->collection, 'collection');
             $this->validator->assertCredential($command->credential, 'credential');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Profile\RawException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
-        // We must assert thet there is no raw data with the given source and collection
-        try {
-            $entity = $this->repository->findOne($command->collection, $command->source);
-            throw new Create\Profile\RawException('Error while trying to create raw', 500);
-        } catch (NotFound $e) {
-        }
-
-        $raw = $this->repository->create(
-            [
-                'source'     => $command->source,
-                'collection' => $command->collection,
-                'data'       => $command->data,
-                'created_at' => time()
-            ]
-        );
+        $fileName = $this->getFileName($command);
 
         try {
-            $raw = $this->repository->save($raw);
+            if ($this->fileSystem->has($fileName)) {
+                throw new Create\Profile\RawException('Error while trying to create raw, collection already exists.', 500);
+            }
+
+            $raw = $this->entityFactory->create('Profile\\Raw');
+            $raw->hydrate(
+                [
+                    'source_id'  => $command->source->getEncodedId(),
+                    'collection' => $command->collection,
+                    'data'       => $command->data,
+                    'created_at' => time()
+                ]
+            );
+
+            $serialized = $raw->serialize();
+
+            $this->fileSystem->write($fileName, $serialized['data']);
 
             $process = $this->processRepository->findOneBySourceId($command->source->id);
 
@@ -179,11 +247,11 @@ class Raw implements HandlerInterface {
             );
 
             $this->emitter->emit($event);
-        } catch (\Exception $e) {
-            throw new Create\Profile\RawException('Error while trying to create a raw', 500, $e);
-        }
 
-        return $raw;
+            return $raw;
+        } catch (\Exception $exception) {
+            throw new Create\Profile\RawException('Error while trying to create raw', 500, $exception);
+        }
     }
 
     /**
@@ -203,11 +271,11 @@ class Raw implements HandlerInterface {
     public function handleDeleteAll(DeleteAll $command) : int {
         try {
             $this->validator->assertUser($command->user, 'user');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Profile\RawException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -217,107 +285,174 @@ class Raw implements HandlerInterface {
             $sourceNameInput = $command->queryParams['source'] ?? null;
 
             if ($sourceNameInput) {
-                $userSources = $this->sourceRepository->getByUserIdAndName($command->user->id, $sourceNameInput);
+                $sources = $this->sourceRepository->getByUserIdAndName($command->user->id, $sourceNameInput);
             } else {
-                $userSources = $this->sourceRepository->getByUserId($command->user->id);
+                $sources = $this->sourceRepository->getByUserId($command->user->id);
             }
 
-            foreach ($userSources as $source) {
-                $affectedRows += $this->repository->deleteBySource($source);
+            foreach ($sources as $source) {
+                $basePath = $this->getBasePath($source);
+                $affectedRows += count($this->fileSystem->listFiles($basePath));
+                $this->fileSystem->deleteDir($basePath);
             }
 
             return $affectedRows;
-        } catch (NotFound $e) {
-            throw new Create\Profile\RawException('Error while trying to delete raw data', 500, $e);
+        } catch (NotFound $exception) {
+            throw new Create\Profile\RawException('Error while trying to delete raw data', 500, $exception);
         }
+    }
+
+    /**
+     * List all raw data in the given source.
+     *
+     * @param \App\Command\Profile\Raw\ListAll $command
+     *
+     * @throws \App\Exception\Validate\Profile\RawException
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function handleListAll(ListAll $command) : Collection {
+        try {
+            $this->validator->assertUser($command->user, 'user');
+            $this->validator->assertNullableArray($command->queryParams, 'queryParams');
+        } catch (ValidationException $exception) {
+            throw new Validate\Profile\RawException(
+                $exception->getFullMessage(),
+                400,
+                $exception
+            );
+        }
+
+        foreach ($command->queryParams as $key => $value) {
+            if (substr_compare($key, 'source:', 0, 7) === 0) {
+                $command->queryParams[substr($key, 7)] = $value;
+                unset($command->queryParams[$key]);
+            }
+        }
+
+        $sources = $this->sourceRepository->getByUserIdFiltered($command->user->id, $command->queryParams);
+
+        $filter = [];
+        if (isset($command->queryParams['collection'])) {
+            if (! preg_match('/^[a-zA-Z0-9]+(,[a-zA-Z0-9]+)*$/', $command->queryParams['collection'])) {
+                throw new Validate\Profile\RawException('Invalid collection filter');
+            }
+
+            $filter = explode(',', $command->queryParams['collection']);
+        }
+
+        $filtered = count($filter) > 0;
+
+        $entities = new Collection();
+        foreach ($sources as $source) {
+            $basePath = $this->getBasePath($source);
+            foreach ($this->fileSystem->listFiles($basePath) as $file) {
+                if (! preg_match('/^[a-zA-Z0-9]+$/', $file['filename'])) {
+                    continue;
+                }
+
+                if ($file['size'] == 0) {
+                    continue;
+                }
+
+                if (($filtered) && (! in_array($file['filename'], $filter))) {
+                    continue;
+                }
+
+                $raw = $this->entityFactory->create(
+                    'Profile\\Raw',
+                    [
+                        'source_id'  => $source->getEncodedId(),
+                        'collection' => $file['filename'],
+                        'data'       => $this->fileSystem->read($file['path']),
+                        'created_at' => $this->fileSystem->getTimestamp($file['path']),
+                        'updated_at' => null
+                    ]
+                );
+                $entities->push($raw);
+            }
+        }
+
+        return $entities;
     }
 
     /**
      * Creates or updates a raw data in the given source.
      *
-     * @param \App\Command\Profile\Raw\Upsert $command
-     *
-     * @see \App\Repository\DBRaw::findOne
-     * @see \App\Repository\DBRaw::create
-     * @see \App\Repository\DBRaw::save
+     * @param \App\Command\Profile\Raw\UpsertOne $command
      *
      * @throws \App\Exception\Validate\Profile\RawException
      * @throws \App\Exception\Create\Profile\RawException
+     * @throws \App\Exception\Update\Profile\RawException
      *
      * @return \App\Entity\Profile\Raw
      */
-    public function handleUpsert(Upsert $command) : RawEntity {
+    public function handleUpsertOne(UpsertOne $command) : RawEntity {
         try {
             $this->validator->assertSource($command->source, 'source');
             $this->validator->assertName($command->collection, 'collection');
             $this->validator->assertCredential($command->credential, 'credential');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Profile\RawException(
-                $e->getMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
-        $entity    = null;
-        $inserting = false;
+        $fileName = $this->getFileName($command);
 
         try {
-            $entity = $this->repository->findOne($command->collection, $command->source);
+            $inserting = false;
+            $createdAt = time();
+            $updatedAt = null;
+            if ($this->fileSystem->has($fileName)) {
+                $inserting = true;
+                $createdAt = $this->fileSystem->getTimestamp($fileName);
+                $updatedAt = time();
+            }
 
-            $entity->source     = $command->source;
-            $entity->data       = $command->data;
-            $entity->updated_at = time();
-        } catch (NotFound $e) {
-        }
-
-        $process = $this->processRepository->findOneBySourceId($command->source->id);
-
-        if ($entity === null) {
-            $inserting = true;
-            $entity    = $this->repository->create(
+            $raw = $this->entityFactory->create('Profile\\Raw');
+            $raw->hydrate(
                 [
-                    'source'     => $command->source,
+                    'source_id'  => $command->source->getEncodedId(),
                     'collection' => $command->collection,
                     'data'       => $command->data,
-                    'created_at' => time(),
-                    'updated_at' => null
+                    'created_at' => $createdAt,
+                    'updated_at' => $updatedAt
                 ]
             );
-        }
 
-        try {
-            $entity = $this->repository->save($entity);
+            $serialized = $raw->serialize();
 
+            $this->fileSystem->put($fileName, $serialized['data']);
+
+            $process = $this->processRepository->findOneBySourceId($command->source->id);
+
+            $eventName = 'Profile\\Raw\\Updated';
             if ($inserting) {
-                $event = $this->eventFactory->create(
-                    'Profile\\Raw\\Created',
-                    $entity,
-                    $command->user,
-                    $command->source,
-                    $process,
-                    $command->credential
-                );
-            } else {
-                $event = $this->eventFactory->create(
-                    'Profile\\Raw\\Updated',
-                    $entity,
-                    $command->user,
-                    $command->source,
-                    $process,
-                    $command->credential
-                );
+                $eventName = 'Profile\\Raw\\Created';
             }
+
+            $event = $this->eventFactory->create(
+                $eventName,
+                $raw,
+                $command->user,
+                $command->source,
+                $process,
+                $command->credential
+            );
 
             $this->emitter->emit($event);
-        } catch (\Exception $e) {
+
+            return $raw;
+        } catch (\Exception $exception) {
+            throw $exception;
             if ($inserting) {
-                throw new Create\Profile\RawException('Error while trying to create raw', 500, $e);
+                throw new Create\Profile\RawException('Error while trying to create raw', 500, $exception);
             }
 
-            throw new Update\Profile\RawException('Error while trying to update raw', 500, $e);
+            throw new Update\Profile\RawException('Error while trying to update raw', 500, $exception);
         }
-
-        return $entity;
     }
 }

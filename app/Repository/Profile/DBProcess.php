@@ -10,12 +10,12 @@ namespace App\Repository\Profile;
 
 use App\Entity\Profile\Process;
 use App\Exception\NotFound;
-use App\Repository\AbstractSQLDBRepository;
+use App\Repository\AbstractDBRepository;
 
 /**
  * Database-based Process Repository Implementation.
  */
-class DBProcess extends AbstractSQLDBRepository implements ProcessInterface {
+class DBProcess extends AbstractDBRepository implements ProcessInterface {
     /**
      * The table associated with the repository.
      *

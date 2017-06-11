@@ -32,7 +32,7 @@ interface CandidateInterface extends RepositoryInterface {
      * @param int   $userId
      * @param array $attributeNames
      *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Support\Collection
      */
     public function getAllByUserIdAndAttributeNames(int $userId, array $attributeNames = []) : Collection;
 

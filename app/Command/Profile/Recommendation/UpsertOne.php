@@ -12,9 +12,9 @@ use App\Command\AbstractCommand;
 use App\Command\CommandInterface;
 
 /**
- * Recommendation "Upsert" Command.
+ * Recommendation "Upsert One" Command.
  */
-class Upsert extends AbstractCommand {
+class UpsertOne extends AbstractCommand {
     /**
      * Recommendation User.
      *

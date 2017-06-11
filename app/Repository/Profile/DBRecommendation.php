@@ -9,12 +9,12 @@ declare(strict_types = 1);
 namespace App\Repository\Profile;
 
 use App\Entity\Profile\Recommendation;
-use App\Repository\AbstractSQLDBRepository;
+use App\Repository\AbstractDBRepository;
 
 /**
  * Database-based Recommendation Repository Implementation.
  */
-class DBRecommendation extends AbstractSQLDBRepository implements RecommendationInterface {
+class DBRecommendation extends AbstractDBRepository implements RecommendationInterface {
     /**
      * The table associated with the repository.
      *
