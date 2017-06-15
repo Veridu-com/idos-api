@@ -137,11 +137,11 @@ class Hook implements HandlerInterface {
         try {
             $this->validator->assertId($command->hookId, 'hookId');
             $this->validator->assertCompany($command->company, 'company');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Company\HookException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -176,11 +176,11 @@ class Hook implements HandlerInterface {
             $this->validator->assertUrl($command->url, 'url');
             $this->validator->assertIdentity($command->identity, 'identity');
             $this->validator->assertCompany($command->company, 'company');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Company\HookException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -195,7 +195,7 @@ class Hook implements HandlerInterface {
             if ($this->httpClient->request('GET', $command->url)->getStatusCode() === 204) {
                 $validResponse = true;
             }
-        } catch (\Exception $e) {
+        } catch (\Exception $exception) {
         }
 
         if (! $validResponse) {
@@ -214,10 +214,14 @@ class Hook implements HandlerInterface {
 
         try {
             $hook  = $this->repository->save($hook);
-            $event = $this->eventFactory->create('Company\\Hook\\Created', $hook, $command->identity);
+            $event = $this->eventFactory->create('Company\Hook\Created', $hook, $command->identity);
             $this->emitter->emit($event);
-        } catch (\Exception $e) {
-            throw new Create\Company\HookException('Error while trying to create a hook', 500, $e);
+        } catch (\Exception $exception) {
+            throw new Create\Company\HookException(
+                'Error while trying to create a new hook',
+                500,
+                $exception
+            );
         }
 
         return $hook;
@@ -245,11 +249,11 @@ class Hook implements HandlerInterface {
             $this->validator->assertUrl($command->url, 'url');
             $this->validator->assertIdentity($command->identity, 'identity');
             $this->validator->assertCompany($command->company, 'company');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Company\HookException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -271,7 +275,7 @@ class Hook implements HandlerInterface {
             if ($this->httpClient->request('GET', $command->url)->getStatusCode() === 204) {
                 $validResponse = true;
             }
-        } catch (\Exception $e) {
+        } catch (\Exception $exception) {
         }
 
         if (! $validResponse) {
@@ -285,10 +289,10 @@ class Hook implements HandlerInterface {
 
         try {
             $hook  = $this->repository->save($hook);
-            $event = $this->eventFactory->create('Company\\Hook\\Updated', $hook, $command->identity);
+            $event = $this->eventFactory->create('Company\Hook\Updated', $hook, $command->identity);
             $this->emitter->emit($event);
-        } catch (\Exception $e) {
-            throw new Update\Company\HookException('Error while trying to update a hook', 500, $e);
+        } catch (\Exception $exception) {
+            throw new Update\Company\HookException('Error while trying to update a hook', 500, $exception);
         }
 
         return $hook;
@@ -313,11 +317,11 @@ class Hook implements HandlerInterface {
             $this->validator->assertId($command->hookId, 'hookId');
             $this->validator->assertIdentity($command->identity, 'identity');
             $this->validator->assertCompany($command->company, 'company');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Company\HookException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -340,7 +344,7 @@ class Hook implements HandlerInterface {
             throw new NotFound\Company\HookException('No hooks found for deletion', 404);
         }
 
-        $event = $this->eventFactory->create('Company\\Hook\\Deleted', $hook, $command->identity);
+        $event = $this->eventFactory->create('Company\Hook\Deleted', $hook, $command->identity);
         $this->emitter->emit($event);
     }
 }

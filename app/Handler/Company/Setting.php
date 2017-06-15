@@ -162,11 +162,11 @@ class Setting implements HandlerInterface {
             $this->validator->assertCompany($command->company, 'company');
             $this->validator->assertId($command->company->id, 'companyId');
             $this->validator->assertIdentity($command->identity, 'identity');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Company\SettingException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -183,10 +183,10 @@ class Setting implements HandlerInterface {
 
         try {
             $setting = $this->repository->save($setting);
-            $event   = $this->eventFactory->create('Company\\Setting\\Created', $setting, $command->company, $command->identity);
+            $event   = $this->eventFactory->create('Company\Setting\Created', $setting, $command->company, $command->identity);
             $this->emitter->emit($event);
-        } catch (\Exception $e) {
-            throw new Create\Company\SettingException('Error while trying to create a setting', 500, $e);
+        } catch (\Exception $exception) {
+            throw new Create\Company\SettingException('Error while trying to create a setting', 500, $exception);
         }
 
         return $setting;
@@ -210,11 +210,11 @@ class Setting implements HandlerInterface {
             $this->validator->assertId($command->settingId, 'settingId');
             $this->validator->assertIdentity($command->identity, 'identity');
             $this->validator->assertCompany($command->company, 'company');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Company\SettingException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -225,10 +225,10 @@ class Setting implements HandlerInterface {
 
         try {
             $setting = $this->repository->save($setting);
-            $event   = $this->eventFactory->create('Company\\Setting\\Updated', $setting, $command->company, $command->identity);
+            $event   = $this->eventFactory->create('Company\Setting\Updated', $setting, $command->company, $command->identity);
             $this->emitter->emit($event);
-        } catch (\Exception $e) {
-            throw new Update\Company\SettingException('Error while trying to update a setting', 500, $e);
+        } catch (\Exception $exception) {
+            throw new Update\Company\SettingException('Error while trying to update a setting', 500, $exception);
         }
 
         return $setting;
@@ -248,11 +248,11 @@ class Setting implements HandlerInterface {
         try {
             $this->validator->assertId($command->settingId, 'settingId');
             $this->validator->assertIdentity($command->identity, 'identity');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Company\SettingException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -264,7 +264,7 @@ class Setting implements HandlerInterface {
             throw new NotFound\Company\SettingException('No settings found for deletion', 404);
         }
 
-        $event = $this->eventFactory->create('Company\\Setting\\Deleted', $setting, $command->company, $command->identity);
+        $event = $this->eventFactory->create('Company\Setting\Deleted', $setting, $command->company, $command->identity);
         $this->emitter->emit($event);
     }
 }

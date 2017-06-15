@@ -158,7 +158,7 @@ class EvaluateRecommendation extends AbstractListener {
 
         try {
             $user = $this->userRepository->find($event->getUserId());
-        } catch (\RuntimeException $e) {
+        } catch (\RuntimeException $exception) {
             // Fails silently
             return;
         }
@@ -213,7 +213,7 @@ class EvaluateRecommendation extends AbstractListener {
             ];
 
             if ($this->queueOnManager($this->gearmanClient, $payload)) {
-                $this->emitter->emit($this->eventFactory->create('Manager\\WorkQueued', $event));
+                $this->emitter->emit($this->eventFactory->create('Manager\WorkQueued', $event));
                 continue;
             }
 

@@ -83,8 +83,8 @@ class Flag implements HandlerInterface {
             );
 
             return $this->categoryRepository->upsert($category);
-        } catch (\Exception $e) {
-            throw new Update\Profile\FlagException('Error while trying to upsert a Flag category', 500, $e);
+        } catch (\Exception $exception) {
+            throw new Update\Profile\FlagException('Error while trying to upsert a Flag category', 500, $exception);
         }
     }
 
@@ -160,11 +160,11 @@ class Flag implements HandlerInterface {
             }
 
             $this->validator->assertCredential($command->credential, 'credential');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Profile\FlagException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -184,10 +184,10 @@ class Flag implements HandlerInterface {
             $entity = $this->repository->save($entity);
             $entity = $this->repository->hydrateRelations($entity);
 
-            $event = $this->eventFactory->create('Profile\\Flag\\Created', $entity, $command->credential);
+            $event = $this->eventFactory->create('Profile\Flag\Created', $entity, $command->credential);
             $this->emitter->emit($event);
-        } catch (\Exception $e) {
-            throw new Create\Profile\FlagException('Error while trying to create a flag', 500, $e);
+        } catch (\Exception $exception) {
+            throw new Create\Profile\FlagException('Error while trying to create a flag', 500, $exception);
         }
 
         return $entity;
@@ -212,11 +212,11 @@ class Flag implements HandlerInterface {
             $this->validator->assertHandler($command->handler, 'handler');
             $this->validator->assertSlug($command->slug, 'slug');
             $this->validator->assertCredential($command->credential, 'credential');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Profile\FlagException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -226,10 +226,10 @@ class Flag implements HandlerInterface {
             $affectedRows = $this->repository->delete($entity->id);
 
             if ($affectedRows) {
-                $event = $this->eventFactory->create('Profile\\Flag\\Deleted', $entity, $command->credential);
+                $event = $this->eventFactory->create('Profile\Flag\Deleted', $entity, $command->credential);
                 $this->emitter->emit($event);
             }
-        } catch (\Exception $e) {
+        } catch (\Exception $exception) {
             throw new AppException('Error while deleting flag');
         }
 
@@ -254,11 +254,11 @@ class Flag implements HandlerInterface {
             $this->validator->assertUser($command->user, 'user');
             $this->validator->assertHandler($command->handler, 'handler');
             $this->validator->assertCredential($command->credential, 'credential');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Profile\FlagException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -275,10 +275,10 @@ class Flag implements HandlerInterface {
             }
 
             if ($affectedRows) {
-                $event = $this->eventFactory->create('Profile\\Flag\\DeletedMulti', $entities, $command->credential);
+                $event = $this->eventFactory->create('Profile\Flag\DeletedMulti', $entities, $command->credential);
                 $this->emitter->emit($event);
             }
-        } catch (\Exception $e) {
+        } catch (\Exception $exception) {
             throw new AppException('Error while deleting flags');
         }
 

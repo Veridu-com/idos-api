@@ -150,7 +150,7 @@ class Tags implements ControllerInterface {
 
         $user = $this->userRepository->find($request->getAttribute('decodedUserId'));
 
-        $command = $this->commandFactory->create('Profile\\Tag\\CreateNew');
+        $command = $this->commandFactory->create('Profile\Tag\CreateNew');
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $user)
@@ -190,7 +190,7 @@ class Tags implements ControllerInterface {
 
         $user = $this->userRepository->find($request->getAttribute('decodedUserId'));
 
-        $command = $this->commandFactory->create('Profile\\Tag\\DeleteOne');
+        $command = $this->commandFactory->create('Profile\Tag\DeleteOne');
         $command
             ->setParameter('identity', $identity)
             ->setParameter('user', $user)
@@ -227,7 +227,7 @@ class Tags implements ControllerInterface {
 
         $user = $this->userRepository->find($request->getAttribute('decodedUserId'));
 
-        $command = $this->commandFactory->create('Profile\\Tag\\DeleteAll');
+        $command = $this->commandFactory->create('Profile\Tag\DeleteAll');
         $command
             ->setParameter('identity', $identity)
             ->setParameter('user', $user);

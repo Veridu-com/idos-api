@@ -113,11 +113,11 @@ class Candidate implements HandlerInterface {
             $this->validator->assertValue($command->value, 'value');
             $this->validator->assertScore($command->support, 'support');
             $this->validator->assertCredential($command->credential, 'credential');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Profile\CandidateException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -136,14 +136,14 @@ class Candidate implements HandlerInterface {
             $entity = $this->repository->save($entity);
             $entity = $this->repository->hydrateRelations($entity);
             $event  = $this->eventFactory->create(
-                'Profile\\Candidate\\Created',
+                'Profile\Candidate\Created',
                 $command->user,
                 $entity,
                 $command->credential
             );
             $this->emitter->emit($event);
-        } catch (\Exception $e) {
-            throw new Create\Profile\CandidateException('Error while trying to create an candidate', 500, $e);
+        } catch (\Exception $exception) {
+            throw new Create\Profile\CandidateException('Error while trying to create an candidate', 500, $exception);
         }
 
         return $entity;
@@ -165,11 +165,11 @@ class Candidate implements HandlerInterface {
             $this->validator->assertHandler($command->handler, 'handler');
             $this->validator->assertArray($command->queryParams, 'queryParams');
             $this->validator->assertCredential($command->credential, 'credential');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Profile\CandidateException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -191,15 +191,15 @@ class Candidate implements HandlerInterface {
 
             if ($affectedRows) {
                 $event = $this->eventFactory->create(
-                    'Profile\\Candidate\\DeletedMulti',
+                    'Profile\Candidate\DeletedMulti',
                     $command->user,
                     $entities,
                     $command->credential
                 );
                 $this->emitter->emit($event);
             }
-        } catch (\Exception $e) {
-            throw new NotFound\Profile\CandidateException('Error while deleting all candidates', 500, $e);
+        } catch (\Exception $exception) {
+            throw new NotFound\Profile\CandidateException('Error while deleting all candidates', 500, $exception);
         }
 
         return $affectedRows;

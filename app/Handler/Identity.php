@@ -106,11 +106,11 @@ class Identity implements HandlerInterface {
             $this->validator->assertString($command->profileId, 'profileId');
             $this->validator->assertShortName($command->sourceName, 'sourceName');
             $this->validator->assertString($command->appKey, 'appKey');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\IdentityException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -130,10 +130,10 @@ class Identity implements HandlerInterface {
 
         try {
             $identity = $this->repository->save($identity);
-            $event    = $this->eventFactory->create('Identity\\Created', $identity);
+            $event    = $this->eventFactory->create('Identity\Created', $identity);
             $this->emitter->emit($event);
-        } catch (\Exception $e) {
-            throw new Create\IdentityException('Error while trying to create an identity', 500, $e);
+        } catch (\Exception $exception) {
+            throw new Create\IdentityException('Error while trying to create an identity', 500, $exception);
         }
 
         return $identity;

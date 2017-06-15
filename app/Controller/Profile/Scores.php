@@ -152,7 +152,7 @@ class Scores implements ControllerInterface {
         $handler    = $request->getAttribute('handler');
         $credential = $request->getAttribute('credential');
 
-        $command = $this->commandFactory->create('Profile\\Score\\CreateNew');
+        $command = $this->commandFactory->create('Profile\Score\CreateNew');
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('credential', $credential)
@@ -197,7 +197,7 @@ class Scores implements ControllerInterface {
         $name       = $request->getAttribute('scoreName');
         $credential = $request->getAttribute('credential');
 
-        $command = $this->commandFactory->create('Profile\\Score\\UpdateOne');
+        $command = $this->commandFactory->create('Profile\Score\UpdateOne');
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('credential', $credential)
@@ -239,7 +239,7 @@ class Scores implements ControllerInterface {
         $handler    = $request->getAttribute('handler');
         $credential = $request->getAttribute('credential');
 
-        $command = $this->commandFactory->create('Profile\\Score\\UpsertOne');
+        $command = $this->commandFactory->create('Profile\Score\UpsertOne');
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('credential', $credential)
@@ -280,7 +280,7 @@ class Scores implements ControllerInterface {
         $name       = $request->getAttribute('scoreName');
         $credential = $request->getAttribute('credential');
 
-        $command = $this->commandFactory->create('Profile\\Score\\DeleteOne');
+        $command = $this->commandFactory->create('Profile\Score\DeleteOne');
         $command
             ->setParameter('credential', $credential)
             ->setParameter('user', $user)
@@ -318,7 +318,7 @@ class Scores implements ControllerInterface {
         $handler    = $request->getAttribute('handler');
         $credential = $request->getAttribute('credential');
 
-        $command = $this->commandFactory->create('Profile\\Score\\DeleteAll');
+        $command = $this->commandFactory->create('Profile\Score\DeleteAll');
         $command
             ->setParameter('credential', $credential)
             ->setParameter('user', $user)

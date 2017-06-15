@@ -107,7 +107,7 @@ class Invitations implements ControllerInterface {
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetCompany = $request->getAttribute('targetCompany');
         $identity      = $request->getAttribute('identity');
-        $command       = $this->commandFactory->create('Company\\Invitation\\CreateNew');
+        $command       = $this->commandFactory->create('Company\Invitation\CreateNew');
 
         $command
             ->setParameter('company', $targetCompany)
@@ -147,7 +147,7 @@ class Invitations implements ControllerInterface {
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $identity = $request->getAttribute('identity');
 
-        $command = $this->commandFactory->create('Company\\Invitation\\DeleteOne');
+        $command = $this->commandFactory->create('Company\Invitation\DeleteOne');
         $command
             ->setParameter('identity', $identity)
             ->setParameter('invitationId', $request->getAttribute('decodedInvitationId'));
@@ -180,7 +180,7 @@ class Invitations implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $command = $this->commandFactory->create('Company\\Invitation\\UpdateOne');
+        $command = $this->commandFactory->create('Company\Invitation\UpdateOne');
 
         $command->setParameter('invitationId', $request->getAttribute('decodedInvitationId'));
         $command->setParameters($request->getParsedBody());

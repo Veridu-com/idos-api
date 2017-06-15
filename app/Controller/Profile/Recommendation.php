@@ -107,7 +107,7 @@ class Recommendation implements ControllerInterface {
         $company     = $request->getAttribute('company');
         $credential  = $request->getAttribute('credential');
 
-        $command = $this->commandFactory->create('Profile\\Recommendation\\UpsertOne');
+        $command = $this->commandFactory->create('Profile\Recommendation\UpsertOne');
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $user)

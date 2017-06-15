@@ -108,11 +108,11 @@ class Subscription implements HandlerInterface {
             $this->validator->assertString($command->categoryName, 'categoryName');
             $this->validator->assertCredential($command->credential, 'credential');
             $this->validator->assertIdentity($command->identity, 'identity');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Company\SubscriptionException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -127,10 +127,10 @@ class Subscription implements HandlerInterface {
 
         try {
             $subscription = $this->repository->save($subscription);
-            $event        = $this->eventFactory->create('Company\\Subscription\\Created', $subscription, $command->identity);
+            $event        = $this->eventFactory->create('Company\Subscription\Created', $subscription, $command->identity);
             $this->emitter->emit($event);
-        } catch (\Exception $e) {
-            throw new Create\Company\SubscriptionException('Error while trying to create a subscription', 500, $e);
+        } catch (\Exception $exception) {
+            throw new Create\Company\SubscriptionException('Error while trying to create a subscription', 500, $exception);
         }
 
         return $subscription;
@@ -150,11 +150,11 @@ class Subscription implements HandlerInterface {
         try {
             $this->validator->assertId($command->subscriptionId, 'subscriptionId');
             $this->validator->assertIdentity($command->identity, 'identity');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Company\SubscriptionException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -165,7 +165,7 @@ class Subscription implements HandlerInterface {
             throw new NotFound\Company\SubscriptionException('No subscriptions found for deletion', 404);
         }
 
-        $event = $this->eventFactory->create('Company\\Subscription\\Deleted', $subscription, $command->identity);
+        $event = $this->eventFactory->create('Company\Subscription\Deleted', $subscription, $command->identity);
         $this->emitter->emit($event);
     }
 }

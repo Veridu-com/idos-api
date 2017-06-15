@@ -221,7 +221,7 @@ class Raw implements HandlerInterface {
                 throw new Create\Profile\RawException('Error while trying to create raw, collection already exists.', 500);
             }
 
-            $raw = $this->entityFactory->create('Profile\\Raw');
+            $raw = $this->entityFactory->create('Profile\Raw');
             $raw->hydrate(
                 [
                     'source_id'  => $command->source->getEncodedId(),
@@ -238,7 +238,7 @@ class Raw implements HandlerInterface {
             $process = $this->processRepository->findOneBySourceId($command->source->id);
 
             $event = $this->eventFactory->create(
-                'Profile\\Raw\\Created',
+                'Profile\Raw\Created',
                 $raw,
                 $command->user,
                 $command->source,
@@ -360,7 +360,7 @@ class Raw implements HandlerInterface {
                 }
 
                 $raw = $this->entityFactory->create(
-                    'Profile\\Raw',
+                    'Profile\Raw',
                     [
                         'source_id'  => $source->getEncodedId(),
                         'collection' => $file['filename'],
@@ -412,7 +412,7 @@ class Raw implements HandlerInterface {
                 $updatedAt = time();
             }
 
-            $raw = $this->entityFactory->create('Profile\\Raw');
+            $raw = $this->entityFactory->create('Profile\Raw');
             $raw->hydrate(
                 [
                     'source_id'  => $command->source->getEncodedId(),
@@ -429,9 +429,9 @@ class Raw implements HandlerInterface {
 
             $process = $this->processRepository->findOneBySourceId($command->source->id);
 
-            $eventName = 'Profile\\Raw\\Updated';
+            $eventName = 'Profile\Raw\Updated';
             if ($inserting) {
-                $eventName = 'Profile\\Raw\\Created';
+                $eventName = 'Profile\Raw\Created';
             }
 
             $event = $this->eventFactory->create(

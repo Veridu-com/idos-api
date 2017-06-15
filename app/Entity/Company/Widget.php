@@ -13,7 +13,7 @@ use App\Entity\AbstractEntity;
 /**
  * Widgets Entity.
  *
- * @apiEntity schema/hook/hookEntity.json
+ * @apiEntity schema/widget/widgetEntity.json
  */
 class Widget extends AbstractEntity {
     /**

@@ -112,11 +112,11 @@ class RoleAccess implements HandlerInterface {
             $this->validator->assertResource($command->resource, 'resource');
             $this->validator->assertAccess($command->access, 'access');
             $this->validator->assertId($command->identityId, 'identityId');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\User\RoleAccessException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -135,10 +135,10 @@ class RoleAccess implements HandlerInterface {
 
         try {
             $entity = $this->repository->save($entity);
-            $event  = $this->eventFactory->create('User\\RoleAccess\\Created', $entity);
+            $event  = $this->eventFactory->create('User\RoleAccess\Created', $entity);
             $this->emitter->emit($event);
-        } catch (\Exception $e) {
-            throw new Create\User\RoleAccessException('Error while trying to create a role access', 500, $e);
+        } catch (\Exception $exception) {
+            throw new Create\User\RoleAccessException('Error while trying to create a role access', 500, $exception);
         }
 
         return $entity;
@@ -156,11 +156,11 @@ class RoleAccess implements HandlerInterface {
     public function handleDeleteAll(DeleteAll $command) : int {
         try {
             $this->validator->assertId($command->identityId, 'identityId');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\User\RoleAccessException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -168,7 +168,7 @@ class RoleAccess implements HandlerInterface {
 
         $rowsAffected = $this->repository->deleteAllFromIdentity($command->identityId);
 
-        $event = $this->eventFactory->create('User\\RoleAccess\\DeletedMulti', $roleAccesses);
+        $event = $this->eventFactory->create('User\RoleAccess\DeletedMulti', $roleAccesses);
         $this->emitter->emit($event);
 
         return $rowsAffected;
@@ -189,11 +189,11 @@ class RoleAccess implements HandlerInterface {
             $this->validator->assertId($command->identityId, 'identityId');
             $this->validator->assertId($command->roleAccessId, 'roleAccessId');
             $this->validator->assertAccess($command->access, 'access');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\User\RoleAccessException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -205,10 +205,10 @@ class RoleAccess implements HandlerInterface {
         // saves entity
         try {
             $entity = $this->repository->save($entity);
-            $event  = $this->eventFactory->create('User\\RoleAccess\\Updated', $entity);
+            $event  = $this->eventFactory->create('User\RoleAccess\Updated', $entity);
             $this->emitter->emit($event);
-        } catch (\Exception $e) {
-            throw new Update\User\RoleAccessException('Error while trying to update a role access', 500, $e);
+        } catch (\Exception $exception) {
+            throw new Update\User\RoleAccessException('Error while trying to update a role access', 500, $exception);
         }
 
         return $entity;
@@ -228,11 +228,11 @@ class RoleAccess implements HandlerInterface {
         try {
             $this->validator->assertId($command->identityId, 'identityId');
             $this->validator->assertId($command->roleAccessId, 'roleAccessId');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\User\RoleAccessException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -243,7 +243,7 @@ class RoleAccess implements HandlerInterface {
             throw new NotFound\User\RoleAccessException('No role accesses found for deletion', 404);
         }
 
-        $event = $this->eventFactory->create('User\\RoleAccess\\Deleted', $roleAccess);
+        $event = $this->eventFactory->create('User\RoleAccess\Deleted', $roleAccess);
         $this->emitter->emit($event);
     }
 }

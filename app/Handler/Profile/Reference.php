@@ -114,11 +114,11 @@ class Reference implements HandlerInterface {
             $this->validator->assertName($command->name, 'name');
             $this->validator->assertValue($command->value, 'value');
             $this->validator->assertCredential($command->credential, 'credential');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Profile\ReferenceException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -135,10 +135,10 @@ class Reference implements HandlerInterface {
         try {
             $reference = $this->repository->save($reference);
 
-            $event = $this->eventFactory->create('Profile\\Reference\\Created', $reference, $command->credential);
+            $event = $this->eventFactory->create('Profile\Reference\Created', $reference, $command->credential);
             $this->emitter->emit($event);
-        } catch (\Exception $e) {
-            throw new Create\Profile\ReferenceException('Error while trying to create a reference', 500, $e);
+        } catch (\Exception $exception) {
+            throw new Create\Profile\ReferenceException('Error while trying to create a reference', 500, $exception);
         }
 
         return $reference;
@@ -161,11 +161,11 @@ class Reference implements HandlerInterface {
         try {
             $this->validator->assertValue($command->value, 'value');
             $this->validator->assertCredential($command->credential, 'credential');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Profile\ReferenceException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -175,10 +175,10 @@ class Reference implements HandlerInterface {
         try {
             $reference = $this->repository->save($reference);
 
-            $event = $this->eventFactory->create('Profile\\Reference\\Updated', $reference, $command->credential);
+            $event = $this->eventFactory->create('Profile\Reference\Updated', $reference, $command->credential);
             $this->emitter->emit($event);
-        } catch (\Exception $e) {
-            throw new Update\Profile\ReferenceException('Error while trying to update a feature', 500, $e);
+        } catch (\Exception $exception) {
+            throw new Update\Profile\ReferenceException('Error while trying to update a feature', 500, $exception);
         }
 
         return $reference;
@@ -201,11 +201,11 @@ class Reference implements HandlerInterface {
         try {
             $this->validator->assertName($command->name, 'name');
             $this->validator->assertCredential($command->credential, 'credential');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Profile\ReferenceException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -216,7 +216,7 @@ class Reference implements HandlerInterface {
             throw new NotFound\Profile\ReferenceException('No references found for deletion', 404);
         }
 
-        $event = $this->eventFactory->create('Profile\\Reference\\Deleted', $reference, $command->credential);
+        $event = $this->eventFactory->create('Profile\Reference\Deleted', $reference, $command->credential);
         $this->emitter->emit($event);
     }
 
@@ -235,7 +235,7 @@ class Reference implements HandlerInterface {
         $affectedRows = $this->repository->deleteByUserId($command->user->id);
 
         if ($affectedRows) {
-            $event = $this->eventFactory->create('Profile\\Reference\\DeletedMulti', $references, $command->credential);
+            $event = $this->eventFactory->create('Profile\Reference\DeletedMulti', $references, $command->credential);
             $this->emitter->emit($event);
         }
 

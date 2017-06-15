@@ -201,7 +201,7 @@ class Sso implements HandlerInterface {
      * @return \App\Entity\User The created user
      */
     private function createNewUser(Credential $credential, string $role, string $username) : User {
-        $command = $this->commandFactory->create('User\\CreateNew');
+        $command = $this->commandFactory->create('User\CreateNew');
         $command->setParameters(
             [
                 'credential' => $credential,
@@ -230,7 +230,7 @@ class Sso implements HandlerInterface {
         Credential $credential,
         string $ipAddr
     ) : SourceEntity {
-        $command = $this->commandFactory->create('Profile\\Source\\CreateNew');
+        $command = $this->commandFactory->create('Profile\Source\CreateNew');
 
         $command->setParameters(
             [
@@ -251,7 +251,7 @@ class Sso implements HandlerInterface {
         string $role,
         string $ipaddr
     ) : MemberEntity {
-        $command = $this->commandFactory->create('Company\\Member\\CreateNew');
+        $command = $this->commandFactory->create('Company\Member\CreateNew');
 
         $command->setParameter('company', $company)
             ->setParameter('ipaddr', $ipaddr)
@@ -304,8 +304,8 @@ class Sso implements HandlerInterface {
 
         try {
             $response = $service->request($serviceRequestUrl);
-        } catch (\Exception $e) {
-            throw new Create\SsoException('Error while trying to contact provider', 500, $e);
+        } catch (\Exception $exception) {
+            throw new Create\SsoException('Error while trying to contact provider', 500, $exception);
         }
 
         $decodedResponse = json_decode($response, true);
@@ -323,8 +323,8 @@ class Sso implements HandlerInterface {
                 $profileId,
                 $command->appKey ?: 'Veridu'
             );
-        } catch (NotFound $e) {
-            $identityCommand = $this->commandFactory->create('Identity\\CreateNew');
+        } catch (NotFound $exception) {
+            $identityCommand = $this->commandFactory->create('Identity\CreateNew');
             $identityCommand
                 ->setParameter('sourceName', $sourceName)
                 ->setParameter('profileId', $profileId)
@@ -335,7 +335,7 @@ class Sso implements HandlerInterface {
 
         try {
             $user = $this->userRepository->findOneByIdentityIdAndCredentialId($identity->id, $credential->id);
-        } catch (NotFound $e) {
+        } catch (NotFound $exception) {
             $user = $this->createNewUser($credential, 'user', bin2hex(openssl_random_pseudo_bytes(10)));
             $this->userRepository->assignIdentityToUser($user->id, $identity->id);
         }
@@ -394,7 +394,7 @@ class Sso implements HandlerInterface {
                     if ($invitation->memberId === null) {
                         try {
                             $member = $this->memberRepository->findMembership($identity->id, $company->id);
-                        } catch (NotFound $e) {
+                        } catch (NotFound $exception) {
                             // if can't find membership, creates
                             $member = $this->createNewMembership(
                                 $company,
@@ -408,7 +408,7 @@ class Sso implements HandlerInterface {
                             $this->invitationRepository->save($invitation);
                         }
                     }
-                } catch (NotFound $e) {
+                } catch (NotFound $exception) {
                     throw new InvitationException('Invalid invitation code.');
                 }
             }
@@ -433,7 +433,7 @@ class Sso implements HandlerInterface {
             function ($response) {
                 return $response['user_id'];
             },
-            'Sso\\CreatedAmazon'
+            'Sso\CreatedAmazon'
         );
     }
 
@@ -453,7 +453,7 @@ class Sso implements HandlerInterface {
             function ($response) {
                 return $response['uid'];
             },
-            'Sso\\CreatedYahoo'
+            'Sso\CreatedYahoo'
         );
     }
 
@@ -473,7 +473,7 @@ class Sso implements HandlerInterface {
             function ($response) {
                 return $response['id'];
             },
-            'Sso\\CreatedFacebook'
+            'Sso\CreatedFacebook'
         );
     }
 
@@ -493,7 +493,7 @@ class Sso implements HandlerInterface {
             function ($response) {
                 return $response['id'];
             },
-            'Sso\\CreatedGoogle'
+            'Sso\CreatedGoogle'
         );
     }
 
@@ -513,7 +513,7 @@ class Sso implements HandlerInterface {
             function ($response) {
                 return $response['id'];
             },
-            'Sso\\CreatedLinkedin'
+            'Sso\CreatedLinkedin'
         );
     }
 
@@ -533,7 +533,7 @@ class Sso implements HandlerInterface {
             function ($response) {
                 return $response['user_id'];
             },
-            'Sso\\CreatedPaypal'
+            'Sso\CreatedPaypal'
         );
     }
 
@@ -553,7 +553,7 @@ class Sso implements HandlerInterface {
             function ($response) {
                 return $response['user_id'];
             },
-            'Sso\\CreatedSpotify'
+            'Sso\CreatedSpotify'
         );
     }
 
@@ -573,7 +573,7 @@ class Sso implements HandlerInterface {
             function ($response) {
                 return $response['id_str'];
             },
-            'Sso\\CreatedTwitter'
+            'Sso\CreatedTwitter'
         );
     }
 
@@ -593,7 +593,7 @@ class Sso implements HandlerInterface {
             function ($response) {
                 return $response['guid']['value'];
             },
-            'Sso\\CreatedYahoo'
+            'Sso\CreatedYahoo'
         );
     }
 }

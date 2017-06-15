@@ -253,7 +253,7 @@ class Attribute extends AbstractListener {
             return;
         }
 
-        $command = $this->commandFactory->create('Profile\\Attribute\\UpsertOne');
+        $command = $this->commandFactory->create('Profile\Attribute\UpsertOne');
         $command
             ->setParameter('user', $user)
             ->setParameter('credential', $credential)
@@ -292,7 +292,7 @@ class Attribute extends AbstractListener {
      * @return void
      */
     public function handle(EventInterface $event) {
-        $command = $this->commandFactory->create('Profile\\Attribute\\DeleteAll');
+        $command = $this->commandFactory->create('Profile\Attribute\DeleteAll');
         $command
             ->setParameter('user', $event->user)
             ->setParameter('credential', $event->credential)
@@ -385,7 +385,7 @@ class Attribute extends AbstractListener {
             ];
         }
 
-        $command = $this->commandFactory->create('Profile\\Attribute\\UpsertBulk');
+        $command = $this->commandFactory->create('Profile\Attribute\UpsertBulk');
         $command
             ->setParameter('user', $event->user)
             ->setParameter('credential', $event->credential)

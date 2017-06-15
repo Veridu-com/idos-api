@@ -153,7 +153,7 @@ class Profiles implements ControllerInterface {
 
         try {
             $recommendation = $this->recommendationRepository->findOne($user->id)->toArray();
-        } catch (NotFound $e) {
+        } catch (NotFound $exception) {
             $recommendation = null;
         }
 

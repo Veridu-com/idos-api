@@ -167,7 +167,7 @@ class ScrapeScheduler extends AbstractListener {
      */
     private function dispatchUnhandleEvent(EventInterface $event) {
         $unhandledEvent = $this->eventFactory->create(
-            'Manager\\UnhandledEvent',
+            'Manager\UnhandledEvent',
             $event
         );
         $this->emitter->emit($unhandledEvent);

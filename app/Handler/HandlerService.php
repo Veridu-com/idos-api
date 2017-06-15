@@ -130,11 +130,11 @@ class HandlerService implements HandlerInterface {
             }
 
             $this->validator->assertIdentity($command->identity, 'identity');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\HandlerServiceException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -143,10 +143,10 @@ class HandlerService implements HandlerInterface {
         try {
             $entity = $this->repository->save($entity);
             $entity = $this->repository->find($entity->id);
-            $event  = $this->eventFactory->create('HandlerService\\Created', $entity, $command->identity);
+            $event  = $this->eventFactory->create('HandlerService\Created', $entity, $command->identity);
             $this->emitter->emit($event);
-        } catch (\Exception $e) {
-            throw new Create\HandlerServiceException('Error while trying to create a handler', 500, $e);
+        } catch (\Exception $exception) {
+            throw new Create\HandlerServiceException('Error while trying to create a handler', 500, $exception);
         }
 
         return $entity;
@@ -191,11 +191,11 @@ class HandlerService implements HandlerInterface {
             }
 
             $this->validator->assertIdentity($command->identity, 'identity');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\HandlerServiceException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -208,10 +208,10 @@ class HandlerService implements HandlerInterface {
 
         try {
             $entity            = $this->repository->save($entity);
-            $event             = $this->eventFactory->create('HandlerService\\Updated', $entity, $command->identity);
+            $event             = $this->eventFactory->create('HandlerService\Updated', $entity, $command->identity);
             $this->emitter->emit($event);
-        } catch (\Exception $e) {
-            throw new Update\HandlerServiceException('Error while trying to update a service', 500, $e);
+        } catch (\Exception $exception) {
+            throw new Update\HandlerServiceException('Error while trying to update a service', 500, $exception);
         }
 
         return $entity;
@@ -231,11 +231,11 @@ class HandlerService implements HandlerInterface {
             $this->validator->assertCompany($command->company, 'company');
             $this->validator->assertId($command->handlerServiceId, 'handlerServiceId');
             $this->validator->assertIdentity($command->identity, 'identity');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\HandlerServiceException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -247,7 +247,7 @@ class HandlerService implements HandlerInterface {
             throw new NotFound\HandlerServiceException('No services found for deletion', 404);
         }
 
-        $event = $this->eventFactory->create('HandlerService\\Deleted', $service, $command->identity);
+        $event = $this->eventFactory->create('HandlerService\Deleted', $service, $command->identity);
         $this->emitter->emit($event);
     }
 }

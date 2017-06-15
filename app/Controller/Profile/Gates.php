@@ -142,7 +142,7 @@ class Gates implements ControllerInterface {
         $handler    = $request->getAttribute('handler');
         $credential = $request->getAttribute('credential');
 
-        $command = $this->commandFactory->create('Profile\\Gate\\CreateNew');
+        $command = $this->commandFactory->create('Profile\Gate\CreateNew');
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('credential', $credential)
@@ -185,7 +185,7 @@ class Gates implements ControllerInterface {
         $slug       = $request->getAttribute('gateSlug');
         $credential = $request->getAttribute('credential');
 
-        $command = $this->commandFactory->create('Profile\\Gate\\UpdateOne');
+        $command = $this->commandFactory->create('Profile\Gate\UpdateOne');
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('credential', $credential)
@@ -228,7 +228,7 @@ class Gates implements ControllerInterface {
         $handler    = $request->getAttribute('handler');
         $credential = $request->getAttribute('credential');
 
-        $command = $this->commandFactory->create('Profile\\Gate\\UpsertOne');
+        $command = $this->commandFactory->create('Profile\Gate\UpsertOne');
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('credential', $credential)
@@ -269,7 +269,7 @@ class Gates implements ControllerInterface {
         $slug       = $request->getAttribute('gateSlug');
         $credential = $request->getAttribute('credential');
 
-        $command = $this->commandFactory->create('Profile\\Gate\\DeleteOne');
+        $command = $this->commandFactory->create('Profile\Gate\DeleteOne');
         $command
             ->setParameter('credential', $credential)
             ->setParameter('user', $user)
@@ -307,7 +307,7 @@ class Gates implements ControllerInterface {
         $handler    = $request->getAttribute('handler');
         $credential = $request->getAttribute('credential');
 
-        $command = $this->commandFactory->create('Profile\\Gate\\DeleteAll');
+        $command = $this->commandFactory->create('Profile\Gate\DeleteAll');
         $command
             ->setParameter('credential', $credential)
             ->setParameter('user', $user)

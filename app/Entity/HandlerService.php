@@ -11,7 +11,7 @@ namespace App\Entity;
 /**
  * Service's Entity.
  *
- * @apiEntity schema/service/serviceEntity.json
+ * @apiEntity schema/handlerService/handlerServiceEntity.json
  *
  * @property int        $id
  * @property int        $company_id

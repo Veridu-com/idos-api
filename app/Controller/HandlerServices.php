@@ -139,7 +139,7 @@ class HandlerServices implements ControllerInterface {
         $identity  = $request->getAttribute('identity');
         $handlerId = $request->getAttribute('decodedHandlerId');
 
-        $command = $this->commandFactory->create('HandlerService\\CreateNew');
+        $command = $this->commandFactory->create('HandlerService\CreateNew');
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('handlerId', $handlerId)
@@ -182,7 +182,7 @@ class HandlerServices implements ControllerInterface {
         $identity         = $request->getAttribute('identity');
         $handlerServiceId = $request->getAttribute('decodedHandlerServiceId');
 
-        $command = $this->commandFactory->create('HandlerService\\UpdateOne');
+        $command = $this->commandFactory->create('HandlerService\UpdateOne');
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('handlerServiceId', $handlerServiceId)
@@ -221,7 +221,7 @@ class HandlerServices implements ControllerInterface {
         $identity         = $request->getAttribute('identity');
         $handlerServiceId = $request->getAttribute('decodedHandlerServiceId');
 
-        $command = $this->commandFactory->create('HandlerService\\DeleteOne');
+        $command = $this->commandFactory->create('HandlerService\DeleteOne');
         $command
             ->setParameter('company', $company)
             ->setParameter('identity', $identity)

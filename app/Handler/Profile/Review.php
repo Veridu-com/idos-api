@@ -127,11 +127,11 @@ class Review implements HandlerInterface {
             $this->validator->assertId($command->gateId, 'gateId');
             $this->validator->assertFlag($command->positive, 'positive');
             $this->validator->assertIdentity($command->identity, 'identity');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Profile\ReviewException(
-                $e->getMessage(),
+                $exception->getMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -148,10 +148,10 @@ class Review implements HandlerInterface {
         try {
             $entity = $this->repository->save($entity);
 
-            $event = $this->eventFactory->create('Profile\\Review\\Created', $entity, $command->identity);
+            $event = $this->eventFactory->create('Profile\Review\Created', $entity, $command->identity);
             $this->emitter->emit($event);
-        } catch (\Exception $e) {
-            throw new Create\Profile\ReviewException('Error while trying to create a review', 500, $e);
+        } catch (\Exception $exception) {
+            throw new Create\Profile\ReviewException('Error while trying to create a review', 500, $exception);
         }
 
         return $entity;
@@ -176,11 +176,11 @@ class Review implements HandlerInterface {
             $this->validator->assertUser($command->user, 'user');
             $this->validator->assertFlag($command->positive, 'positive');
             $this->validator->assertIdentity($command->identity, 'identity');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Profile\ReviewException(
-                $e->getMessage(),
+                $exception->getMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -189,10 +189,10 @@ class Review implements HandlerInterface {
 
         try {
             $review = $this->repository->save($review);
-            $event  = $this->eventFactory->create('Profile\\Review\\Updated', $review, $command->identity);
+            $event  = $this->eventFactory->create('Profile\Review\Updated', $review, $command->identity);
             $this->emitter->emit($event);
-        } catch (\Exception $e) {
-            throw new Update\Profile\ReviewException('Error while trying to update a review', 500, $e);
+        } catch (\Exception $exception) {
+            throw new Update\Profile\ReviewException('Error while trying to update a review', 500, $exception);
         }
 
         return $review;
@@ -220,11 +220,11 @@ class Review implements HandlerInterface {
             if ((bool) $command->gateId === (bool) $command->recommendationId) {
                 throw new ValidationException('A review should belong to strictly one Gate or Review');
             }
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Profile\ReviewException(
-                $e->getMessage(),
+                $exception->getMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -277,7 +277,7 @@ class Review implements HandlerInterface {
             }
 
             $this->repository->commit();
-        } catch (\Exception $e) {
+        } catch (\Exception $exception) {
             $this->repository->rollBack();
             throw new UpsertException($e->getMessage());
         }

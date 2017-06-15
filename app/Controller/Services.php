@@ -141,7 +141,7 @@ class Services implements ControllerInterface {
         $company  = $request->getAttribute('targetCompany');
         $identity = $request->getAttribute('identity');
 
-        $command = $this->commandFactory->create('Service\\CreateNew');
+        $command = $this->commandFactory->create('Service\CreateNew');
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('identity', $identity)
@@ -186,7 +186,7 @@ class Services implements ControllerInterface {
         $identity  = $request->getAttribute('identity');
         $serviceId = $request->getAttribute('decodedServiceId');
 
-        $command = $this->commandFactory->create('Service\\UpdateOne');
+        $command = $this->commandFactory->create('Service\UpdateOne');
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('identity', $identity)
@@ -224,7 +224,7 @@ class Services implements ControllerInterface {
         $identity  = $request->getAttribute('identity');
         $serviceId = $request->getAttribute('decodedServiceId');
 
-        $command = $this->commandFactory->create('Service\\DeleteOne');
+        $command = $this->commandFactory->create('Service\DeleteOne');
         $command
             ->setParameter('identity', $identity)
             ->setParameter('company', $company)

@@ -38,7 +38,7 @@ class AddSourceTagFromUpsertBulkFeature extends AbstractListener {
             return new \App\Listener\Profile\Source\AddSourceTagFromUpsertBulkFeature(
                 $container
                     ->get('repositoryFactory')
-                    ->create('Profile\\Source')
+                    ->create('Profile\Source')
             );
         };
     }

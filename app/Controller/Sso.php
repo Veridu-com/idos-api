@@ -147,31 +147,31 @@ class Sso implements ControllerInterface {
 
         switch ($sourceName) {
             case 'amazon':
-                $command = $this->commandFactory->create('Sso\\CreateNewAmazon');
+                $command = $this->commandFactory->create('Sso\CreateNewAmazon');
                 break;
             case 'dropbox':
-                $command = $this->commandFactory->create('Sso\\CreateNewDropbox');
+                $command = $this->commandFactory->create('Sso\CreateNewDropbox');
                 break;
             case 'facebook':
-                $command = $this->commandFactory->create('Sso\\CreateNewFacebook');
+                $command = $this->commandFactory->create('Sso\CreateNewFacebook');
                 break;
             case 'google':
-                $command = $this->commandFactory->create('Sso\\CreateNewGoogle');
+                $command = $this->commandFactory->create('Sso\CreateNewGoogle');
                 break;
             case 'linkedin':
-                $command = $this->commandFactory->create('Sso\\CreateNewLinkedin');
+                $command = $this->commandFactory->create('Sso\CreateNewLinkedin');
                 break;
             case 'paypal':
-                $command = $this->commandFactory->create('Sso\\CreateNewPaypal');
+                $command = $this->commandFactory->create('Sso\CreateNewPaypal');
                 break;
             case 'spotify':
-                $command = $this->commandFactory->create('Sso\\CreateNewSpotify');
+                $command = $this->commandFactory->create('Sso\CreateNewSpotify');
                 break;
             case 'twitter':
-                $command = $this->commandFactory->create('Sso\\CreateNewTwitter');
+                $command = $this->commandFactory->create('Sso\CreateNewTwitter');
                 break;
             case 'yahoo':
-                $command = $this->commandFactory->create('Sso\\CreateNewYahoo');
+                $command = $this->commandFactory->create('Sso\CreateNewYahoo');
                 break;
             default:
                 throw new AppException('Unsupported provider.', 400);

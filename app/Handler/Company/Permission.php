@@ -108,11 +108,11 @@ class Permission implements HandlerInterface {
             $this->validator->assertRouteName($command->routeName, 'routeName');
             $this->validator->assertId($command->companyId, 'companyId');
             $this->validator->assertIdentity($command->identity, 'identity');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Company\PermissionException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -126,10 +126,10 @@ class Permission implements HandlerInterface {
 
         try {
             $permission = $this->repository->save($permission);
-            $event      = $this->eventFactory->create('Company\\Permission\\Created', $permission, $command->identity);
+            $event      = $this->eventFactory->create('Company\Permission\Created', $permission, $command->identity);
             $this->emitter->emit($event);
-        } catch (\Exception $e) {
-            throw new Create\Company\PermissionException('Error while trying to create a permission', 500, $e);
+        } catch (\Exception $exception) {
+            throw new Create\Company\PermissionException('Error while trying to create a permission', 500, $exception);
         }
 
         return $permission;
@@ -153,11 +153,11 @@ class Permission implements HandlerInterface {
             $this->validator->assertId($command->companyId, 'companyId');
             $this->validator->assertRouteName($command->routeName, 'routeName');
             $this->validator->assertIdentity($command->identity, 'identity');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Company\PermissionException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -169,7 +169,7 @@ class Permission implements HandlerInterface {
             throw new NotFound\Company\PermissionException('No permissions found for deletion', 404);
         }
 
-        $event = $this->eventFactory->create('Company\\Permission\\Deleted', $permission, $command->identity);
+        $event = $this->eventFactory->create('Company\Permission\Deleted', $permission, $command->identity);
         $this->emitter->emit($event);
     }
 }

@@ -81,7 +81,7 @@ trait QueueCompanyServiceHandlers {
             ];
 
             if ($this->queue($payload)) {
-                $this->emitter->emit($this->eventFactory->create('Manager\\WorkQueued', $event));
+                $this->emitter->emit($this->eventFactory->create('Manager\WorkQueued', $event));
 
                 continue;
             }
@@ -119,7 +119,7 @@ trait QueueCompanyServiceHandlers {
      */
     private function dispatchUnhandleEvent(EventInterface $event) {
         $unhandledEvent = $this->eventFactory->create(
-            'Manager\\UnhandledEvent',
+            'Manager\UnhandledEvent',
             $event
         );
         $this->emitter->emit($unhandledEvent);

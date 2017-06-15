@@ -68,7 +68,7 @@ class Company extends AbstractListener {
      * @return void
      */
     public function handle(EventInterface $event) {
-        $command = $this->commandFactory->create('Company\\Setup');
+        $command = $this->commandFactory->create('Company\Setup');
 
         $command
             ->setParameter('companyId', $event->company->id)

@@ -36,7 +36,7 @@ class AddSourceTagFromCreateFeature extends AbstractListener {
             return new \App\Listener\Profile\Source\AddSourceTagFromCreateFeature(
                 $container
                     ->get('repositoryFactory')
-                    ->create('Profile\\Source')
+                    ->create('Profile\Source')
             );
         };
     }

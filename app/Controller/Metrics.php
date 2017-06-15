@@ -82,7 +82,7 @@ class Metrics implements ControllerInterface {
     public function listAllSystem(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetCompany = $request->getAttribute('targetCompany');
 
-        $command = $this->commandFactory->create('Metric\\ListAllSystem');
+        $command = $this->commandFactory->create('Metric\ListAllSystem');
         $command
             ->setParameter('queryParams', $request->getQueryParams())
             ->setParameter('targetCompany', $targetCompany);
@@ -121,7 +121,7 @@ class Metrics implements ControllerInterface {
     public function listAllUser(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetCompany = $request->getAttribute('targetCompany');
 
-        $command = $this->commandFactory->create('Metric\\ListAllUser');
+        $command = $this->commandFactory->create('Metric\ListAllUser');
         $command
             ->setParameter('queryParams', $request->getQueryParams())
             ->setParameter('targetCompany', $targetCompany);

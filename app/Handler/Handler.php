@@ -111,11 +111,11 @@ class Handler implements HandlerInterface {
             $this->validator->assertPassword($command->authPassword, 'authPassword');
             $this->validator->assertFlag($command->enabled, 'enabled');
             $this->validator->assertIdentity($command->identity, 'identity');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\HandlerException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -134,10 +134,10 @@ class Handler implements HandlerInterface {
 
         try {
             $entity = $this->repository->save($entity);
-            $event  = $this->eventFactory->create('Handler\\Created', $entity, $command->identity);
+            $event  = $this->eventFactory->create('Handler\Created', $entity, $command->identity);
             $this->emitter->emit($event);
-        } catch (\Exception $e) {
-            throw new Create\HandlerException('Error while trying to create a handler', 500, $e);
+        } catch (\Exception $exception) {
+            throw new Create\HandlerException('Error while trying to create a handler', 500, $exception);
         }
 
         return $entity;
@@ -178,11 +178,11 @@ class Handler implements HandlerInterface {
             }
 
             $this->validator->assertIdentity($command->identity, 'identity');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\HandlerException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -203,10 +203,10 @@ class Handler implements HandlerInterface {
             try {
                 $entity->updatedAt = time();
                 $entity            = $this->repository->save($entity);
-                $event             = $this->eventFactory->create('Handler\\Updated', $entity, $command->identity);
+                $event             = $this->eventFactory->create('Handler\Updated', $entity, $command->identity);
                 $this->emitter->emit($event);
-            } catch (\Exception $e) {
-                throw new Update\HandlerException('Error while trying to update a service', 500, $e);
+            } catch (\Exception $exception) {
+                throw new Update\HandlerException('Error while trying to update a service', 500, $exception);
             }
         }
 
@@ -227,11 +227,11 @@ class Handler implements HandlerInterface {
             $this->validator->assertCompany($command->company, 'company');
             $this->validator->assertId($command->handlerId, 'handlerId');
             $this->validator->assertIdentity($command->identity, 'identity');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\HandlerException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -242,7 +242,7 @@ class Handler implements HandlerInterface {
             throw new NotFound\HandlerException('No services found for deletion', 404);
         }
 
-        $event = $this->eventFactory->create('Handler\\Deleted', $service, $command->identity);
+        $event = $this->eventFactory->create('Handler\Deleted', $service, $command->identity);
         $this->emitter->emit($event);
     }
 
@@ -257,11 +257,11 @@ class Handler implements HandlerInterface {
         try {
             $this->validator->assertCompany($command->company, 'company');
             $this->validator->assertIdentity($command->identity, 'identity');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\HandlerException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -269,7 +269,7 @@ class Handler implements HandlerInterface {
 
         $affectedRows = $this->repository->deleteByCompanyId($command->company->id);
 
-        $event = $this->eventFactory->create('Handler\\DeletedMulti', $services, $command->identity);
+        $event = $this->eventFactory->create('Handler\DeletedMulti', $services, $command->identity);
         $this->emitter->emit($event);
 
         return $affectedRows;

@@ -101,11 +101,11 @@ class Profile implements HandlerInterface {
         try {
             $this->validator->assertId($command->userId, 'userId');
             $this->validator->assertIdentity($command->identity, 'identity');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Company\ProfileException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -116,7 +116,7 @@ class Profile implements HandlerInterface {
             throw new NotFound\Company\ProfileException('No profiles found for deletion', 404);
         }
 
-        $event = $this->eventFactory->create('Company\\Profile\\Deleted', $user, $command->identity);
+        $event = $this->eventFactory->create('Company\Profile\Deleted', $user, $command->identity);
         $this->emitter->emit($event);
 
         return $rowsAffected;

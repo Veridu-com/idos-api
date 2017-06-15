@@ -13,7 +13,8 @@ use App\Extension\SlugMutator;
 /**
  * Category's Entity.
  *
- * @apiEntity schema/service/serviceEntity.json
+ * @FIXME Schema does not exist!
+ * @FIXME @apiEntity schema/category/categoryEntity.json
  *
  * @property int    $id
  * @property string $displayName

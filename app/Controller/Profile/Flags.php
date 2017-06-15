@@ -143,7 +143,7 @@ class Flags implements ControllerInterface {
         $handler    = $request->getAttribute('handler');
         $credential = $request->getAttribute('credential');
 
-        $command = $this->commandFactory->create('Profile\\Flag\\CreateNew');
+        $command = $this->commandFactory->create('Profile\Flag\CreateNew');
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('credential', $credential)
@@ -185,7 +185,7 @@ class Flags implements ControllerInterface {
         $slug       = $request->getAttribute('flagSlug');
         $credential = $request->getAttribute('credential');
 
-        $command = $this->commandFactory->create('Profile\\Flag\\DeleteOne');
+        $command = $this->commandFactory->create('Profile\Flag\DeleteOne');
         $command
             ->setParameter('credential', $credential)
             ->setParameter('user', $user)
@@ -223,7 +223,7 @@ class Flags implements ControllerInterface {
         $handler    = $request->getAttribute('handler');
         $credential = $request->getAttribute('credential');
 
-        $command = $this->commandFactory->create('Profile\\Flag\\DeleteAll');
+        $command = $this->commandFactory->create('Profile\Flag\DeleteAll');
         $command
             ->setParameter('credential', $credential)
             ->setParameter('user', $user)

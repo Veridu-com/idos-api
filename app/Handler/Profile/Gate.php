@@ -85,8 +85,8 @@ class Gate implements HandlerInterface {
             );
 
             return $this->categoryRepository->upsert($category);
-        } catch (\Exception $e) {
-            throw new Update\Profile\GateException('Error while trying to upsert a Gate category', 500, $e);
+        } catch (\Exception $exception) {
+            throw new Update\Profile\GateException('Error while trying to upsert a Gate category', 500, $exception);
         }
     }
 
@@ -157,11 +157,11 @@ class Gate implements HandlerInterface {
             $this->validator->assertName($command->name, 'name');
             $this->validator->assertCredential($command->credential, 'credential');
             $this->validator->assertMediumName($command->confidenceLevel, 'confidenceLevel');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Profile\GateException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -181,7 +181,7 @@ class Gate implements HandlerInterface {
             $entity = $this->repository->save($entity);
             $entity = $this->repository->hydrateRelations($entity);
 
-            $event = $this->eventFactory->create('Profile\\Gate\\Created', $entity, $command->credential);
+            $event = $this->eventFactory->create('Profile\Gate\Created', $entity, $command->credential);
             $this->emitter->emit($event);
         } catch (\Exception $exception) {
             throw new Create\Profile\GateException('Error while trying to create a gate', 500, $exception);
@@ -210,11 +210,11 @@ class Gate implements HandlerInterface {
             $this->validator->assertSlug($command->slug, 'slug');
             $this->validator->assertCredential($command->credential, 'credential');
             $this->validator->assertMediumName($command->confidenceLevel, 'confidenceLevel');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Profile\GateException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -227,7 +227,7 @@ class Gate implements HandlerInterface {
             $entity = $this->repository->save($entity);
             $entity = $this->repository->hydrateRelations($entity);
 
-            $event = $this->eventFactory->create('Profile\\Gate\\Updated', $entity, $command->credential);
+            $event = $this->eventFactory->create('Profile\Gate\Updated', $entity, $command->credential);
             $this->emitter->emit($event);
         } catch (\Exception $exception) {
             throw new Update\Profile\GateException('Error while trying to update a gate', 500, $exception);
@@ -249,11 +249,11 @@ class Gate implements HandlerInterface {
             $this->validator->assertHandler($command->handler, 'handler');
             $this->validator->assertName($command->name, 'name');
             $this->validator->assertMediumName($command->confidenceLevel, 'confidenceLevel');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Profile\GateException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -283,15 +283,15 @@ class Gate implements HandlerInterface {
             $entity = $this->repository->hydrateRelations($entity);
 
             if ($entity->updatedAt) {
-                $event = $this->eventFactory->create('Profile\\Gate\\Updated', $entity, $command->credential);
+                $event = $this->eventFactory->create('Profile\Gate\Updated', $entity, $command->credential);
             } else {
-                $event = $this->eventFactory->create('Profile\\Gate\\Created', $entity, $command->credential);
+                $event = $this->eventFactory->create('Profile\Gate\Created', $entity, $command->credential);
             }
 
             $this->emitter->emit($event);
-        } catch (\Exception $e) {
+        } catch (\Exception $exception) {
             $this->repository->rollBack();
-            throw new Update\Profile\GateException('Error while trying to upsert a gate', 500, $e);
+            throw new Update\Profile\GateException('Error while trying to upsert a gate', 500, $exception);
         }
 
         return $entity;
@@ -316,11 +316,11 @@ class Gate implements HandlerInterface {
             $this->validator->assertHandler($command->handler, 'handler');
             $this->validator->assertSlug($command->slug, 'slug');
             $this->validator->assertCredential($command->credential, 'credential');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Profile\GateException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -329,10 +329,10 @@ class Gate implements HandlerInterface {
             $affectedRows = $this->repository->delete($entity->id);
 
             if ($affectedRows) {
-                $event = $this->eventFactory->create('Profile\\Gate\\Deleted', $entity, $command->credential);
+                $event = $this->eventFactory->create('Profile\Gate\Deleted', $entity, $command->credential);
                 $this->emitter->emit($event);
             }
-        } catch (\Exception $e) {
+        } catch (\Exception $exception) {
             throw new NotFound\Profile\GateException('No gates found for deletion', 404);
         }
 
@@ -356,11 +356,11 @@ class Gate implements HandlerInterface {
             $this->validator->assertUser($command->user, 'user');
             $this->validator->assertHandler($command->handler, 'handler');
             $this->validator->assertCredential($command->credential, 'credential');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Profile\GateException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -377,11 +377,11 @@ class Gate implements HandlerInterface {
             }
 
             if ($affectedRows) {
-                $event = $this->eventFactory->create('Profile\\Gate\\DeletedMulti', $entities, $command->credential);
+                $event = $this->eventFactory->create('Profile\Gate\DeletedMulti', $entities, $command->credential);
                 $this->emitter->emit($event);
             }
-        } catch (\Exception $e) {
-            throw new Update\Profile\GateException('Error while trying to delete all gates', 500, $e);
+        } catch (\Exception $exception) {
+            throw new Update\Profile\GateException('Error while trying to delete all gates', 500, $exception);
         }
 
         return $affectedRows;

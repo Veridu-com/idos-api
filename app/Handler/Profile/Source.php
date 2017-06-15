@@ -190,11 +190,11 @@ class Source implements HandlerInterface {
             foreach ($command->tags as $key => $value) {
                 $this->validator->assertString($key, sprintf('tags.%s', $key));
             }
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Profile\SourceException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -264,8 +264,8 @@ class Source implements HandlerInterface {
                     $profileId,
                     $appKey
                 );
-            } catch (NotFound $e) {
-                $identityCommand = $this->commandFactory->create('Identity\\CreateNew');
+            } catch (NotFound $exception) {
+                $identityCommand = $this->commandFactory->create('Identity\CreateNew');
                 $identityCommand
                     ->setParameter('sourceName', $sourceName)
                     ->setParameter('profileId', $profileId)
@@ -277,12 +277,12 @@ class Source implements HandlerInterface {
 
         try {
             $source = $this->repository->save($source);
-        } catch (\Exception $e) {
-            throw new Create\Profile\SourceException('Error while trying to create a source', 500, $e);
+        } catch (\Exception $exception) {
+            throw new Create\Profile\SourceException('Error while trying to create a source', 500, $exception);
         }
 
         $event = $this->eventFactory->create(
-            'Profile\\Source\\Created',
+            'Profile\Source\Created',
             $source,
             $command->user,
             $command->ipaddr,
@@ -299,8 +299,8 @@ class Source implements HandlerInterface {
                 ]
             );
             $processEntity = $this->processRepository->save($processEntity);
-        } catch (\Exception $e) {
-            throw new Create\Profile\SourceException('Error while trying to create a process for the Source', 500, $e);
+        } catch (\Exception $exception) {
+            throw new Create\Profile\SourceException('Error while trying to create a process for the Source', 500, $exception);
         }
 
         $event->process = $processEntity;
@@ -309,7 +309,7 @@ class Source implements HandlerInterface {
         if ($sendOTP) {
             $this->emitter->emit(
                 $this->eventFactory->create(
-                    'Profile\\Source\\OTP',
+                    'Profile\Source\OTP',
                     $source,
                     $command->user,
                     $command->credential,
@@ -323,7 +323,7 @@ class Source implements HandlerInterface {
         if ($sendCRA) {
             $this->emitter->emit(
                 $this->eventFactory->create(
-                    'Profile\\Source\\CRA',
+                    'Profile\Source\CRA',
                     $command->user,
                     $source,
                     $command->ipaddr,
@@ -361,11 +361,11 @@ class Source implements HandlerInterface {
             }
 
             $this->validator->assertCredential($command->credential, 'credential');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Profile\SourceException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -382,11 +382,11 @@ class Source implements HandlerInterface {
         if (isset($command->otpCode)) {
             try {
                 $this->validator->assertOTPCode($command->otpCode, 'otpCode');
-            } catch (ValidationException $e) {
+            } catch (ValidationException $exception) {
                 throw new Validate\Profile\SourceException(
-                    $e->getFullMessage(),
+                    $exception->getFullMessage(),
                     400,
-                    $e
+                    $exception
                 );
             }
         }
@@ -441,15 +441,15 @@ class Source implements HandlerInterface {
             $source = $this->repository->save($source);
             $this->emitter->emit(
                 $this->eventFactory->create(
-                    'Profile\\Source\\Updated',
+                    'Profile\Source\Updated',
                     $command->user,
                     $source,
                     $command->ipaddr,
                     $command->credential
                 )
             );
-        } catch (\Exception $e) {
-            throw new Update\Profile\SourceException('Error while trying to update a source', 500, $e);
+        } catch (\Exception $exception) {
+            throw new Update\Profile\SourceException('Error while trying to update a source', 500, $exception);
         }
 
         return $source;
@@ -475,11 +475,11 @@ class Source implements HandlerInterface {
             $this->validator->assertId($command->source->id, 'sourceId');
             $this->validator->assertIpAddr($command->ipaddr, 'ipaddr');
             $this->validator->assertCredential($command->credential, 'credential');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Profile\SourceException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -491,7 +491,7 @@ class Source implements HandlerInterface {
 
         $this->emitter->emit(
             $this->eventFactory->create(
-                'Profile\\Source\\Deleted',
+                'Profile\Source\Deleted',
                 $command->user,
                 $command->source,
                 $command->ipaddr,
@@ -518,11 +518,11 @@ class Source implements HandlerInterface {
             $this->validator->assertId($command->user->id, 'userId');
             $this->validator->assertIpAddr($command->ipaddr, 'ipaddr');
             $this->validator->assertCredential($command->credential, 'credential');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Profile\SourceException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -535,7 +535,7 @@ class Source implements HandlerInterface {
         if ($rowsAffected) {
             $this->emitter->emit(
                 $this->eventFactory->create(
-                    'Profile\\Source\\DeletedMulti',
+                    'Profile\Source\DeletedMulti',
                     $command->user,
                     $sources,
                     $command->ipaddr,

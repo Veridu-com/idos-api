@@ -10,8 +10,8 @@ namespace App\Handler\Profile;
 
 use App\Command\Profile\Attribute\CreateNew;
 use App\Command\Profile\Attribute\DeleteAll;
-use App\Command\Profile\Attribute\UpsertOne;
 use App\Command\Profile\Attribute\UpsertBulk;
+use App\Command\Profile\Attribute\UpsertOne;
 use App\Entity\Profile\Attribute as AttributeEntity;
 use App\Exception\Create;
 use App\Exception\NotFound;
@@ -115,11 +115,11 @@ class Attribute implements HandlerInterface {
             $this->validator->assertLongName($command->name, 'name');
             $this->validator->assertString($command->value, 'value');
             $this->validator->assertCredential($command->credential, 'credential');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Profile\AttributeException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -134,10 +134,10 @@ class Attribute implements HandlerInterface {
 
         try {
             $entity = $this->repository->save($entity);
-            $event  = $this->eventFactory->create('Profile\\Attribute\\Created', $entity, $command->credential);
+            $event  = $this->eventFactory->create('Profile\Attribute\Created', $entity, $command->credential);
             $this->emitter->emit($event);
-        } catch (\Exception $e) {
-            throw new Create\Profile\AttributeException('Error while trying to create an attribute', 500, $e);
+        } catch (\Exception $exception) {
+            throw new Create\Profile\AttributeException('Error while trying to create an attribute', 500, $exception);
         }
 
         return $entity;
@@ -161,11 +161,11 @@ class Attribute implements HandlerInterface {
             $this->validator->assertLongName($command->name, 'name');
             $this->validator->assertString($command->value, 'value');
             $this->validator->assertCredential($command->credential, 'credential');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Profile\AttributeException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -193,7 +193,7 @@ class Attribute implements HandlerInterface {
             ]
         );
 
-        $event = $this->eventFactory->create('Profile\\Attribute\\Created', $entity, $command->credential);
+        $event = $this->eventFactory->create('Profile\Attribute\Created', $entity, $command->credential);
         $this->emitter->emit($event);
 
         return $entity;
@@ -216,11 +216,11 @@ class Attribute implements HandlerInterface {
             $this->validator->assertUser($command->user, 'user');
             $this->validator->assertAttributeArray($command->attributes, 'attributes');
             $this->validator->assertCredential($command->credential, 'credential');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Profile\AttributeException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -249,15 +249,15 @@ class Attribute implements HandlerInterface {
                 $entities[] = $entity;
             }
 
-            $event = $this->eventFactory->create('Profile\\Attribute\\UpsertedBulk', $command->attributes, $command->user, $command->credential);
+            $event = $this->eventFactory->create('Profile\Attribute\UpsertedBulk', $command->attributes, $command->user, $command->credential);
             $this->emitter->emit($event);
 
             $this->repository->commit();
 
             return new Collection($entities);
-        } catch (\Exception $e) {
+        } catch (\Exception $exception) {
             $this->repository->rollBack();
-            throw new UpsertException('Error while upserting attributes.', 500, $e);
+            throw new UpsertException('Error while upserting attributes.', 500, $exception);
         }
     }
 
@@ -276,11 +276,11 @@ class Attribute implements HandlerInterface {
             $this->validator->assertUser($command->user, 'user');
             $this->validator->assertArray($command->queryParams, 'queryParams');
             $this->validator->assertCredential($command->credential, 'credential');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Profile\AttributeException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -292,10 +292,10 @@ class Attribute implements HandlerInterface {
             $affectedRows = $this->repository->deleteByUserId($command->user->id);
 
             if ($affectedRows) {
-                $event = $this->eventFactory->create('Profile\\Attribute\\DeletedMulti', $entities, $command->credential);
+                $event = $this->eventFactory->create('Profile\Attribute\DeletedMulti', $entities, $command->credential);
                 $this->emitter->emit($event);
             }
-        } catch (\Exception $e) {
+        } catch (\Exception $exception) {
             throw new NotFound\Profile\AttributeException('Error while deleting all attributes', 404);
         }
 
