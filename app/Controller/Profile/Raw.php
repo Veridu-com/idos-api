@@ -84,7 +84,7 @@ class Raw implements ControllerInterface {
         $user        = $request->getAttribute('targetUser');
         $queryParams = $request->getQueryParams();
 
-        $command = $this->commandFactory->create('Profile\\Raw\\ListAll');
+        $command = $this->commandFactory->create('Profile\Raw\ListAll');
         $command
             ->setParameter('user', $user)
             ->setParameter('queryParams', $queryParams);
@@ -169,7 +169,7 @@ class Raw implements ControllerInterface {
 
         $source = $this->sourceRepository->findOne($sourceId, $user->id);
 
-        $command = $this->commandFactory->create('Profile\\Raw\\CreateNew');
+        $command = $this->commandFactory->create('Profile\Raw\CreateNew');
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $user)
@@ -219,7 +219,7 @@ class Raw implements ControllerInterface {
 
         $source = $this->sourceRepository->findOne($sourceId, $user->id);
 
-        $command = $this->commandFactory->create('Profile\\Raw\\UpsertOne');
+        $command = $this->commandFactory->create('Profile\Raw\UpsertOne');
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('credential', $credential)
@@ -268,7 +268,7 @@ class Raw implements ControllerInterface {
             throw new AppException('Source not found');
         }
 
-        $command = $this->commandFactory->create('Profile\\Raw\\DeleteOne');
+        $command = $this->commandFactory->create('Profile\Raw\DeleteOne');
         $command
             ->setParameter('credential', $credential)
             ->setParameter('user', $user)
@@ -307,7 +307,7 @@ class Raw implements ControllerInterface {
         $user        = $request->getAttribute('targetUser');
         $queryParams = $request->getQueryParams();
 
-        $command = $this->commandFactory->create('Profile\\Raw\\DeleteAll');
+        $command = $this->commandFactory->create('Profile\Raw\DeleteAll');
         $command
             ->setParameter('user', $user)
             ->setParameter('queryParams', $queryParams);

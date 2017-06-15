@@ -158,7 +158,7 @@ class Tasks implements ControllerInterface {
         $credential = $request->getAttribute('credential');
         $processId  = $request->getAttribute('decodedProcessId');
 
-        $command = $this->commandFactory->create('Profile\\Task\\CreateNew');
+        $command = $this->commandFactory->create('Profile\Task\CreateNew');
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('credential', $credential)
@@ -202,7 +202,7 @@ class Tasks implements ControllerInterface {
         $user       = $request->getAttribute('targetUser');
         $credential = $request->getAttribute('credential');
 
-        $command = $this->commandFactory->create('Profile\\Task\\UpdateOne');
+        $command = $this->commandFactory->create('Profile\Task\UpdateOne');
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $user)

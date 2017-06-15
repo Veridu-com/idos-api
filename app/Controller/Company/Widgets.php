@@ -139,7 +139,7 @@ class Widgets implements ControllerInterface {
         $company           = $request->getAttribute('targetCompany');
         $identity          = $request->getAttribute('identity');
 
-        $command = $this->commandFactory->create('Company\\Widget\\CreateNew');
+        $command = $this->commandFactory->create('Company\Widget\CreateNew');
         $command
             ->setParameter('company', $company)
             ->setParameter('identity', $identity)
@@ -183,7 +183,7 @@ class Widgets implements ControllerInterface {
         $widgetHash = $request->getAttribute('widgetHash');
         $identity   = $request->getAttribute('identity');
 
-        $command = $this->commandFactory->create('Company\\Widget\\UpdateOne');
+        $command = $this->commandFactory->create('Company\Widget\UpdateOne');
         $command
             ->setParameter('identity', $identity)
             ->setParameter('hash', $widgetHash)
@@ -221,7 +221,7 @@ class Widgets implements ControllerInterface {
         $widgetHash = $request->getAttribute('widgetHash');
         $identity   = $request->getAttribute('identity');
 
-        $command = $this->commandFactory->create('Company\\Widget\\DeleteOne');
+        $command = $this->commandFactory->create('Company\Widget\DeleteOne');
         $command
             ->setParameter('hash', $widgetHash)
             ->setParameter('identity', $identity);

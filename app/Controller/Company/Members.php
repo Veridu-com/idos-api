@@ -135,7 +135,7 @@ class Members implements ControllerInterface {
         $identity      = $request->getAttribute('identity');
         $memberId      = $request->getAttribute('decodedMemberId');
 
-        $command = $this->commandFactory->create('Company\\Member\\UpdateOne');
+        $command = $this->commandFactory->create('Company\Member\UpdateOne');
         $command
             ->setParameter('company', $targetCompany)
             ->setParameter('identity', $identity)
@@ -176,7 +176,7 @@ class Members implements ControllerInterface {
         $identity      = $request->getAttribute('identity');
         $memberId      = $request->getAttribute('decodedMemberId');
 
-        $command = $this->commandFactory->create('Company\\Member\\DeleteOne');
+        $command = $this->commandFactory->create('Company\Member\DeleteOne');
         $command
             ->setParameter('company', $targetCompany)
             ->setParameter('identity', $identity)

@@ -48,19 +48,19 @@ class Profiles implements RouteInterface {
                 $repositoryFactory
                     ->create('User'),
                 $repositoryFactory
-                    ->create('Profile\\Source'),
+                    ->create('Profile\Source'),
                 $repositoryFactory
-                    ->create('Profile\\Tag'),
+                    ->create('Profile\Tag'),
                 $repositoryFactory
-                    ->create('Profile\\Review'),
+                    ->create('Profile\Review'),
                 $repositoryFactory
-                    ->create('Profile\\Flag'),
+                    ->create('Profile\Flag'),
                 $repositoryFactory
-                    ->create('Profile\\Gate'),
+                    ->create('Profile\Gate'),
                 $repositoryFactory
-                    ->create('Profile\\Attribute'),
+                    ->create('Profile\Attribute'),
                 $repositoryFactory
-                    ->create('Profile\\Recommendation'),
+                    ->create('Profile\Recommendation'),
                 $container
                     ->get('commandBus'),
                 $container

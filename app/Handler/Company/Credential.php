@@ -112,11 +112,11 @@ class Credential implements HandlerInterface {
             $this->validator->assertCompany($command->company, 'company');
             $this->validator->assertId($command->company->id, 'companyId');
             $this->validator->assertIdentity($command->identity, 'identity');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Company\CredentialException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -146,10 +146,10 @@ class Credential implements HandlerInterface {
 
         try {
             $credential = $this->repository->save($credential);
-            $event      = $this->eventFactory->create('Company\\Credential\\Created', $credential, $command->identity);
+            $event      = $this->eventFactory->create('Company\Credential\Created', $credential, $command->identity);
             $this->emitter->emit($event);
-        } catch (\Exception $e) {
-            throw new Create\Company\CredentialException('Error while trying to create a credential', 500, $e);
+        } catch (\Exception $exception) {
+            throw new Create\Company\CredentialException('Error while trying to create a credential', 500, $exception);
         }
 
         return $credential;
@@ -170,11 +170,11 @@ class Credential implements HandlerInterface {
             $this->validator->assertId($command->credentialId, 'credentialId');
             $this->validator->assertName($command->name, 'name');
             $this->validator->assertIdentity($command->identity, 'identity');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Company\CredentialException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -184,10 +184,10 @@ class Credential implements HandlerInterface {
 
         try {
             $credential = $this->repository->save($credential);
-            $event      = $this->eventFactory->create('Company\\Credential\\Updated', $credential, $command->identity);
+            $event      = $this->eventFactory->create('Company\Credential\Updated', $credential, $command->identity);
             $this->emitter->emit($event);
-        } catch (\Exception $e) {
-            throw new Update\Company\CredentialException('Error while trying to update a credential', 500, $e);
+        } catch (\Exception $exception) {
+            throw new Update\Company\CredentialException('Error while trying to update a credential', 500, $exception);
         }
 
         return $credential;
@@ -207,11 +207,11 @@ class Credential implements HandlerInterface {
         try {
             $this->validator->assertId($command->credential->id, 'credentialId');
             $this->validator->assertIdentity($command->identity, 'identity');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Company\CredentialException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -222,7 +222,7 @@ class Credential implements HandlerInterface {
             throw new NotFound\Company\CredentialException('No credentials found for deletion', 404);
         }
 
-        $event = $this->eventFactory->create('Company\\Credential\\Deleted', $credential, $command->identity);
+        $event = $this->eventFactory->create('Company\Credential\Deleted', $credential, $command->identity);
         $this->emitter->emit($event);
     }
 }

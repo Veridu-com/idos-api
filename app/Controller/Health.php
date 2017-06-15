@@ -81,12 +81,12 @@ class Health implements ControllerInterface {
 
         try {
             $queueServerStatus = @$this->gearmanClient->ping('health-check');
-        } catch (\Exception $e) {
+        } catch (\Exception $exception) {
         }
 
         try {
             $sqlDatabaseStatus = (bool) $this->sqlConnection->query()->get([$this->sqlConnection->raw('1')])->first();
-        } catch (\Exception $e) {
+        } catch (\Exception $exception) {
         }
 
         $status = $queueServerStatus && $sqlDatabaseStatus;

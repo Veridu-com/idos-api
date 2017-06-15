@@ -46,7 +46,7 @@ class Raw implements RouteInterface {
             return new \App\Controller\Profile\Raw(
                 $container
                     ->get('repositoryFactory')
-                    ->create('Profile\\Source'),
+                    ->create('Profile\Source'),
                 $container
                     ->get('commandBus'),
                 $container

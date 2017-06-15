@@ -13,7 +13,7 @@ use App\Entity\AbstractEntity;
 /**
  * Credentials Entity.
  *
- * @apiEntity schema/credential/credentialEntity.json
+ * @apiEntity schema/subscription/subscriptionEntity.json
  *
  * @property int    $id
  * @property int    $gate_id

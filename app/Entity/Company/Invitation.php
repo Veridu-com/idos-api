@@ -13,7 +13,7 @@ use App\Entity\AbstractEntity;
 /**
  * Invitations Entity.
  *
- * @apiEntity schema/user/userEntity.json
+ * @apiEntity schema/invitation/invitationEntity.json
  */
 class Invitation extends AbstractEntity {
     /**

@@ -36,7 +36,7 @@ trait RetrieveProcess {
             }
 
             return $processRepository->findLastByUserIdSourceIdAndEvent($event, $sourceId, $userId);
-        } catch (NotFound $e) {
+        } catch (NotFound $exception) {
             // creates a new process if not found
             $entity = $processRepository->create(
                 [

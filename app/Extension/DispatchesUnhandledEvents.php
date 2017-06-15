@@ -25,7 +25,7 @@ trait DispatchesUnhandledEvents {
      */
     private function dispatchUnhandledEvent(EventInterface $event, EventFactory $eventFactory, Emitter $emitter) {
         $unhandledEvent = $eventFactory->create(
-            'Manager\\UnhandledEvent',
+            'Manager\UnhandledEvent',
             $event
         );
 

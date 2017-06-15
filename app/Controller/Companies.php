@@ -123,7 +123,7 @@ class Companies implements ControllerInterface {
         $company  = $request->getAttribute('targetCompany');
         $identity = $request->getAttribute('identity');
 
-        $command = $this->commandFactory->create('Company\\CreateNew');
+        $command = $this->commandFactory->create('Company\CreateNew');
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('identity', $identity)
@@ -161,7 +161,7 @@ class Companies implements ControllerInterface {
         $targetCompany = $request->getAttribute('targetCompany');
         $identity      = $request->getAttribute('identity');
 
-        $command = $this->commandFactory->create('Company\\UpdateOne');
+        $command = $this->commandFactory->create('Company\UpdateOne');
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('identity', $identity)
@@ -198,7 +198,7 @@ class Companies implements ControllerInterface {
         $targetCompany = $request->getAttribute('targetCompany');
         $identity      = $request->getAttribute('identity');
 
-        $command = $this->commandFactory->create('Company\\DeleteOne');
+        $command = $this->commandFactory->create('Company\DeleteOne');
         $command->setParameter('company', $targetCompany);
         $command->setParameter('identity', $identity);
 

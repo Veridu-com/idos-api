@@ -111,7 +111,7 @@ class Candidates implements ControllerInterface {
         $handler    = $request->getAttribute('handler');
         $credential = $request->getAttribute('credential');
 
-        $command = $this->commandFactory->create('Profile\\Candidate\\CreateNew');
+        $command = $this->commandFactory->create('Profile\Candidate\CreateNew');
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('credential', $credential)
@@ -152,7 +152,7 @@ class Candidates implements ControllerInterface {
         $credential = $request->getAttribute('credential');
         $handler    = $request->getAttribute('handler');
 
-        $command = $this->commandFactory->create('Profile\\Candidate\\DeleteAll');
+        $command = $this->commandFactory->create('Profile\Candidate\DeleteAll');
         $command
             ->setParameter('credential', $credential)
             ->setParameter('user', $user)

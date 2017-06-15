@@ -139,7 +139,7 @@ class References implements ControllerInterface {
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $credential = $request->getAttribute('credential');
 
-        $command = $this->commandFactory->create('Profile\\Reference\\CreateNew');
+        $command = $this->commandFactory->create('Profile\Reference\CreateNew');
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('credential', $credential)
@@ -179,7 +179,7 @@ class References implements ControllerInterface {
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $credential = $request->getAttribute('credential');
 
-        $command = $this->commandFactory->create('Profile\\Reference\\UpdateOne');
+        $command = $this->commandFactory->create('Profile\Reference\UpdateOne');
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('credential', $credential)
@@ -217,7 +217,7 @@ class References implements ControllerInterface {
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $credential = $request->getAttribute('credential');
 
-        $command = $this->commandFactory->create('Profile\\Reference\\DeleteOne');
+        $command = $this->commandFactory->create('Profile\Reference\DeleteOne');
         $command
             ->setParameter('credential', $credential)
             ->setParameter('user', $request->getAttribute('targetUser'))
@@ -252,7 +252,7 @@ class References implements ControllerInterface {
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $credential = $request->getAttribute('credential');
 
-        $command = $this->commandFactory->create('Profile\\Reference\\DeleteAll');
+        $command = $this->commandFactory->create('Profile\Reference\DeleteAll');
         $command
             ->setParameter('credential', $credential)
             ->setParameter('user', $request->getAttribute('targetUser'));

@@ -140,7 +140,7 @@ class RoleAccess implements ControllerInterface {
         $user = $request->getAttribute('user');
         $body = $request->getParsedBody();
 
-        $command = $this->commandFactory->create('RoleAccess\\CreateNew');
+        $command = $this->commandFactory->create('RoleAccess\CreateNew');
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('identityId', $user->identityId);
@@ -175,7 +175,7 @@ class RoleAccess implements ControllerInterface {
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user = $request->getAttribute('user');
 
-        $command = $this->commandFactory->create('RoleAccess\\DeleteAll');
+        $command = $this->commandFactory->create('RoleAccess\DeleteAll');
         $command->setParameter('identityId', $user->identityId);
 
         $deleted = $this->commandBus->handle($command);
@@ -209,7 +209,7 @@ class RoleAccess implements ControllerInterface {
         $user                = $request->getAttribute('user');
         $decodedRoleAccessId = $request->getAttribute('decodedRoleAccessId');
 
-        $command = $this->commandFactory->create('RoleAccess\\DeleteOne');
+        $command = $this->commandFactory->create('RoleAccess\DeleteOne');
         $command->setParameter('identityId', $user->identityId);
         $command->setParameter('roleAccessId', $decodedRoleAccessId);
 
@@ -245,7 +245,7 @@ class RoleAccess implements ControllerInterface {
         $user                = $request->getAttribute('user');
         $decodedRoleAccessId = $request->getAttribute('decodedRoleAccessId');
 
-        $command = $this->commandFactory->create('RoleAccess\\UpdateOne');
+        $command = $this->commandFactory->create('RoleAccess\UpdateOne');
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('roleAccessId', $decodedRoleAccessId)

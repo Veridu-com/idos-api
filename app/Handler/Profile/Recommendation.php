@@ -106,11 +106,11 @@ class Recommendation implements HandlerInterface {
             $this->validator->assertString($command->result, 'result');
             $this->validator->assertNullableArray($command->passed, 'passed');
             $this->validator->assertNullableArray($command->failed, 'failed');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Profile\RecommendationException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -145,7 +145,7 @@ class Recommendation implements HandlerInterface {
 
             if ($recommendation->updatedAt) {
                 $event = $this->eventFactory->create(
-                    'Profile\\Recommendation\\Updated',
+                    'Profile\Recommendation\Updated',
                     $recommendation,
                     $command->user,
                     $command->handler,
@@ -154,7 +154,7 @@ class Recommendation implements HandlerInterface {
                 );
             } else {
                 $event = $this->eventFactory->create(
-                    'Profile\\Recommendation\\Created',
+                    'Profile\Recommendation\Created',
                     $recommendation,
                     $command->user,
                     $command->handler,
@@ -164,8 +164,8 @@ class Recommendation implements HandlerInterface {
             }
 
             $this->emitter->emit($event);
-        } catch (\Exception $e) {
-            throw new Create\Profile\RecommendationException('Error while trying to upsert a recommendation', 404, $e);
+        } catch (\Exception $exception) {
+            throw new Create\Profile\RecommendationException('Error while trying to upsert a recommendation', 404, $exception);
         }
 
         return $recommendation;

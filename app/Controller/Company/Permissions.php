@@ -173,7 +173,7 @@ class Permissions implements ControllerInterface {
         $targetCompany = $request->getAttribute('targetCompany');
         $identity      = $request->getAttribute('identity');
 
-        $command = $this->commandFactory->create('Company\\Permission\\CreateNew');
+        $command = $this->commandFactory->create('Company\Permission\CreateNew');
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('identity', $identity)
@@ -215,7 +215,7 @@ class Permissions implements ControllerInterface {
         $routeName     = $request->getAttribute('routeName');
         $identity      = $request->getAttribute('identity');
 
-        $command = $this->commandFactory->create('Company\\Permission\\DeleteOne');
+        $command = $this->commandFactory->create('Company\Permission\DeleteOne');
         $command
             ->setParameter('identity', $identity)
             ->setParameter('companyId', $targetCompany->id)

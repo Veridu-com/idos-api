@@ -163,7 +163,7 @@ class Features implements ControllerInterface {
             $source = $this->sourceRepository->findOne($request->getParsedBodyParam('decoded_source_id'), $user->id);
         }
 
-        $command = $this->commandFactory->create('Profile\\Feature\\CreateNew');
+        $command = $this->commandFactory->create('Profile\Feature\CreateNew');
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $user)
@@ -210,7 +210,7 @@ class Features implements ControllerInterface {
         $credential   = $request->getAttribute('credential');
         $featureId    = $request->getAttribute('decodedFeatureId');
 
-        $command = $this->commandFactory->create('Profile\\Feature\\UpdateOne');
+        $command = $this->commandFactory->create('Profile\Feature\UpdateOne');
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $user)
@@ -259,7 +259,7 @@ class Features implements ControllerInterface {
             $source = $this->sourceRepository->findOne($request->getParsedBodyParam('decoded_source_id'), $user->id);
         }
 
-        $command = $this->commandFactory->create('Profile\\Feature\\UpsertOne');
+        $command = $this->commandFactory->create('Profile\Feature\UpsertOne');
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $user)
@@ -299,7 +299,7 @@ class Features implements ControllerInterface {
         $handler     = $request->getAttribute('handler');
         $credential  = $request->getAttribute('credential');
 
-        $command = $this->commandFactory->create('Profile\\Feature\\UpsertBulk');
+        $command = $this->commandFactory->create('Profile\Feature\UpsertBulk');
         $command
             ->setParameter('features', $request->getParsedBody())
             ->setParameter('user', $user)
@@ -335,7 +335,7 @@ class Features implements ControllerInterface {
         $credential   = $request->getAttribute('credential');
         $featureId    = $request->getAttribute('decodedFeatureId');
 
-        $command = $this->commandFactory->create('Profile\\Feature\\DeleteOne');
+        $command = $this->commandFactory->create('Profile\Feature\DeleteOne');
         $command
             ->setParameter('user', $user)
             ->setParameter('handler', $handler)
@@ -373,7 +373,7 @@ class Features implements ControllerInterface {
         $handler    = $request->getAttribute('handler');
         $credential = $request->getAttribute('credential');
 
-        $command = $this->commandFactory->create('Profile\\Feature\\DeleteAll');
+        $command = $this->commandFactory->create('Profile\Feature\DeleteAll');
         $command
             ->setParameter('credential', $credential)
             ->setParameter('user', $user)

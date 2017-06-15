@@ -138,7 +138,7 @@ class Credentials implements ControllerInterface {
         $company  = $request->getAttribute('targetCompany');
         $identity = $request->getAttribute('identity');
 
-        $command = $this->commandFactory->create('Company\\Credential\\CreateNew');
+        $command = $this->commandFactory->create('Company\Credential\CreateNew');
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('identity', $identity)
@@ -178,7 +178,7 @@ class Credentials implements ControllerInterface {
         $identity   = $request->getAttribute('identity');
         $credential = $this->repository->findByPubKey($request->getAttribute('pubKey'));
 
-        $command = $this->commandFactory->create('Company\\Credential\\UpdateOne');
+        $command = $this->commandFactory->create('Company\Credential\UpdateOne');
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('identity', $identity)
@@ -217,7 +217,7 @@ class Credentials implements ControllerInterface {
         $identity   = $request->getAttribute('identity');
         $credential = $this->repository->findByPubKey($request->getAttribute('pubKey'));
 
-        $command = $this->commandFactory->create('Company\\Credential\\DeleteOne');
+        $command = $this->commandFactory->create('Company\Credential\DeleteOne');
         $command
             ->setParameter('credential', $credential)
             ->setParameter('identity', $identity);

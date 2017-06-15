@@ -61,7 +61,7 @@ class Settings implements ControllerInterface {
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetCompany = $request->getAttribute('targetCompany');
 
-        $command = $this->commandFactory->create('Company\\Setting\\ListAll');
+        $command = $this->commandFactory->create('Company\Setting\ListAll');
         $command
             ->setParameter('hasParentAccess', $request->getAttribute('hasParentAccess'))
             ->setParameter('queryParams', $request->getQueryParams())
@@ -102,7 +102,7 @@ class Settings implements ControllerInterface {
         $identity  = $request->getAttribute('identity');
         $company   = $request->getAttribute('targetCompany');
 
-        $command = $this->commandFactory->create('Company\\Setting\\GetOne');
+        $command = $this->commandFactory->create('Company\Setting\GetOne');
         $command
             ->setParameter('company', $company)
             ->setParameter('settingId', $settingId)
@@ -145,7 +145,7 @@ class Settings implements ControllerInterface {
         $company  = $request->getAttribute('targetCompany');
         $identity = $request->getAttribute('identity');
 
-        $command = $this->commandFactory->create('Company\\Setting\\CreateNew');
+        $command = $this->commandFactory->create('Company\Setting\CreateNew');
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('identity', $identity)
@@ -186,7 +186,7 @@ class Settings implements ControllerInterface {
         $identity      = $request->getAttribute('identity');
         $targetCompany = $request->getAttribute('targetCompany');
 
-        $command = $this->commandFactory->create('Company\\Setting\\UpdateOne');
+        $command = $this->commandFactory->create('Company\Setting\UpdateOne');
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('identity', $identity)
@@ -226,7 +226,7 @@ class Settings implements ControllerInterface {
         $identity  = $request->getAttribute('identity');
         $company   = $request->getAttribute('targetCompany');
 
-        $command = $this->commandFactory->create('Company\\Setting\\DeleteOne');
+        $command = $this->commandFactory->create('Company\Setting\DeleteOne');
         $command
             ->setParameter('company', $company)
             ->setParameter('identity', $identity)

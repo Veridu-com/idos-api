@@ -71,7 +71,7 @@ class Tokens implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function exchange(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $command = $this->commandFactory->create('Token\\Exchange');
+        $command = $this->commandFactory->create('Token\Exchange');
 
         $slug = $request->getParsedBody()['slug'];
 

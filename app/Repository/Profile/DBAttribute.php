@@ -9,7 +9,6 @@ declare(strict_types = 1);
 namespace App\Repository\Profile;
 
 use App\Entity\Profile\Attribute;
-use App\Exception\Create;
 use App\Exception\NotFound;
 use App\Repository\AbstractDBRepository;
 use Illuminate\Support\Collection;

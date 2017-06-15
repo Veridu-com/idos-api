@@ -15,6 +15,7 @@ use App\Entity\Handler;
 use App\Entity\Identity;
 use App\Entity\Profile\Source;
 use App\Entity\Service;
+use App\Entity\ServiceHandler;
 use App\Entity\User;
 use League\Event\EventInterface;
 use Respect\Validation\Validator;
@@ -162,7 +163,7 @@ trait AssertEntity {
      * @return void
      */
     public function assertServiceHandler($entity, string $name = 'serviceHandler') : void {
-        Validator::instance('App\\Entity\\ServiceHandler')
+        Validator::instance(ServiceHandler::class)
             ->setName($name)
             ->assert($entity);
     }

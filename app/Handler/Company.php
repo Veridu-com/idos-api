@@ -138,11 +138,11 @@ class Company implements HandlerInterface {
             $this->validator->assertLongString($command->name, 'name');
             $this->validator->assertNullableId($command->parentId, 'parentId');
             $this->validator->assertIdentity($command->identity, 'identity');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\CompanyException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -159,10 +159,10 @@ class Company implements HandlerInterface {
 
         try {
             $company = $this->repository->saveNewCompany($company, $command->identity);
-            $event   = $this->eventFactory->create('Company\\Created', $company, $command->identity);
+            $event   = $this->eventFactory->create('Company\Created', $company, $command->identity);
             $this->emitter->emit($event);
-        } catch (\Exception $e) {
-            throw new Create\CompanyException('Error while trying to create a company', 500, $e);
+        } catch (\Exception $exception) {
+            throw new Create\CompanyException('Error while trying to create a company', 500, $exception);
         }
 
         return $company;
@@ -182,11 +182,11 @@ class Company implements HandlerInterface {
         try {
             $this->validator->assertId($command->companyId, 'companyId');
             $this->validator->assertIdentity($command->identity, 'identity');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\CompanyException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -215,12 +215,12 @@ class Company implements HandlerInterface {
                 $this->serviceRepository->upsert($service);
             }
 
-            $event = $this->eventFactory->create('Company\\Setup', $company, $command->identity);
+            $event = $this->eventFactory->create('Company\Setup', $company, $command->identity);
             $this->emitter->emit($event);
 
             return $handlerServices;
-        } catch (\Exception $e) {
-            throw new Create\CompanyException('Error while trying to setup new company', 500, $e);
+        } catch (\Exception $exception) {
+            throw new Create\CompanyException('Error while trying to setup new company', 500, $exception);
         }
     }
 
@@ -240,11 +240,11 @@ class Company implements HandlerInterface {
             $this->validator->assertId($command->company->id, 'id');
             $this->validator->assertMediumString($command->name, 'name');
             $this->validator->assertIdentity($command->identity, 'identity');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\CompanyException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -254,10 +254,10 @@ class Company implements HandlerInterface {
 
         try {
             $company = $this->repository->save($company);
-            $event   = $this->eventFactory->create('Company\\Updated', $company, $command->identity);
+            $event   = $this->eventFactory->create('Company\Updated', $company, $command->identity);
             $this->emitter->emit($event);
-        } catch (\Exception $e) {
-            throw new Update\CompanyException('Error while trying to update a company', 500, $e);
+        } catch (\Exception $exception) {
+            throw new Update\CompanyException('Error while trying to update a company', 500, $exception);
         }
 
         return $company;
@@ -278,11 +278,11 @@ class Company implements HandlerInterface {
             $this->validator->assertCompany($command->company, 'company');
             $this->validator->assertId($command->company->id, 'id');
             $this->validator->assertIdentity($command->identity, 'identity');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\CompanyException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -292,7 +292,7 @@ class Company implements HandlerInterface {
             throw new NotFound\CompanyException('No companies found for deletion', 404);
         }
 
-        $event = $this->eventFactory->create('Company\\Deleted', $command->company, $command->identity);
+        $event = $this->eventFactory->create('Company\Deleted', $command->company, $command->identity);
         $this->emitter->emit($event);
     }
 }

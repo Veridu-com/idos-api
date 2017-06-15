@@ -170,7 +170,7 @@ class Auth implements MiddlewareInterface {
     private function handleIdentityToken(ServerRequestInterface $request, string $reqToken) : ServerRequestInterface {
         try {
             $token = $this->jwtParser->parse($reqToken);
-        } catch (\Throwable $e) {
+        } catch (\Throwable $exception) {
             throw new AppException('Invalid Token', 400);
         }
 
@@ -185,7 +185,7 @@ class Auth implements MiddlewareInterface {
 
         try {
             $identity = $this->identityRepository->findByPubKey($identityPubKey);
-        } catch (NotFound $e) {
+        } catch (NotFound $exception) {
             throw new AppException('Invalid Identity', 400);
         }
 
@@ -215,7 +215,7 @@ class Auth implements MiddlewareInterface {
     private function handleUserToken(ServerRequestInterface $request, string $reqToken) : ServerRequestInterface {
         try {
             $token = $this->jwtParser->parse($reqToken);
-        } catch (\Throwable $e) {
+        } catch (\Throwable $exception) {
             throw new AppException('Invalid Token', 400);
         }
 
@@ -234,7 +234,7 @@ class Auth implements MiddlewareInterface {
 
         try {
             $credential = $this->credentialRepository->findByPubKey($credentialPubKey);
-        } catch (NotFound $e) {
+        } catch (NotFound $exception) {
             throw new AppException('Invalid Credential', 400);
         }
 
@@ -283,7 +283,7 @@ class Auth implements MiddlewareInterface {
     private function handleCompanyToken(ServerRequestInterface $request, string $reqToken) : ServerRequestInterface {
         try {
             $token = $this->jwtParser->parse($reqToken);
-        } catch (\Throwable $e) {
+        } catch (\Throwable $exception) {
             throw new AppException('Invalid Token', 400);
         }
 
@@ -302,7 +302,7 @@ class Auth implements MiddlewareInterface {
 
         try {
             $company = $this->companyRepository->findByPubKey($companyPubKey);
-        } catch (NotFound $e) {
+        } catch (NotFound $exception) {
             throw new AppException('Invalid Company', 400);
         }
 
@@ -327,7 +327,7 @@ class Auth implements MiddlewareInterface {
 
             try {
                 $credential = $this->credentialRepository->findByPubKey($credentialPubKey);
-            } catch (NotFound $e) {
+            } catch (NotFound $exception) {
                 throw new AppException('Invalid Credential Public Key', 400);
             }
 
@@ -368,7 +368,7 @@ class Auth implements MiddlewareInterface {
     private function handleCredentialToken(ServerRequestInterface $request, string $reqToken) : ServerRequestInterface {
         try {
             $token = $this->jwtParser->parse($reqToken);
-        } catch (\Throwable $e) {
+        } catch (\Throwable $exception) {
             throw new AppException('Invalid Token', 400);
         }
 
@@ -387,7 +387,7 @@ class Auth implements MiddlewareInterface {
 
         try {
             $issuerHandler = $this->handlerRepository->findByPubKey($servicePubKey);
-        } catch (NotFound $e) {
+        } catch (NotFound $exception) {
             throw new AppException('Invalid Service', 400);
         }
 
@@ -405,7 +405,7 @@ class Auth implements MiddlewareInterface {
 
         try {
             $credential = $this->credentialRepository->findByPubKey($credentialPubKey);
-        } catch (NotFound $e) {
+        } catch (NotFound $exception) {
             throw new AppException('Invalid Credential', 400);
         }
 

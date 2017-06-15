@@ -112,11 +112,11 @@ class Process implements HandlerInterface {
             $this->validator->assertName($command->event, 'event');
             $this->validator->assertId($command->userId, 'userId');
             $this->validator->assertCredential($command->credential, 'credential');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Profile\ProcessException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -131,10 +131,10 @@ class Process implements HandlerInterface {
 
         try {
             $this->repository->save($process);
-            $event = $this->eventFactory->create('Profile\\Process\\Created', $process, $command->credential);
+            $event = $this->eventFactory->create('Profile\Process\Created', $process, $command->credential);
             $this->emitter->emit($event);
-        } catch (\Exception $e) {
-            throw new Create\Profile\ProcessException('Error while trying to create a process', 500, $e);
+        } catch (\Exception $exception) {
+            throw new Create\Profile\ProcessException('Error while trying to create a process', 500, $exception);
         }
 
         return $process;
@@ -159,11 +159,11 @@ class Process implements HandlerInterface {
             $this->validator->assertName($command->event, 'event');
             $this->validator->assertId($command->id, 'id');
             $this->validator->assertCredential($command->credential, 'credential');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Profile\ProcessException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -175,10 +175,10 @@ class Process implements HandlerInterface {
 
         try {
             $process = $this->repository->save($process);
-            $event   = $this->eventFactory->create('Profile\\Process\\Updated', $process, $command->credential);
+            $event   = $this->eventFactory->create('Profile\Process\Updated', $process, $command->credential);
             $this->emitter->emit($event);
-        } catch (\Exception $e) {
-            throw new Update\Profile\ProcessException('Error while trying to update a feature', 500, $e);
+        } catch (\Exception $exception) {
+            throw new Update\Profile\ProcessException('Error while trying to update a feature', 500, $exception);
         }
 
         return $process;

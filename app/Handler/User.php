@@ -105,11 +105,11 @@ class User implements HandlerInterface {
             $this->validator->assertCredential($command->credential, 'credential');
             $this->validator->assertId($command->credential->id, 'credentialId');
             $this->validator->assertUserName($command->username, 'username');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\UserException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -123,10 +123,10 @@ class User implements HandlerInterface {
 
         try {
             $user  = $this->repository->save($user);
-            $event = $this->eventFactory->create('User\\Created', $user);
+            $event = $this->eventFactory->create('User\Created', $user);
             $this->emitter->emit($event);
-        } catch (\Exception $e) {
-            throw new Create\UserException('Error while trying to create an user', 500, $e);
+        } catch (\Exception $exception) {
+            throw new Create\UserException('Error while trying to create an user', 500, $exception);
         }
 
         return $user;

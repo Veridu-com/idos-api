@@ -128,11 +128,11 @@ class Widget implements HandlerInterface {
             $this->validator->assertCompany($command->company, 'company');
             $this->validator->assertString($command->label, 'label');
             $this->validator->assertIdentity($command->identity, 'identity');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Company\WidgetException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -158,10 +158,10 @@ class Widget implements HandlerInterface {
 
         try {
             $widget  = $this->repository->save($widget);
-            $event   = $this->eventFactory->create('Company\\Widget\\Created', $widget, $command->identity);
+            $event   = $this->eventFactory->create('Company\Widget\Created', $widget, $command->identity);
             $this->emitter->emit($event);
-        } catch (\Exception $e) {
-            throw new Create\Company\WidgetException('Error while trying to create a widget', 500, $e);
+        } catch (\Exception $exception) {
+            throw new Create\Company\WidgetException('Error while trying to create a widget', 500, $exception);
         }
 
         return $widget;
@@ -186,11 +186,11 @@ class Widget implements HandlerInterface {
         try {
             // $this->validator->assertString($command->label, 'label');
             $this->validator->assertIdentity($command->identity, 'identity');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Company\WidgetException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -204,10 +204,10 @@ class Widget implements HandlerInterface {
 
         try {
             $widget  = $this->repository->save($widget);
-            $event   = $this->eventFactory->create('Company\\Widget\\Updated', $widget, $command->identity);
+            $event   = $this->eventFactory->create('Company\Widget\Updated', $widget, $command->identity);
             $this->emitter->emit($event);
-        } catch (\Exception $e) {
-            throw new Update\Company\WidgetException('Error while trying to update a widget', 500, $e);
+        } catch (\Exception $exception) {
+            throw new Update\Company\WidgetException('Error while trying to update a widget', 500, $exception);
         }
 
         return $widget;
@@ -230,11 +230,11 @@ class Widget implements HandlerInterface {
         try {
             $this->validator->assertName($command->hash, 'hash');
             $this->validator->assertIdentity($command->identity, 'identity');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Company\WidgetException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -245,7 +245,7 @@ class Widget implements HandlerInterface {
             throw new NotFound\Company\WidgetException('No widgets found for deletion', 404);
         }
 
-        $event = $this->eventFactory->create('Company\\Widget\\Deleted', $widget, $command->identity);
+        $event = $this->eventFactory->create('Company\Widget\Deleted', $widget, $command->identity);
         $this->emitter->emit($event);
     }
 }

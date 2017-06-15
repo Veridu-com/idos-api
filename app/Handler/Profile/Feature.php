@@ -12,8 +12,8 @@ use App\Command\Profile\Feature\CreateNew;
 use App\Command\Profile\Feature\DeleteAll;
 use App\Command\Profile\Feature\DeleteOne;
 use App\Command\Profile\Feature\UpdateOne;
-use App\Command\Profile\Feature\UpsertOne;
 use App\Command\Profile\Feature\UpsertBulk;
+use App\Command\Profile\Feature\UpsertOne;
 use App\Entity\Profile\Feature as FeatureEntity;
 use App\Exception\Create;
 use App\Exception\NotFound;
@@ -184,7 +184,7 @@ class Feature implements HandlerInterface {
             );
 
             $event = $this->eventFactory->create(
-                'Profile\\Feature\\Created',
+                'Profile\Feature\Created',
                 $feature,
                 $command->user,
                 $process,
@@ -220,11 +220,11 @@ class Feature implements HandlerInterface {
             $this->validator->assertName($command->type, 'type');
             $this->validator->assertNullableValue($command->value, 'value');
             $this->validator->assertCredential($command->credential, 'credential');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Profile\FeatureException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -250,7 +250,7 @@ class Feature implements HandlerInterface {
             );
 
             $event = $this->eventFactory->create(
-                'Profile\\Feature\\Updated',
+                'Profile\Feature\Updated',
                 $feature,
                 $command->user,
                 $process,
@@ -340,7 +340,7 @@ class Feature implements HandlerInterface {
 
             if ($feature->updatedAt) {
                 $event = $this->eventFactory->create(
-                    'Profile\\Feature\\Updated',
+                    'ProfileFeature\Updated',
                     $feature,
                     $command->user,
                     $process,
@@ -349,7 +349,7 @@ class Feature implements HandlerInterface {
                 );
             } else {
                 $event = $this->eventFactory->create(
-                    'Profile\\Feature\\Created',
+                    'Profile\Feature\Created',
                     $feature,
                     $command->user,
                     $process,
@@ -465,7 +465,7 @@ class Feature implements HandlerInterface {
                 );
 
                 $event = $this->eventFactory->create(
-                    'Profile\\Feature\\CreatedBulk',
+                    'Profile\Feature\CreatedBulk',
                     $sourceFeatures,
                     $command->user,
                     $process,
@@ -517,7 +517,7 @@ class Feature implements HandlerInterface {
             throw new NotFound\Profile\FeatureException('No features found for deletion', 404);
         }
 
-        $event = $this->eventFactory->create('Profile\\Feature\\Deleted', $feature, $command->credential);
+        $event = $this->eventFactory->create('Profile\Feature\Deleted', $feature, $command->credential);
         $this->emitter->emit($event);
 
         return $affectedRows;
@@ -563,7 +563,7 @@ class Feature implements HandlerInterface {
 
         $this->repository->commit();
 
-        $event = $this->eventFactory->create('Profile\\Feature\\DeletedMulti', $deletedFeatures, $command->credential);
+        $event = $this->eventFactory->create('Profile\Feature\DeletedMulti', $deletedFeatures, $command->credential);
         $this->emitter->emit($event);
 
         return $affectedRows;

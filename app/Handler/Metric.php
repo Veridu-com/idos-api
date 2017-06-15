@@ -168,11 +168,11 @@ class Metric implements HandlerInterface {
     public function handleCreateNew(CreateNew $command) : bool {
         try {
             $this->validator->assertEvent($command->event, 'event');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\MetricException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 

@@ -153,7 +153,7 @@ class Profiles implements ControllerInterface {
 
             try {
                 $recommendation = $this->recommendationRepository->findOne($profile->id)->toArray();
-            } catch (NotFound $e) {
+            } catch (NotFound $exception) {
                 $recommendation = null;
             }
 
@@ -212,7 +212,7 @@ class Profiles implements ControllerInterface {
 
         try {
             $recommendation = $this->recommendationRepository->findOne($profile->id)->toArray();
-        } catch (NotFound $e) {
+        } catch (NotFound $exception) {
             $recommendation = null;
         }
 
@@ -267,7 +267,7 @@ class Profiles implements ControllerInterface {
         $userId   = $request->getAttribute('decodedUserId');
         $identity = $request->getAttribute('identity');
 
-        $command = $this->commandFactory->create('Company\\Profile\\DeleteOne');
+        $command = $this->commandFactory->create('Company\Profile\DeleteOne');
         $command
             ->setParameter('identity', $identity)
             ->setParameter('userId', $userId);

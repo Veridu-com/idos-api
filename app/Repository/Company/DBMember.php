@@ -112,7 +112,7 @@ class DBMember extends AbstractDBRepository implements MemberInterface {
     public function findMembership(int $identityId, int $companyId) : Member {
         try {
             return $this->findDirectMembership($identityId, $companyId);
-        } catch (NotFound $e) {
+        } catch (NotFound $exception) {
             // this means the user doesn't have a direct relationship with the company
             // but the user may have an indirect relationship
             // if the user has a role in a company that is a parent of the given company
@@ -130,7 +130,7 @@ class DBMember extends AbstractDBRepository implements MemberInterface {
 
         try {
             return $this->findDirectMembership($identityId, $companyId);
-        } catch (NotFound $e) {
+        } catch (NotFound $exception) {
             if (! $company->parentId) {
                 throw new NotFound();
             }

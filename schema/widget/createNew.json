@@ -1,0 +1,20 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "POST /companies/{companySlug}/credentials/{pubKey}/widgets",
+    "type": "object",
+    "properties": {
+        "status": {
+            "description": "Response status flag",
+            "type": "boolean"
+        },
+        "data": {
+            "description": "Widget response payload",
+            "type": "object",
+            "$ref": "widgetEntity.json"
+        }
+    },
+    "required": [
+        "status",
+        "data"
+    ]
+}

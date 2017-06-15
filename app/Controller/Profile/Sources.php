@@ -151,7 +151,7 @@ class Sources implements ControllerInterface {
         $user       = $request->getAttribute('targetUser');
         $credential = $request->getAttribute('credential');
 
-        $command = $this->commandFactory->create('Profile\\Source\\CreateNew');
+        $command = $this->commandFactory->create('Profile\Source\CreateNew');
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('credential', $credential)
@@ -200,7 +200,7 @@ class Sources implements ControllerInterface {
 
         $source = $this->repository->findOne($sourceId, $user->id);
 
-        $command = $this->commandFactory->create('Profile\\Source\\UpdateOne');
+        $command = $this->commandFactory->create('Profile\Source\UpdateOne');
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('credential', $credential)
@@ -244,7 +244,7 @@ class Sources implements ControllerInterface {
 
         $source = $this->repository->findOne($sourceId, $user->id);
 
-        $command = $this->commandFactory->create('Profile\\Source\\DeleteOne');
+        $command = $this->commandFactory->create('Profile\Source\DeleteOne');
         $command
             ->setParameter('credential', $credential)
             ->setParameter('user', $user)
@@ -281,7 +281,7 @@ class Sources implements ControllerInterface {
         $user       = $request->getAttribute('targetUser');
         $credential = $request->getAttribute('credential');
 
-        $command = $this->commandFactory->create('Profile\\Source\\DeleteAll');
+        $command = $this->commandFactory->create('Profile\Source\DeleteAll');
         $command
             ->setParameter('credential', $credential)
             ->setParameter('user', $user)

@@ -116,11 +116,11 @@ class Task implements HandlerInterface {
             $this->validator->assertNullableString($command->message, 'message');
             $this->validator->assertId($command->processId, 'processId');
             $this->validator->assertCredential($command->credential, 'credential');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Profile\TaskException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -139,10 +139,10 @@ class Task implements HandlerInterface {
 
         try {
             $task  = $this->repository->save($task);
-            $event = $this->eventFactory->create('Profile\\Task\\Created', $task, $command->credential);
+            $event = $this->eventFactory->create('Profile\Task\Created', $task, $command->credential);
             $this->emitter->emit($event);
-        } catch (\Exception $e) {
-            throw new Create\Profile\TaskException('Error while trying to create a task', 500, $e);
+        } catch (\Exception $exception) {
+            throw new Create\Profile\TaskException('Error while trying to create a task', 500, $exception);
         }
 
         return $task;
@@ -192,11 +192,11 @@ class Task implements HandlerInterface {
             }
 
             $this->validator->assertCredential($command->credential, 'credential');
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Profile\TaskException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -205,15 +205,15 @@ class Task implements HandlerInterface {
         try {
             $task = $this->repository->save($task);
 
-            $updated = $this->eventFactory->create('Profile\\Task\\Updated', $task, $command->credential);
+            $updated = $this->eventFactory->create('Profile\Task\Updated', $task, $command->credential);
             $this->emitter->emit($updated);
 
             if (! $task->running && $task->success) {
-                $completed = $this->eventFactory->create('Profile\\Task\\Completed', $task, $command->user, $task->event, $command->credential);
+                $completed = $this->eventFactory->create('Profile\Task\Completed', $task, $command->user, $task->event, $command->credential);
                 $this->emitter->emit($completed);
             }
-        } catch (\Exception $e) {
-            throw new Update\Profile\TaskException('Error while trying to update a task', 500, $e);
+        } catch (\Exception $exception) {
+            throw new Update\Profile\TaskException('Error while trying to update a task', 500, $exception);
         }
 
         return $task;

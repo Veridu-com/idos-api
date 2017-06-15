@@ -117,7 +117,7 @@ class Subscriptions implements ControllerInterface {
 
         $credential = $this->credentialRepository->findByPubKey($request->getAttribute('pubKey'));
 
-        $command = $this->commandFactory->create('Company\\Subscription\\CreateNew');
+        $command = $this->commandFactory->create('Company\Subscription\CreateNew');
 
         $command
             ->setParameters($request->getParsedBody() ?: [])
@@ -157,7 +157,7 @@ class Subscriptions implements ControllerInterface {
         $subscriptionId = $request->getAttribute('decodedSubscriptionId');
         $identity       = $request->getAttribute('identity');
 
-        $command = $this->commandFactory->create('Company\\Subscription\\DeleteOne');
+        $command = $this->commandFactory->create('Company\Subscription\DeleteOne');
         $command
             ->setParameter('identity', $identity)
             ->setParameter('subscriptionId', $subscriptionId);
