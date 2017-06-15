@@ -6,6 +6,7 @@
 
 define('__VERSION__', '1.0');
 define('__ROOT__', __DIR__ . '/..');
+define('__RSRC__', __DIR__ . '/Resources');
 
 date_default_timezone_set('UTC');
 setlocale(LC_ALL, 'en_US.UTF8');

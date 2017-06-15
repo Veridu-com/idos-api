@@ -190,6 +190,14 @@ class Source implements HandlerInterface {
             foreach ($command->tags as $key => $value) {
                 $this->validator->assertString($key, sprintf('tags.%s', $key));
             }
+
+            if (isset($command->tags['phone'])) {
+                $this->validator->assertPhone($command->tags['phone'], 'tags.phone');
+            }
+
+            if (isset($command->tags['email'])) {
+                $this->validator->assertEmail($command->tags['email'], 'tags.email');
+            }
         } catch (ValidationException $exception) {
             throw new Validate\Profile\SourceException(
                 $exception->getFullMessage(),
@@ -200,17 +208,38 @@ class Source implements HandlerInterface {
 
         $company = $this->companyRepository->find($command->credential->companyId);
 
+        // File
+        $sendFile = false;
+        if (isset($command->tags['contents'])) {
+            if (! isset($command->tags['extension'])) {
+                throw new Validate\Profile\SourceException('Inline file upload must contain an extension field', 400);
+            }
+
+            $fileExtension = $command->tags['extension'];
+
+            if (strlen($command->tags['contents']) > 4194304) {
+                throw new Validate\Profile\SourceException('Inline file upload cannot exceed 4 MB.', 400);
+            }
+
+            $fileContents = base64_decode($command->tags['contents'], true);
+            if ($fileContents === false) {
+                throw new Validate\Profile\SourceException('Invalid file uploaded, content must be base64 encoded.', 400);
+            }
+
+            unset($command->tags['contents']);
+            $command->tags['file_size'] = strlen($fileContents);
+            $command->tags['file_sha1'] = sha1($fileContents);
+
+            $sendFile = true;
+        }
+
         // OTP check
         $sendOTP = false;
         if (isset($command->tags['otp_check'])) {
             $this->validator->validateFlag($command->tags['otp_check']);
 
             if ((! isset($command->tags['email'])) && (! isset($command->tags['phone']))) {
-                throw new ValidationException('OTP Checks must have "phone" or "email" fields.', 400);
-            }
-
-            if (isset($command->tags['email'])) {
-                $this->validator->assertEmail($command->tags['email'], 'tags.email');
+                throw new Validate\Profile\SourceException('OTP Checks must have "phone" or "email" fields.', 400);
             }
 
             $command->tags['otp_code']     = random_int(100000, 999999);
@@ -221,9 +250,9 @@ class Source implements HandlerInterface {
 
         // CRA check
         $sendCRA = false;
-        if ((isset($command->tags['cra_check']))
-            && ($this->validator->validateFlag($command->tags['cra_check'], 'tags.cra_check'))
-        ) {
+        if (isset($command->tags['cra_check'])) {
+            $this->validator->validateFlag($command->tags['cra_check'], 'tags.cra_check');
+
             // Reference code for tracking the CRA Result
             $command->tags['cra_reference'] = md5(
                 sprintf(
@@ -305,6 +334,22 @@ class Source implements HandlerInterface {
 
         $event->process = $processEntity;
         $this->emitter->emit($event);
+
+        if ($sendFile) {
+            $this->emitter->emit(
+                $this->eventFactory->create(
+                    'Profile\Source\File',
+                    $source,
+                    $command->user,
+                    $command->credential,
+                    $company,
+                    $processEntity,
+                    $fileContents,
+                    $fileExtension,
+                    $command->ipaddr
+                )
+            );
+        }
 
         if ($sendOTP) {
             $this->emitter->emit(

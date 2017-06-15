@@ -103,6 +103,13 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
             require_once __ROOT__ . '/config/listeners.php';
             require_once __ROOT__ . '/config/providers.php';
 
+            // $eventList = [];
+            // $emitter   = $app->getContainer()->get('emitter');
+            // $emitter->addListener('*', function ($event) use (&$eventList) {
+            //     $eventList[] = get_class($event);
+            // });
+            //
+
             self::$app = $app;
         }
 
