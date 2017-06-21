@@ -75,14 +75,19 @@ class Flag implements HandlerInterface {
         try {
             $category = $this->categoryRepository->create(
                 [
-                'display_name' => $name,
-                'name'         => $name,
-                'handler_id'   => $handlerId,
-                'type'         => 'gate'
+                    'display_name' => $name,
+                    'name'         => $name,
+                    'handler_id'   => $handlerId,
+                    'type'         => 'gate'
                 ]
             );
 
-            return $this->categoryRepository->upsert($category);
+            return $this->categoryRepository->upsert(
+                $category,
+                [
+                    'name'
+                ]
+            );
         } catch (\Exception $exception) {
             throw new Update\Profile\FlagException('Error while trying to upsert a Flag category', 500, $exception);
         }

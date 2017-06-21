@@ -447,7 +447,6 @@ class Raw implements HandlerInterface {
 
             return $raw;
         } catch (\Exception $exception) {
-            throw $exception;
             if ($inserting) {
                 throw new Create\Profile\RawException('Error while trying to create raw', 500, $exception);
             }

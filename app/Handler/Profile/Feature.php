@@ -307,9 +307,7 @@ class Feature implements HandlerInterface {
                 ]
             );
 
-            $serialized = $feature->serialize();
-
-            $this->repository->upsert(
+            $feature = $this->repository->upsert(
                 $feature,
                 [
                     'user_id',
@@ -318,18 +316,12 @@ class Feature implements HandlerInterface {
                     'name'
                 ],
                 [
-                    'type'       => $serialized['type'],
-                    'value'      => $serialized['value'],
+                    'type'       => $feature->getRawAttribute('type'),
+                    'value'      => $feature->getRawAttribute('value'),
                     'updated_at' => date('Y-m-d H:i:s')
                 ]
             );
-
-            $feature = $this->repository->findOneByName(
-                $command->name,
-                $command->handler->id,
-                $sourceName,
-                $command->user->id
-            );
+            $feature = $this->repository->hydrateRelations($feature);
 
             $process = $this->getRelatedProcess(
                 $this->processRepository,
@@ -432,10 +424,7 @@ class Feature implements HandlerInterface {
                     ]
                 );
 
-                $serialized                                      = $entity->serialize();
-                $perSource[$feature['source_id'] ?? 'profile'][] = $entity;
-
-                $this->repository->upsert(
+                $entity = $this->repository->upsert(
                     $entity,
                     [
                         'user_id',
@@ -444,12 +433,14 @@ class Feature implements HandlerInterface {
                         'name'
                     ],
                     [
-                        'type'       => $serialized['type'],
-                        'value'      => $serialized['value'],
+                        'type'       => $entity->getRawAttribute('type'),
+                        'value'      => $entity->getRawAttribute('value'),
                         'updated_at' => date('Y-m-d H:i:s')
                     ]
                 );
+                $entity = $this->repository->hydrateRelations($entity);
 
+                $perSource[$feature['source_id'] ?? 'profile'][] = $entity;
                 $features[] = $entity;
             }
 

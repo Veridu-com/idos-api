@@ -207,9 +207,9 @@ class Company implements HandlerInterface {
 
                 $service = $this->serviceRepository->create(
                     [
-                    'company_id'         => $command->companyId,
-                    'handler_service_id' => $handlerService->id,
-                    'listens'            => $handlerService->listens
+                        'company_id'         => $command->companyId,
+                        'handler_service_id' => $handlerService->id,
+                        'listens'            => $handlerService->listens
                     ]
                 );
                 $this->serviceRepository->upsert($service);

@@ -77,14 +77,19 @@ class Gate implements HandlerInterface {
         try {
             $category = $this->categoryRepository->create(
                 [
-                'display_name' => $name,
-                'name'         => $name,
-                'handler_id'   => $handlerId,
-                'type'         => 'gate'
+                    'display_name' => $name,
+                    'name'         => $name,
+                    'handler_id'   => $handlerId,
+                    'type'         => 'gate'
                 ]
             );
 
-            return $this->categoryRepository->upsert($category);
+            return $this->categoryRepository->upsert(
+                $category,
+                [
+                    'name'
+                ]
+            );
         } catch (\Exception $exception) {
             throw new Update\Profile\GateException('Error while trying to upsert a Gate category', 500, $exception);
         }
@@ -270,23 +275,27 @@ class Gate implements HandlerInterface {
                 ]
             );
 
-            $this->repository->upsert(
+            $entity = $this->repository->upsert(
                 $entity, ['user_id', 'creator', 'name'], [
                 'updated_at'       => date('Y-m-d H:i:s'),
                 'confidence_level' => $entity->confidenceLevel
                 ]
             );
-            $entity = $this->repository->findBySlug($entity->slug, $entity->creator, $entity->userId);
 
             $this->repository->commit();
 
             $entity = $this->repository->hydrateRelations($entity);
 
+            $eventClass = 'Profile\Gate\Created';
             if ($entity->updatedAt) {
-                $event = $this->eventFactory->create('Profile\Gate\Updated', $entity, $command->credential);
-            } else {
-                $event = $this->eventFactory->create('Profile\Gate\Created', $entity, $command->credential);
+                $eventClass = 'Profile\Gate\Updated';
             }
+
+            $event = $this->eventFactory->create(
+                $eventClass,
+                $entity,
+                $command->credential
+            );
 
             $this->emitter->emit($event);
         } catch (\Exception $exception) {

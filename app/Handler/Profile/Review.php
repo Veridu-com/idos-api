@@ -247,7 +247,7 @@ class Review implements HandlerInterface {
 
         try {
             if (isset($command->gateId)) {
-                $this->repository->upsert(
+                $review = $this->repository->upsert(
                     $review,
                     [
                         'user_id',
@@ -258,11 +258,10 @@ class Review implements HandlerInterface {
                         'description' => $review->description
                     ]
                 );
-                $review = $this->repository->findOneByGateIdAndUserId($command->gateId, $command->user->id);
             }
 
             if (isset($command->recommendationId)) {
-                $this->repository->upsert(
+                $review = $this->repository->upsert(
                     $review,
                     [
                         'user_id',
@@ -273,7 +272,6 @@ class Review implements HandlerInterface {
                         'description' => $review->description
                     ]
                 );
-                $review = $this->repository->findOneByRecommendationIdAndUserId($command->recommendationId, $command->user->id);
             }
 
             $this->repository->commit();

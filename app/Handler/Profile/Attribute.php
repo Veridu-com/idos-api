@@ -179,16 +179,14 @@ class Attribute implements HandlerInterface {
             ]
         );
 
-        $serialized = $entity->serialize();
-
-        $this->repository->upsert(
+        $entity = $this->repository->upsert(
             $entity,
             [
                 'user_id',
                 'name'
             ],
             [
-                'value'      => $serialized['value'],
+                'value'      => $entity->getRawAttribute('value'),
                 'updated_at' => $now
             ]
         );

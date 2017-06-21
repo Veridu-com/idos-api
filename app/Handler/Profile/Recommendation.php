@@ -126,22 +126,18 @@ class Recommendation implements HandlerInterface {
                 ]
             );
 
-            $serialized = $recommendation->serialize();
-
-            $this->repository->upsert(
+            $recommendation = $this->repository->upsert(
                 $recommendation,
                 [
                     'user_id'
                 ],
                 [
-                    'result'     => $serialized['result'],
-                    'passed'     => $serialized['passed'],
-                    'failed'     => $serialized['failed'],
+                    'result'     => $recommendation->getRawAttribute('result'),
+                    'passed'     => $recommendation->getRawAttribute('passed'),
+                    'failed'     => $recommendation->getRawAttribute('failed'),
                     'updated_at' => date('Y-m-d H:i:s')
                 ]
             );
-
-            $recommendation = $this->repository->findOne($command->user->id);
 
             if ($recommendation->updatedAt) {
                 $event = $this->eventFactory->create(
