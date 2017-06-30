@@ -88,18 +88,6 @@ class Cache implements RepositoryInterface {
 
         $item->lock();
         $tagList[$baseKey] = true;
-        file_put_contents(
-            '/tmp/cache.txt',
-            sprintf(
-                'tagEntity: %s:%s -> %s (%d)%s',
-                $this->getClass($entity),
-                $entity->id,
-                $baseKey,
-                count($tagList),
-                PHP_EOL
-            ),
-            \FILE_APPEND | \LOCK_EX
-        );
 
         $item->set($tagList);
 
@@ -112,16 +100,6 @@ class Cache implements RepositoryInterface {
 
         $tagList = $item->get();
         if ($item->isMiss()) {
-            file_put_contents(
-                '/tmp/cache.txt',
-                sprintf(
-                    'invalidate: empty tag set (%s)%s',
-                    $baseKey,
-                    PHP_EOL
-                ),
-                \FILE_APPEND | \LOCK_EX
-            );
-
             return;
         }
 
@@ -131,16 +109,6 @@ class Cache implements RepositoryInterface {
             if ($derivedKey->isMiss()) {
                 continue;
             }
-
-            file_put_contents(
-                '/tmp/cache.txt',
-                sprintf(
-                    'invalidate: %s%s',
-                    $baseKey,
-                    PHP_EOL
-                ),
-                \FILE_APPEND | \LOCK_EX
-            );
 
             $derivedKey->lock();
 
@@ -175,16 +143,6 @@ class Cache implements RepositoryInterface {
         }
 
         if (preg_match('/^(save|upsert|update.*|delete.*)$/', $name)) {
-            file_put_contents(
-                '/tmp/cache.txt',
-                sprintf(
-                    'bypass: %s (%s)%s',
-                    $name,
-                    $this->stringify($arguments),
-                    PHP_EOL
-                ),
-                \FILE_APPEND | \LOCK_EX
-            );
             $data = call_user_func_array([$this->repository, $name], $arguments);
             if ($data instanceof EntityInterface) {
                 $this->invalidateTags($data);
@@ -208,30 +166,7 @@ class Cache implements RepositoryInterface {
 
         $data = $item->get();
 
-        if ($item->isHit()) {
-            file_put_contents(
-                '/tmp/cache.txt',
-                sprintf(
-                    'hit: %s -> %s%s',
-                    $baseKey,
-                    $derivedKey,
-                    PHP_EOL
-                ),
-                \FILE_APPEND | \LOCK_EX
-            );
-        }
-
         if ($item->isMiss()) {
-            file_put_contents(
-                '/tmp/cache.txt',
-                sprintf(
-                    'miss: %s -> %s%s',
-                    $baseKey,
-                    $derivedKey,
-                    PHP_EOL
-                ),
-                \FILE_APPEND | \LOCK_EX
-            );
             $item->lock();
 
             $data = call_user_func_array([$this->repository, $name], $arguments);

@@ -373,18 +373,6 @@ abstract class AbstractDBRepository extends AbstractRepository {
         );
 
         if (count($result)) {
-            file_put_contents(
-                '/tmp/upsert.txt',
-                sprintf(
-                    '%s:%d (%s)%s',
-                    $this->getTableName(),
-                    $result[0]->id,
-                    json_encode($serialized),
-                    PHP_EOL
-                ),
-                \FILE_APPEND | \LOCK_EX
-            );
-
             return $this->find($result[0]->id);
         }
 
