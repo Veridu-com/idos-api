@@ -10,14 +10,7 @@ namespace App\Controller;
 
 use App\Exception\NotFound;
 use App\Factory\Command;
-use App\Repository\Profile\AttributeInterface;
-use App\Repository\Profile\CandidateInterface;
-use App\Repository\Profile\FlagInterface;
-use App\Repository\Profile\GateInterface;
-use App\Repository\Profile\RecommendationInterface;
-use App\Repository\Profile\ScoreInterface;
-use App\Repository\Profile\SourceInterface;
-use App\Repository\UserInterface;
+use App\Repository\RepositoryInterface;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -29,49 +22,49 @@ class Profiles implements ControllerInterface {
     /**
      * Profile Repository instance.
      *
-     * @var \App\Repository\UserInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $repository;
     /**
      * Attribute Repository instance.
      *
-     * @var \App\Repository\Profile\AttributeInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $attributeRepository;
     /**
      * Candidate Repository instance.
      *
-     * @var \App\Repository\Profile\CandidateInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $candidateRepository;
     /**
      * Score Repository instance.
      *
-     * @var \App\Repository\Profile\ScoreInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $scoreRepository;
     /**
      * Source Repository instance.
      *
-     * @var \App\Repository\Profile\SourceInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $sourceRepository;
     /**
      * Gate Repository instance.
      *
-     * @var \App\Repository\Profile\GateInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $gateRepository;
     /**
      * Flag Repository instance.
      *
-     * @var \App\Repository\Profile\FlagInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $flagRepository;
     /**
      * Recommendation Repository instance.
      *
-     * @var \App\Repository\Profile\RecommendationInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $recommendationRepository;
     /**
@@ -90,28 +83,28 @@ class Profiles implements ControllerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\UserInterface                   $repository
-     * @param \App\Repository\Profile\AttributeInterface      $attributeRepository
-     * @param \App\Repository\Profile\CandidateInterface      $candidateRepository
-     * @param \App\Repository\Profile\ScoreInterface          $scoreRepository
-     * @param \App\Repository\Profile\SourceInterface         $sourceRepository
-     * @param \App\Repository\Profile\GateInterface           $gateRepository
-     * @param \App\Repository\Profile\FlagInterface           $flagRepository
-     * @param \App\Repository\Profile\RecommendationInterface $recommendationRepository
-     * @param \League\Tactician\CommandBus                    $commandBus
-     * @param \App\Factory\Command                            $commandFactory
+     * @param \App\Repository\RepositoryInterface $repository
+     * @param \App\Repository\RepositoryInterface $attributeRepository
+     * @param \App\Repository\RepositoryInterface $candidateRepository
+     * @param \App\Repository\RepositoryInterface $scoreRepository
+     * @param \App\Repository\RepositoryInterface $sourceRepository
+     * @param \App\Repository\RepositoryInterface $gateRepository
+     * @param \App\Repository\RepositoryInterface $flagRepository
+     * @param \App\Repository\RepositoryInterface $recommendationRepository
+     * @param \League\Tactician\CommandBus        $commandBus
+     * @param \App\Factory\Command                $commandFactory
      *
      * @return void
      */
     public function __construct(
-        UserInterface $repository,
-        AttributeInterface $attributeRepository,
-        CandidateInterface $candidateRepository,
-        ScoreInterface $scoreRepository,
-        SourceInterface $sourceRepository,
-        GateInterface $gateRepository,
-        FlagInterface $flagRepository,
-        RecommendationInterface $recommendationRepository,
+        RepositoryInterface $repository,
+        RepositoryInterface $attributeRepository,
+        RepositoryInterface $candidateRepository,
+        RepositoryInterface $scoreRepository,
+        RepositoryInterface $sourceRepository,
+        RepositoryInterface $gateRepository,
+        RepositoryInterface $flagRepository,
+        RepositoryInterface $recommendationRepository,
         CommandBus $commandBus,
         Command $commandFactory
     ) {

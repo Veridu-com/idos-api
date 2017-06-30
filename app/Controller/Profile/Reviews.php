@@ -10,26 +10,26 @@ namespace App\Controller\Profile;
 
 use App\Controller\ControllerInterface;
 use App\Factory\Command;
-use App\Repository\Profile\ReviewInterface;
-use App\Repository\UserInterface;
+use App\Repository\RepositoryInterface;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /companies/{companySlug}/profiles/{userId}/reviews and /companies/{companySlug}/profiles/{userId}/reviews/{reviewId}.
+ * Handles requests to /companies/{companySlug}/profiles/{userId}/reviews and
+ * /companies/{companySlug}/profiles/{userId}/reviews/{reviewId}.
  */
 class Reviews implements ControllerInterface {
     /**
      * Review Repository instance.
      *
-     * @var \App\Repository\Profile\ReviewInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $repository;
     /**
      * User Repository instance.
      *
-     * @var \App\Repository\UserInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $userRepository;
     /**
@@ -48,16 +48,16 @@ class Reviews implements ControllerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\Profile\ReviewInterface $repository
-     * @param \App\Repository\UserInterface           $userRepository
-     * @param \League\Tactician\CommandBus            $commandBus
-     * @param \App\Factory\Command                    $commandFactory
+     * @param \App\Repository\RepositoryInterface $repository
+     * @param \App\Repository\RepositoryInterface $userRepository
+     * @param \League\Tactician\CommandBus        $commandBus
+     * @param \App\Factory\Command                $commandFactory
      *
      * @return void
      */
     public function __construct(
-        ReviewInterface $repository,
-        UserInterface $userRepository,
+        RepositoryInterface $repository,
+        RepositoryInterface $userRepository,
         CommandBus $commandBus,
         Command $commandFactory
     ) {

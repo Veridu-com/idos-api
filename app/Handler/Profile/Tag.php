@@ -17,7 +17,7 @@ use App\Exception\NotFound;
 use App\Exception\Validate;
 use App\Factory\Event;
 use App\Handler\HandlerInterface;
-use App\Repository\Profile\TagInterface;
+use App\Repository\RepositoryInterface;
 use App\Validator\Profile\Tag as TagValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
@@ -30,7 +30,7 @@ class Tag implements HandlerInterface {
     /**
      * Tag Repository instance.
      *
-     * @var \App\Repository\Profile\TagInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $repository;
     /**
@@ -75,15 +75,15 @@ class Tag implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\Profile\TagInterface $repository
-     * @param \App\Validator\Profile\Tag           $validator
-     * @param \App\Factory\Event                   $eventFactory
-     * @param \League\Event\Emitter                $emitter
+     * @param \App\Repository\RepositoryInterface $repository
+     * @param \App\Validator\Profile\Tag          $validator
+     * @param \App\Factory\Event                  $eventFactory
+     * @param \League\Event\Emitter               $emitter
      *
      * @return void
      */
     public function __construct(
-        TagInterface $repository,
+        RepositoryInterface $repository,
         TagValidator $validator,
         Event $eventFactory,
         Emitter $emitter

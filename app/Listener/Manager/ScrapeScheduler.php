@@ -14,9 +14,7 @@ use App\Factory\Event as EventFactory;
 use App\Helper\SocialSettings;
 use App\Listener\AbstractListener;
 use App\Listener\ListenerInterface;
-use App\Repository\Company\CredentialInterface;
-use App\Repository\HandlerInterface;
-use App\Repository\ServiceInterface;
+use App\Repository\RepositoryInterface;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
 use League\Event\EventInterface;
@@ -30,19 +28,19 @@ class ScrapeScheduler extends AbstractListener {
     /**
      * Credential Repository instance.
      *
-     * @var \App\Repository\Company\CredentialInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $credentialRepository;
     /**
      * Service Handler Repository instance.
      *
-     * @var \App\Repository\ServiceInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $serviceRepository;
     /**
      * Handler Repository instance.
      *
-     * @var \App\Repository\HandlerInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $handlerRepository;
     /**
@@ -99,20 +97,20 @@ class ScrapeScheduler extends AbstractListener {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\Company\CredentialInterface $credentialRepository
-     * @param \App\Repository\ServiceInterface            $serviceRepository
-     * @param \App\Repository\HandlerInterface            $handlerRepository
-     * @param \App\Repository\Company\SocialSettings      $socialSettings
-     * @param \App\Factory\Event                          $eventFactory
-     * @param \League\Event\Emitter                       $emitter
-     * @param \GearmanClient                              $gearmanClient
+     * @param \App\Repository\RepositoryInterface $credentialRepository
+     * @param \App\Repository\RepositoryInterface $serviceRepository
+     * @param \App\Repository\RepositoryInterface $handlerRepository
+     * @param \App\Repository\RepositoryInterface $socialSettings
+     * @param \App\Factory\Event                  $eventFactory
+     * @param \League\Event\Emitter               $emitter
+     * @param \GearmanClient                      $gearmanClient
      *
      * @return void
      */
     public function __construct(
-        CredentialInterface $credentialRepository,
-        ServiceInterface $serviceRepository,
-        HandlerInterface $handlerRepository,
+        RepositoryInterface $credentialRepository,
+        RepositoryInterface $serviceRepository,
+        RepositoryInterface $handlerRepository,
         SocialSettings $socialSettings,
         EventFactory $eventFactory,
         Emitter $emitter,

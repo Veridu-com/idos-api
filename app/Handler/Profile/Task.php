@@ -16,7 +16,7 @@ use App\Exception\Update;
 use App\Exception\Validate;
 use App\Factory\Event;
 use App\Handler\HandlerInterface;
-use App\Repository\Profile\TaskInterface;
+use App\Repository\RepositoryInterface;
 use App\Validator\Profile\Task as TaskValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
@@ -29,7 +29,7 @@ class Task implements HandlerInterface {
     /**
      * Task Repository instance.
      *
-     * @var \App\Repository\Profile\TaskInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $repository;
     /**
@@ -74,15 +74,15 @@ class Task implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\Profile\TaskInterface $repository
-     * @param \App\Validator\Profile\Task           $validator
-     * @param \App\Factory\Event                    $eventFactory
-     * @param \League\Event\Emitter                 $emitter
+     * @param \App\Repository\RepositoryInterface $repository
+     * @param \App\Validator\Profile\Task         $validator
+     * @param \App\Factory\Event                  $eventFactory
+     * @param \League\Event\Emitter               $emitter
      *
      * @return void
      */
     public function __construct(
-        TaskInterface $repository,
+        RepositoryInterface $repository,
         TaskValidator $validator,
         Event $eventFactory,
         Emitter $emitter

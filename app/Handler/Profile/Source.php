@@ -22,11 +22,7 @@ use App\Exception\Validate;
 use App\Factory\Command as CommandFactory;
 use App\Factory\Event;
 use App\Handler\HandlerInterface;
-use App\Repository\Company\SettingInterface;
-use App\Repository\CompanyInterface;
-use App\Repository\IdentityInterface;
-use App\Repository\Profile\ProcessInterface;
-use App\Repository\Profile\SourceInterface;
+use App\Repository\RepositoryInterface;
 use App\Validator\Profile\Source as SourceValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
@@ -40,31 +36,31 @@ class Source implements HandlerInterface {
     /**
      * Source Repository instance.
      *
-     * @var \App\Repository\Profile\SourceInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $repository;
     /**
      * Process Repository instance.
      *
-     * @var \App\Repository\Profile\ProcessInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $processRepository;
     /**
      * Company Repository instance.
      *
-     * @var \App\Repository\CompanyInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $companyRepository;
     /**
      * Setting Repository instance.
      *
-     * @var \App\Repository\Company\SettingInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $settingRepository;
     /**
      * Identity Repository instance.
      *
-     * @var \App\Repository\IdentityInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $identityRepository;
     /**
@@ -134,23 +130,23 @@ class Source implements HandlerInterface {
     /**
      * Class Constructor.
      *
-     * @param \App\Repository\Profile\SourceInterface  $repository         The repository
-     * @param \App\Repository\Profile\ProcessInterface $processRepository  The process    repository
-     * @param \App\Repository\IdentityInterface        $identityRepository The identity   repository
-     * @param \App\Repository\Company\SettingInterface $settingRepository  The setting    repository
-     * @param \App\Repository\CompanyInterface         $companyRepository  The company    repository
-     * @param \App\Validator\Profile\Source            $validator          The validator
-     * @param \App\Factory\Command                     $commandFactory     The command    factory
-     * @param \League\Tactician\CommandBus             $commandBus         The command    bus        instance.
-     * @param \App\Factory\Event                       $eventFactory       The event      factory
-     * @param \League\Event\Emitter                    $emitter            The emitter
+     * @param \App\Repository\RepositoryInterface $repository         The repository
+     * @param \App\Repository\RepositoryInterface $processRepository  The process    repository
+     * @param \App\Repository\RepositoryInterface $identityRepository The identity   repository
+     * @param \App\Repository\RepositoryInterface $settingRepository  The setting    repository
+     * @param \App\Repository\RepositoryInterface $companyRepository  The company    repository
+     * @param \App\Validator\Profile\Source       $validator          The validator
+     * @param \App\Factory\Command                $commandFactory     The command    factory
+     * @param \League\Tactician\CommandBus        $commandBus         The command    bus        instance.
+     * @param \App\Factory\Event                  $eventFactory       The event      factory
+     * @param \League\Event\Emitter               $emitter            The emitter
      */
     public function __construct(
-        SourceInterface $repository,
-        ProcessInterface $processRepository,
-        IdentityInterface $identityRepository,
-        SettingInterface $settingRepository,
-        CompanyInterface $companyRepository,
+        RepositoryInterface $repository,
+        RepositoryInterface $processRepository,
+        RepositoryInterface $identityRepository,
+        RepositoryInterface $settingRepository,
+        RepositoryInterface $companyRepository,
         SourceValidator $validator,
         CommandFactory $commandFactory,
         CommandBus $commandBus,

@@ -13,10 +13,7 @@ use App\Extension\QueuesOnManager;
 use App\Factory\Event as EventFactory;
 use App\Listener\AbstractListener;
 use App\Listener\ListenerInterface;
-use App\Repository\Company\SettingInterface;
-use App\Repository\HandlerInterface;
-use App\Repository\ServiceInterface;
-use App\Repository\UserInterface;
+use App\Repository\RepositoryInterface;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
 use League\Event\EventInterface;
@@ -32,25 +29,25 @@ class EvaluateRecommendation extends AbstractListener {
     /**
      * Setting Repository.
      *
-     * @var \App\Repository\Company\SettingInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $settingRepository;
     /**
      * Service handler repository.
      *
-     * @var \App\Repository\ServiceInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $serviceRepository;
     /**
      * Handler Repository instance.
      *
-     * @var \App\Repository\HandlerInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $handlerRepository;
     /**
      * User Repository.
      *
-     * @var \App\Repository\UserInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $userRepository;
     /**
@@ -109,22 +106,22 @@ class EvaluateRecommendation extends AbstractListener {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\Company\SettingInterface $settingRepository
-     * @param \App\Repository\ServiceInterface         $serviceRepository
-     * @param \App\Repository\HandlerInterface         $handlerRepository
-     * @param \App\Repository\UserInterface            $userRepository
-     * @param \Monolog\Logger                          $logger
-     * @param \App\Factory\Event                       $eventFactory
-     * @param \League\Event\Emitter                    $emitter
-     * @param \GearmanClient                           $gearmanClient
+     * @param \App\Repository\RepositoryInterface $settingRepository
+     * @param \App\Repository\RepositoryInterface $serviceRepository
+     * @param \App\Repository\RepositoryInterface $handlerRepository
+     * @param \App\Repository\RepositoryInterface $userRepository
+     * @param \Monolog\Logger                     $logger
+     * @param \App\Factory\Event                  $eventFactory
+     * @param \League\Event\Emitter               $emitter
+     * @param \GearmanClient                      $gearmanClient
      *
      * @return void
      */
     public function __construct(
-        SettingInterface $settingRepository,
-        ServiceInterface $serviceRepository,
-        HandlerInterface $handlerRepository,
-        UserInterface $userRepository,
+        RepositoryInterface $settingRepository,
+        RepositoryInterface $serviceRepository,
+        RepositoryInterface $handlerRepository,
+        RepositoryInterface $userRepository,
         Logger $logger,
         EventFactory $eventFactory,
         Emitter $emitter,

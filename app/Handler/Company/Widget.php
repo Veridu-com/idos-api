@@ -18,8 +18,7 @@ use App\Exception\Update;
 use App\Exception\Validate;
 use App\Factory\Event;
 use App\Handler\HandlerInterface;
-use App\Repository\Company\CredentialInterface;
-use App\Repository\Company\WidgetInterface;
+use App\Repository\RepositoryInterface;
 use App\Validator\Company\Widget as WidgetValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
@@ -32,13 +31,13 @@ class Widget implements HandlerInterface {
     /**
      * Widget Repository instance.
      *
-     * @var \App\Repository\Company\WidgetInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $repository;
     /**
      * Credential Repository instance.
      *
-     * @var \App\Repository\Company\CredentialInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $credentialRepository;
     /**
@@ -86,17 +85,17 @@ class Widget implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\Company\WidgetInterface     $repository
-     * @param \App\Repository\Company\CredentialInterface $repository
-     * @param \App\Validator\Company\Widget               $validator
-     * @param \App\Factory\Event                          $eventFactory
-     * @param \League\Event\Emitter                       $emitter
+     * @param \App\Repository\RepositoryInterface $repository
+     * @param \App\Repository\RepositoryInterface $repository
+     * @param \App\Validator\Company\Widget       $validator
+     * @param \App\Factory\Event                  $eventFactory
+     * @param \League\Event\Emitter               $emitter
      *
      * @return void
      */
     public function __construct(
-        WidgetInterface $repository,
-        CredentialInterface $credentialRepository,
+        RepositoryInterface $repository,
+        RepositoryInterface $credentialRepository,
         WidgetValidator $validator,
         Event $eventFactory,
         Emitter $emitter

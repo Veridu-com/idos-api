@@ -9,19 +9,19 @@ declare(strict_types = 1);
 namespace App\Controller;
 
 use App\Factory\Command;
-use App\Repository\CategoryInterface;
+use App\Repository\RepositoryInterface;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /services.
+ * Handles requests to /categories.
  */
 class Categories implements ControllerInterface {
     /**
      * Category Repository instance.
      *
-     * @var \App\Repository\CategoryInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $repository;
 
@@ -42,14 +42,14 @@ class Categories implements ControllerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\CategoryInterface $repository
-     * @param \League\Tactician\CommandBus      $commandBus
-     * @param \App\Factory\Command              $commandFactory
+     * @param \App\Repository\RepositoryInterface $repository
+     * @param \League\Tactician\CommandBus        $commandBus
+     * @param \App\Factory\Command                $commandFactory
      *
      * @return void
      */
     public function __construct(
-        CategoryInterface $repository,
+        RepositoryInterface $repository,
         CommandBus $commandBus,
         Command $commandFactory
     ) {

@@ -19,7 +19,7 @@ use App\Exception\Upsert\Profile\AttributeException as UpsertException;
 use App\Exception\Validate;
 use App\Factory\Event;
 use App\Handler\HandlerInterface;
-use App\Repository\Profile\AttributeInterface;
+use App\Repository\RepositoryInterface;
 use App\Validator\Profile\Attribute as AttributeValidator;
 use Illuminate\Support\Collection;
 use Interop\Container\ContainerInterface;
@@ -33,7 +33,7 @@ class Attribute implements HandlerInterface {
     /**
      * Attribute Repository instance.
      *
-     * @var \App\Repository\Profile\AttributeInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $repository;
     /**
@@ -78,15 +78,15 @@ class Attribute implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\Profile\AttributeInterface $repository
-     * @param \App\Validator\Profile\Attribute           $validator
-     * @param \App\Factory\Event                         $eventFactory
-     * @param \League\Event\Emitter                      $emitter
+     * @param \App\Repository\RepositoryInterface $repository
+     * @param \App\Validator\Profile\Attribute    $validator
+     * @param \App\Factory\Event                  $eventFactory
+     * @param \League\Event\Emitter               $emitter
      *
      * @return void
      */
     public function __construct(
-        AttributeInterface $repository,
+        RepositoryInterface $repository,
         AttributeValidator $validator,
         Event $eventFactory,
         Emitter $emitter

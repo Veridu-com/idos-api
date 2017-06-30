@@ -18,7 +18,7 @@ use App\Exception\Update;
 use App\Exception\Validate;
 use App\Factory\Event;
 use App\Handler\HandlerInterface;
-use App\Repository\Company\CredentialInterface;
+use App\Repository\RepositoryInterface;
 use App\Validator\Company\Credential as CredentialValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
@@ -31,7 +31,7 @@ class Credential implements HandlerInterface {
     /**
      * Credential Repository instance.
      *
-     * @var \App\Repository\Company\CredentialInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $repository;
     /**
@@ -76,15 +76,15 @@ class Credential implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\Company\CredentialInterface $repository
-     * @param \App\Validator\Company\Credential           $validator
-     * @param \App\Factory\Event                          $eventFactory
-     * @param \League\Event\Emitter                       $emitter
+     * @param \App\Repository\RepositoryInterface $repository
+     * @param \App\Validator\Company\Credential   $validator
+     * @param \App\Factory\Event                  $eventFactory
+     * @param \League\Event\Emitter               $emitter
      *
      * @return void
      */
     public function __construct(
-        CredentialInterface $repository,
+        RepositoryInterface $repository,
         CredentialValidator $validator,
         Event $eventFactory,
         Emitter $emitter

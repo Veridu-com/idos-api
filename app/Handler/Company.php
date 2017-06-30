@@ -19,9 +19,7 @@ use App\Exception\NotFound;
 use App\Exception\Update;
 use App\Exception\Validate;
 use App\Factory\Event;
-use App\Repository\CompanyInterface;
-use App\Repository\HandlerServiceInterface;
-use App\Repository\ServiceInterface;
+use App\Repository\RepositoryInterface;
 use App\Validator\Company as CompanyValidator;
 use Defuse\Crypto\Key;
 use Illuminate\Support\Collection;
@@ -36,19 +34,19 @@ class Company implements HandlerInterface {
     /**
      * Company Repository instance.
      *
-     * @var \App\Repository\CompanyInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $repository;
     /**
      * Service Repository instance.
      *
-     * @var \App\Repository\ServiceInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $serviceRepository;
     /**
      * Handler Service Repository instance.
      *
-     * @var \App\Repository\HandlerServiceInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $handlerServiceRepository;
     /**
@@ -98,19 +96,19 @@ class Company implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\CompanyInterface        $repository
-     * @param \App\Repository\ServiceInterface        $serviceRepository
-     * @param \App\Repository\HandlerServiceInterface $handlerServiceRepository
-     * @param \App\Validator\Company                  $validator
-     * @param \App\Factory\Event                      $eventFactory
-     * @param \League\Event\Emitter                   $emitter
+     * @param \App\Repository\RepositoryInterface $repository
+     * @param \App\Repository\RepositoryInterface $serviceRepository
+     * @param \App\Repository\RepositoryInterface $handlerServiceRepository
+     * @param \App\Validator\Company              $validator
+     * @param \App\Factory\Event                  $eventFactory
+     * @param \League\Event\Emitter               $emitter
      *
      * @return void
      */
     public function __construct(
-        CompanyInterface $repository,
-        ServiceInterface $serviceRepository,
-        HandlerServiceInterface $handlerServiceRepository,
+        RepositoryInterface $repository,
+        RepositoryInterface $serviceRepository,
+        RepositoryInterface $handlerServiceRepository,
         CompanyValidator $validator,
         Event $eventFactory,
         Emitter $emitter

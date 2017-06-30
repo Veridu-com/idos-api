@@ -22,7 +22,7 @@ interface RepositoryInterface {
      *
      * @return \App\Entity\EntityInterface
      */
-    public function create(array $attributes) : EntityInterface;
+    // public function create(array $attributes) : EntityInterface;
 
     /**
      * Loads an entity.
@@ -31,7 +31,7 @@ interface RepositoryInterface {
      *
      * @return \App\Entity\EntityInterface
      */
-    public function load(array $attributes) : EntityInterface;
+    // public function load(array $attributes) : EntityInterface;
 
     /**
      * Saves a new entity.
@@ -40,7 +40,7 @@ interface RepositoryInterface {
      *
      * @return \App\Entity\EntityInterface
      */
-    public function save(EntityInterface $entity) : EntityInterface;
+    // public function save(EntityInterface $entity) : EntityInterface;
 
     /**
      * Find an entity by id.
@@ -51,7 +51,7 @@ interface RepositoryInterface {
      *
      * @return \App\Entity\EntityInterface
      */
-    public function find(int $id) : EntityInterface;
+    // public function find(int $id) : EntityInterface;
 
     /**
      * Find an entity by a key.
@@ -64,7 +64,7 @@ interface RepositoryInterface {
      *
      * @return \App\Entity\EntityInterface
      */
-    public function findOneBy(array $constraints, array $queryParams, array $columns) : EntityInterface;
+    // public function findOneBy(array $constraints, array $queryParams, array $columns) : EntityInterface;
 
     /**
      * Find entities by keys.
@@ -77,7 +77,7 @@ interface RepositoryInterface {
      *
      * @return \Illuminate\Support\Collection
      */
-    public function findBy(array $constraints, array $queryParams, array $columns) : Collection;
+    // public function findBy(array $constraints, array $queryParams, array $columns) : Collection;
 
     /**
      * Delete an entitiy by id.
@@ -87,7 +87,7 @@ interface RepositoryInterface {
      *
      * @return int number of affected rows
      */
-    public function delete(int $id, string $key = 'id') : int;
+    // public function delete(int $id, string $key = 'id') : int;
 
     /**
      * Return an entity collection.
@@ -96,5 +96,5 @@ interface RepositoryInterface {
      *
      * @return \Illuminate\Support\Collection
      */
-    public function getAll(array $queryParams = []) : Collection;
+    // public function getAll(array $queryParams = []) : Collection;
 }

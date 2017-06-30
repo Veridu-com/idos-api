@@ -13,8 +13,7 @@ use App\Entity\User;
 use App\Factory\Command;
 use App\Listener\AbstractListener;
 use App\Listener\ListenerInterface;
-use App\Repository\Profile\CandidateInterface;
-use App\Repository\Profile\FeatureInterface;
+use App\Repository\RepositoryInterface;
 use Illuminate\Support\Collection;
 use Interop\Container\ContainerInterface;
 use League\Event\EventInterface;
@@ -27,13 +26,13 @@ class Attribute extends AbstractListener {
     /**
      * Candidate Repository instance.
      *
-     * @var \App\Repository\Profile\CandidateInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $candidateRepository;
     /**
      * Feature Repository instance.
      *
-     * @var \App\Repository\Profile\FeatureInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $featureRepository;
     /**
@@ -265,16 +264,16 @@ class Attribute extends AbstractListener {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\Profile\CandidateInterface $candidateRepository
-     * @param \App\Repository\Profile\FeatureInterface   $featureRepository
-     * @param \League\Tactician\CommandBus               $commandBus
-     * @param \App\Factory\Command                       $commandFactory
+     * @param \App\Repository\RepositoryInterface $candidateRepository
+     * @param \App\Repository\RepositoryInterface $featureRepository
+     * @param \League\Tactician\CommandBus        $commandBus
+     * @param \App\Factory\Command                $commandFactory
      *
      * @return void
      */
     public function __construct(
-        CandidateInterface $candidateRepository,
-        FeatureInterface $featureRepository,
+        RepositoryInterface $candidateRepository,
+        RepositoryInterface $featureRepository,
         CommandBus $commandBus,
         Command $commandFactory
     ) {

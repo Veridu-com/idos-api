@@ -18,8 +18,7 @@ use App\Exception\Upsert\Profile\ReviewException as UpsertException;
 use App\Exception\Validate;
 use App\Factory\Event;
 use App\Handler\HandlerInterface;
-use App\Repository\Profile\RecommendationInterface;
-use App\Repository\Profile\ReviewInterface;
+use App\Repository\RepositoryInterface;
 use App\Validator\Profile\Review as ReviewValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
@@ -32,13 +31,13 @@ class Review implements HandlerInterface {
     /**
      * Review Repository instance.
      *
-     * @var \App\Repository\Profile\ReviewInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $repository;
     /**
      * Recommendation Repository instance.
      *
-     * @var \App\Repository\Profile\RecommendationInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $recommendationRepository;
     /**
@@ -86,17 +85,17 @@ class Review implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\Profile\ReviewInterface         $repository
-     * @param \App\Repository\Profile\RecommendationInterface $recommendationRepository
-     * @param \App\Validator\Profile\Review                   $validator
-     * @param \App\Factory\Event                              $eventFactory
-     * @param \League\Event\Emitter                           $emitter
+     * @param \App\Repository\RepositoryInterface $repository
+     * @param \App\Repository\RepositoryInterface $recommendationRepository
+     * @param \App\Validator\Profile\Review       $validator
+     * @param \App\Factory\Event                  $eventFactory
+     * @param \League\Event\Emitter               $emitter
      *
      * @return void
      */
     public function __construct(
-        ReviewInterface $repository,
-        RecommendationInterface $recommendationRepository,
+        RepositoryInterface $repository,
+        RepositoryInterface $recommendationRepository,
         ReviewValidator $validator,
         Event $eventFactory,
         Emitter $emitter

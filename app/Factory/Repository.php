@@ -8,7 +8,9 @@ declare(strict_types = 1);
 
 namespace App\Factory;
 
+use App\Repository\Cache;
 use App\Repository\RepositoryStrategyInterface;
+use Stash\Pool;
 
 /**
  * Repository Factory Implementation.
@@ -20,6 +22,12 @@ class Repository extends AbstractFactory {
      * @var \App\Repository\RepositoryStrategyInterface
      */
     protected $strategy;
+    /**
+     * Cache Pool.
+     *
+     * @var \Stash\Pool
+     */
+    private $pool;
 
     /**
      * {@inheritdoc}
@@ -39,11 +47,13 @@ class Repository extends AbstractFactory {
      * Class constructor.
      *
      * @param \App\Repository\RepositoryStrategyInterface $strategy
+     * @param \Stash\Pool                                 $pool
      *
      * @return void
      */
-    public function __construct(RepositoryStrategyInterface $strategy) {
+    public function __construct(RepositoryStrategyInterface $strategy, ? Pool $pool = null) {
         $this->strategy = $strategy;
+        $this->pool     = $pool;
     }
 
     /**
@@ -53,7 +63,15 @@ class Repository extends AbstractFactory {
         $class = $this->getClassName($name);
 
         if (class_exists($class)) {
-            return $this->strategy->build($this, $class);
+            $repository = $this->strategy->build($this, $class);
+            if ($this->pool === null) {
+                return $repository;
+            }
+
+            return new Cache(
+                $repository,
+                $this->pool
+            );
         }
 
         throw new \RuntimeException(sprintf('"%s" (%s) not found.', $name, $class));

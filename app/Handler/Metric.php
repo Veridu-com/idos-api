@@ -12,8 +12,7 @@ use App\Command\Metric\CreateNew;
 use App\Command\Metric\ListAllSystem;
 use App\Command\Metric\ListAllUser;
 use App\Exception\Validate;
-use App\Repository\Metric\SystemInterface;
-use App\Repository\Metric\UserInterface;
+use App\Repository\RepositoryInterface;
 use App\Validator\Metric as MetricValidator;
 use Illuminate\Support\Collection;
 use Interop\Container\ContainerInterface;
@@ -26,13 +25,13 @@ class Metric implements HandlerInterface {
     /**
      * System Metrics Repository instance.
      *
-     * @var \App\Repository\Metric\SystemInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $systemMetricsRepository;
     /**
      * User Metrics Repository instance.
      *
-     * @var \App\Repository\Metric\UserInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $userMetricsRepository;
     /**
@@ -72,16 +71,16 @@ class Metric implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\Metric\SystemInterface $systemMetricsRepository
-     * @param \App\Repository\Metric\UserInterface   $userMetricsRepository
-     * @param \App\Validator\Metric                  $validator
-     * @param \GearmanClient                         $gearmanClient
+     * @param \App\Repository\RepositoryInterface $systemMetricsRepository
+     * @param \App\Repository\RepositoryInterface $userMetricsRepository
+     * @param \App\Validator\Metric               $validator
+     * @param \GearmanClient                      $gearmanClient
      *
      * @return void
      */
     public function __construct(
-        SystemInterface $systemMetricsRepository,
-        UserInterface $userMetricsRepository,
+        RepositoryInterface $systemMetricsRepository,
+        RepositoryInterface $userMetricsRepository,
         MetricValidator $validator,
         \GearmanClient $gearmanClient
     ) {

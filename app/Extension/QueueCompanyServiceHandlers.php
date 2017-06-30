@@ -15,13 +15,13 @@ trait QueueCompanyServiceHandlers {
     /**
      * Service Handler Repository instance.
      *
-     * @var \App\Repository\ServiceInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $serviceRepository;
     /**
      * Handler Repository instance.
      *
-     * @var \App\Repository\HandlerInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $handlerRepository;
     /**

@@ -16,7 +16,7 @@ use App\Exception\Update;
 use App\Exception\Validate;
 use App\Factory\Event;
 use App\Handler\HandlerInterface;
-use App\Repository\Profile\ProcessInterface;
+use App\Repository\RepositoryInterface;
 use App\Validator\Profile\Process as ProcessValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
@@ -29,7 +29,7 @@ class Process implements HandlerInterface {
     /**
      * Process Repository instance.
      *
-     * @var \App\Repository\Profile\ProcessInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $repository;
     /**
@@ -74,15 +74,15 @@ class Process implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\Profile\ProcessInterface $repository
-     * @param \App\Validator\Profile\Process           $validator
-     * @param \App\Factory\Event                       $eventFactory
-     * @param \League\Event\Emitter                    $emitter
+     * @param \App\Repository\RepositoryInterface $repository
+     * @param \App\Validator\Profile\Process      $validator
+     * @param \App\Factory\Event                  $eventFactory
+     * @param \League\Event\Emitter               $emitter
      *
      * @return void
      */
     public function __construct(
-        ProcessInterface $repository,
+        RepositoryInterface $repository,
         ProcessValidator $validator,
         Event $eventFactory,
         Emitter $emitter

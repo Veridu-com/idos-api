@@ -19,7 +19,7 @@ use App\Exception\Update;
 use App\Exception\Validate;
 use App\Factory\Event;
 use App\Handler\HandlerInterface;
-use App\Repository\User\RoleAccessInterface;
+use App\Repository\RepositoryInterface;
 use App\Validator\User\RoleAccess as RoleAccessValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
@@ -32,7 +32,7 @@ class RoleAccess implements HandlerInterface {
     /**
      * RoleAccess Repository instance.
      *
-     * @var \App\Repository\User\RoleAccessInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $repository;
     /**
@@ -77,15 +77,15 @@ class RoleAccess implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\User\RoleAccessInterface $repository
-     * @param \App\Validator\User\RoleAccess           $validator
-     * @param \App\Factory\Event                       $eventFactory
-     * @param \League\Event\Emitter                    $emitter
+     * @param \App\Repository\RepositoryInterface $repository
+     * @param \App\Validator\User\RoleAccess      $validator
+     * @param \App\Factory\Event                  $eventFactory
+     * @param \League\Event\Emitter               $emitter
      *
      * @return void
      */
     public function __construct(
-        RoleAccessInterface $repository,
+        RepositoryInterface $repository,
         RoleAccessValidator $validator,
         Event $eventFactory,
         Emitter $emitter

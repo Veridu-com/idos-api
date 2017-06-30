@@ -21,8 +21,7 @@ use App\Exception\Update;
 use App\Exception\Validate;
 use App\Factory\Event;
 use App\Handler\HandlerInterface;
-use App\Repository\CategoryInterface;
-use App\Repository\Profile\GateInterface;
+use App\Repository\RepositoryInterface;
 use App\Validator\Profile\Gate as GateValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
@@ -35,13 +34,13 @@ class Gate implements HandlerInterface {
     /**
      * Gate Repository instance.
      *
-     * @var \App\Repository\Profile\GateInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $repository;
     /**
      * Category Repository instance.
      *
-     * @var \App\Repository\CategoryInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $categoryRepository;
     /**
@@ -121,17 +120,17 @@ class Gate implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\Profile\GateInterface $repository
-     * @param \App\Repository\CategoryInterface     $categoryRepository
-     * @param \App\Validator\Profile\Gate           $validator
-     * @param \App\Factory\Event                    $eventFactory
-     * @param \League\Event\Emitter                 $emitter
+     * @param \App\Repository\RepositoryInterface $repository
+     * @param \App\Repository\RepositoryInterface $categoryRepository
+     * @param \App\Validator\Profile\Gate         $validator
+     * @param \App\Factory\Event                  $eventFactory
+     * @param \League\Event\Emitter               $emitter
      *
      * @return void
      */
     public function __construct(
-        GateInterface $repository,
-        CategoryInterface $categoryRepository,
+        RepositoryInterface $repository,
+        RepositoryInterface $categoryRepository,
         GateValidator $validator,
         Event $eventFactory,
         Emitter $emitter

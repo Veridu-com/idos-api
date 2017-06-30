@@ -11,14 +11,7 @@ namespace App\Controller\Company;
 use App\Controller\ControllerInterface;
 use App\Exception\NotFound;
 use App\Factory\Command;
-use App\Repository\Profile\AttributeInterface;
-use App\Repository\Profile\FlagInterface;
-use App\Repository\Profile\GateInterface;
-use App\Repository\Profile\RecommendationInterface;
-use App\Repository\Profile\ReviewInterface;
-use App\Repository\Profile\SourceInterface;
-use App\Repository\Profile\TagInterface;
-use App\Repository\UserInterface;
+use App\Repository\RepositoryInterface;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -30,49 +23,49 @@ class Profiles implements ControllerInterface {
     /**
      * UserRepository instance.
      *
-     * @var \App\Repository\UserInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $repository;
     /**
      * SourceRepository instance.
      *
-     * @var \App\Repository\Profile\SourceInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $sourceRepository;
     /**
      * TagRepository instance.
      *
-     * @var \App\Repository\Profile\TagInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $tagRepository;
     /**
      * ReviewRepository instance.
      *
-     * @var \App\Repository\Profile\ReviewInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $reviewRepository;
     /**
      * FlagRepository instance.
      *
-     * @var \App\Repository\Profile\FlagInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $flagRepository;
     /**
      * GateRepository instance.
      *
-     * @var \App\Repository\Profile\GateInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $gateRepository;
     /**
      * AttributeRepository instance.
      *
-     * @var \App\Repository\Profile\AttributeInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $attributeRepository;
     /**
      * RecommendationRepository instance.
      *
-     * @var \App\Repository\Profile\RecommendationInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $recommendationRepository;
     /**
@@ -91,28 +84,28 @@ class Profiles implements ControllerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\UserInterface                   $repository
-     * @param \App\Repository\Profile\SourceInterface         $sourceRepository
-     * @param \App\Repository\Profile\TagInterface            $tagRepository
-     * @param \App\Repository\Profile\ReviewInterface         $reviewRepository
-     * @param \App\Repository\Profile\FlagInterface           $flagRepository
-     * @param \App\Repository\Profile\GateInterface           $gateRepository
-     * @param \App\Repository\Profile\AttributeInterface      $attributeRepository
-     * @param \App\Repository\Profile\RecommendationInterface $recommendationRepository
-     * @param \League\Tactician\CommandBus                    $commandBus
-     * @param \App\Factory\Command                            $commandFactory
+     * @param \App\Repository\RepositoryInterface $repository
+     * @param \App\Repository\RepositoryInterface $sourceRepository
+     * @param \App\Repository\RepositoryInterface $tagRepository
+     * @param \App\Repository\RepositoryInterface $reviewRepository
+     * @param \App\Repository\RepositoryInterface $flagRepository
+     * @param \App\Repository\RepositoryInterface $gateRepository
+     * @param \App\Repository\RepositoryInterface $attributeRepository
+     * @param \App\Repository\RepositoryInterface $recommendationRepository
+     * @param \League\Tactician\CommandBus        $commandBus
+     * @param \App\Factory\Command                $commandFactory
      *
      * @return void
      */
     public function __construct(
-        UserInterface $repository,
-        SourceInterface $sourceRepository,
-        TagInterface $tagRepository,
-        ReviewInterface $reviewRepository,
-        FlagInterface $flagRepository,
-        GateInterface $gateRepository,
-        AttributeInterface $attributeRepository,
-        RecommendationInterface $recommendationRepository,
+        RepositoryInterface $repository,
+        RepositoryInterface $sourceRepository,
+        RepositoryInterface $tagRepository,
+        RepositoryInterface $reviewRepository,
+        RepositoryInterface $flagRepository,
+        RepositoryInterface $gateRepository,
+        RepositoryInterface $attributeRepository,
+        RepositoryInterface $recommendationRepository,
         CommandBus $commandBus,
         Command $commandFactory
     ) {

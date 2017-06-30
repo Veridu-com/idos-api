@@ -17,10 +17,7 @@ use App\Exception\NotFound;
 use App\Exception\Validate;
 use App\Factory\Event;
 use App\Handler\HandlerInterface;
-use App\Repository\Company\CredentialInterface;
-use App\Repository\Company\InvitationInterface;
-use App\Repository\Company\SettingInterface;
-use App\Repository\CompanyInterface;
+use App\Repository\RepositoryInterface;
 use App\Validator\Company\Invitation as InvitationValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
@@ -33,25 +30,25 @@ class Invitation implements HandlerInterface {
     /**
      * Invitation Repository instance.
      *
-     * @var \App\Repository\Company\InvitationInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $repository;
     /**
      * Credential Repository instance.
      *
-     * @var \App\Repository\Company\CredentialInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $credentialRepository;
     /**
      * Company Repository instance.
      *
-     * @var \App\Repository\CompanyInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $companyRepository;
     /**
      * Setting Repository instance.
      *
-     * @var \App\Repository\Company\SettingInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $settingRepository;
     /**
@@ -103,21 +100,21 @@ class Invitation implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\Company\InvitationInterface $repository
-     * @param \App\Repository\Company\CredentialInterface $credentialRepository
-     * @param \App\Repository\CompanyInterface            $companyRepository
-     * @param \App\Repository\Company\SettingInterface    $settingRepository
-     * @param \App\Validator\Company\Invitation           $validator
-     * @param \App\Factory\Event                          $eventFactory
-     * @param \League\Event\Emitter                       $emitter
+     * @param \App\Repository\RepositoryInterface $repository
+     * @param \App\Repository\RepositoryInterface $credentialRepository
+     * @param \App\Repository\RepositoryInterface $companyRepository
+     * @param \App\Repository\RepositoryInterface $settingRepository
+     * @param \App\Validator\Company\Invitation   $validator
+     * @param \App\Factory\Event                  $eventFactory
+     * @param \League\Event\Emitter               $emitter
      *
      * @return void
      */
     public function __construct(
-        InvitationInterface $repository,
-        CredentialInterface $credentialRepository,
-        CompanyInterface $companyRepository,
-        SettingInterface $settingRepository,
+        RepositoryInterface $repository,
+        RepositoryInterface $credentialRepository,
+        RepositoryInterface $companyRepository,
+        RepositoryInterface $settingRepository,
         InvitationValidator $validator,
         Event $eventFactory,
         Emitter $emitter

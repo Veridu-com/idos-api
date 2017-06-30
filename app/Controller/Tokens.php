@@ -10,7 +10,7 @@ namespace App\Controller;
 
 use App\Exception\AppException;
 use App\Factory\Command;
-use App\Repository\CompanyInterface;
+use App\Repository\RepositoryInterface;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -22,7 +22,7 @@ class Tokens implements ControllerInterface {
     /**
      * Company Repository instance.
      *
-     * @var \App\Repository\CompanyInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $companyRepository;
     /**
@@ -41,14 +41,14 @@ class Tokens implements ControllerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\CompanyInterface $companyRepository
-     * @param \League\Tactician\CommandBus     $commandBus
-     * @param \App\Factory\Command             $commandFactory
+     * @param \App\Repository\RepositoryInterface $companyRepository
+     * @param \League\Tactician\CommandBus        $commandBus
+     * @param \App\Factory\Command                $commandFactory
      *
      * @return void
      */
     public function __construct(
-        CompanyInterface $companyRepository,
+        RepositoryInterface $companyRepository,
         CommandBus $commandBus,
         Command $commandFactory
     ) {

@@ -464,7 +464,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
             return $this->attributes[$snakeKey];
         }
 
-        return null;
+        return;
     }
 
     /**

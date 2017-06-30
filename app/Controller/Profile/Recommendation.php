@@ -10,7 +10,7 @@ namespace App\Controller\Profile;
 
 use App\Controller\ControllerInterface;
 use App\Factory\Command;
-use App\Repository\Profile\RecommendationInterface;
+use App\Repository\RepositoryInterface;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -22,7 +22,7 @@ class Recommendation implements ControllerInterface {
     /**
      * Recommendation Repository instance.
      *
-     * @var \App\Repository\Profile\RecommendationInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $repository;
     /**
@@ -41,14 +41,14 @@ class Recommendation implements ControllerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\Profile\RecommendationInterface $repository
-     * @param \League\Tactician\CommandBus                    $commandBus
-     * @param \App\Factory\Command                            $commandFactory
+     * @param \App\Repository\RepositoryInterface $repository
+     * @param \League\Tactician\CommandBus        $commandBus
+     * @param \App\Factory\Command                $commandFactory
      *
      * @return void
      */
     public function __construct(
-        RecommendationInterface $repository,
+        RepositoryInterface $repository,
         CommandBus $commandBus,
         Command $commandFactory
     ) {

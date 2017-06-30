@@ -13,7 +13,7 @@ use App\Entity\Identity as IdentityEntity;
 use App\Exception\Create;
 use App\Exception\Validate;
 use App\Factory\Event;
-use App\Repository\IdentityInterface;
+use App\Repository\RepositoryInterface;
 use App\Validator\Identity as IdentityValidator;
 use Defuse\Crypto\Key;
 use Interop\Container\ContainerInterface;
@@ -27,7 +27,7 @@ class Identity implements HandlerInterface {
     /**
      * Identity Repository instance.
      *
-     * @var \App\Repository\IdentityInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $repository;
     /**
@@ -72,15 +72,15 @@ class Identity implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\IdentityInterface $repository
-     * @param \App\Validator\Identity           $validator
-     * @param \App\Factory\Event                $eventFactory
-     * @param \League\Event\Emitter             $emitter
+     * @param \App\Repository\RepositoryInterface $repository
+     * @param \App\Validator\Identity             $validator
+     * @param \App\Factory\Event                  $eventFactory
+     * @param \League\Event\Emitter               $emitter
      *
      * @return void
      */
     public function __construct(
-        IdentityInterface $repository,
+        RepositoryInterface $repository,
         IdentityValidator $validator,
         Event $eventFactory,
         Emitter $emitter

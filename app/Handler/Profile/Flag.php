@@ -19,8 +19,7 @@ use App\Exception\Update;
 use App\Exception\Validate;
 use App\Factory\Event;
 use App\Handler\HandlerInterface;
-use App\Repository\CategoryInterface;
-use App\Repository\Profile\FlagInterface;
+use App\Repository\RepositoryInterface;
 use App\Validator\Profile\Flag as FlagValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
@@ -33,13 +32,13 @@ class Flag implements HandlerInterface {
     /**
      * Flag Repository instance.
      *
-     * @var \App\Repository\Profile\FlagInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $repository;
     /**
      * Category Repository instance.
      *
-     * @var \App\Repository\CategoryInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $categoryRepository;
     /**
@@ -119,17 +118,17 @@ class Flag implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\Profile\FlagInterface $repository
-     * @param \App\Repository\CategoryInterface     $categoryRepository
-     * @param \App\Validator\Profile\Flag           $validator
-     * @param \App\Factory\Event                    $eventFactory
-     * @param \League\Event\Emitter                 $emitter
+     * @param \App\Repository\RepositoryInterface $repository
+     * @param \App\Repository\RepositoryInterface $categoryRepository
+     * @param \App\Validator\Profile\Flag         $validator
+     * @param \App\Factory\Event                  $eventFactory
+     * @param \League\Event\Emitter               $emitter
      *
      * @return void
      */
     public function __construct(
-        FlagInterface $repository,
-        CategoryInterface $categoryRepository,
+        RepositoryInterface $repository,
+        RepositoryInterface $categoryRepository,
         FlagValidator $validator,
         Event $eventFactory,
         Emitter $emitter

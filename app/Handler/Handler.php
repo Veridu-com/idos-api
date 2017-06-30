@@ -19,7 +19,7 @@ use App\Exception\NotFound;
 use App\Exception\Update;
 use App\Exception\Validate;
 use App\Factory\Event;
-use App\Repository\HandlerInterface as DataHandlerInterface;
+use App\Repository\RepositoryInterface;
 use App\Validator\Handler as HandlerValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
@@ -32,7 +32,7 @@ class Handler implements HandlerInterface {
     /**
      * Handler Repository instance.
      *
-     * @var \App\Repository\HandlerInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $repository;
     /**
@@ -77,15 +77,15 @@ class Handler implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\HandlerInterface $repository
-     * @param \App\Validator\Handler           $validator
-     * @param \App\Factory\Event               $eventFactory
-     * @param \League\Event\Emitter            $emitter
+     * @param \App\Repository\RepositoryInterface $repository
+     * @param \App\Validator\Handler              $validator
+     * @param \App\Factory\Event                  $eventFactory
+     * @param \League\Event\Emitter               $emitter
      *
      * @return void
      */
     public function __construct(
-        DataHandlerInterface $repository,
+        RepositoryInterface $repository,
         HandlerValidator $validator,
         Event $eventFactory,
         Emitter $emitter

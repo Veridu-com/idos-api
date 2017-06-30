@@ -9,7 +9,7 @@ declare(strict_types = 1);
 namespace App\Controller;
 
 use App\Factory\Command;
-use App\Repository\HandlerServiceInterface;
+use App\Repository\RepositoryInterface;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -21,7 +21,7 @@ class HandlerServices implements ControllerInterface {
     /**
      * HandlerService Repository instance.
      *
-     * @var \App\Repository\HandlerServiceInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $repository;
     /**
@@ -40,14 +40,14 @@ class HandlerServices implements ControllerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\HandlerServiceInterface $repository
-     * @param \League\Tactician\CommandBus            $commandBus
-     * @param \App\Factory\Command                    $commandFactory
+     * @param \App\Repository\RepositoryInterface $repository
+     * @param \League\Tactician\CommandBus        $commandBus
+     * @param \App\Factory\Command                $commandFactory
      *
      * @return void
      */
     public function __construct(
-        HandlerServiceInterface $repository,
+        RepositoryInterface $repository,
         CommandBus $commandBus,
         Command $commandFactory
     ) {

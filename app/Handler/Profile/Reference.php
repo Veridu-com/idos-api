@@ -19,7 +19,7 @@ use App\Exception\Update;
 use App\Exception\Validate;
 use App\Factory\Event;
 use App\Handler\HandlerInterface;
-use App\Repository\Profile\ReferenceInterface;
+use App\Repository\RepositoryInterface;
 use App\Validator\Profile\Reference as ReferenceValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
@@ -32,7 +32,7 @@ class Reference implements HandlerInterface {
     /**
      * Reference Repository instance.
      *
-     * @var \App\Repository\Profile\ReferenceInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $repository;
     /**
@@ -77,15 +77,15 @@ class Reference implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\Profile\ReferenceInterface $repository
-     * @param \App\Validator\Profile\Reference           $validator
-     * @param \App\Factory\Event                         $eventFactory
-     * @param \League\Event\Emitter                      $emitter
+     * @param \App\Repository\RepositoryInterface $repository
+     * @param \App\Validator\Profile\Reference    $validator
+     * @param \App\Factory\Event                  $eventFactory
+     * @param \League\Event\Emitter               $emitter
      *
      * @return void
      */
     public function __construct(
-        ReferenceInterface $repository,
+        RepositoryInterface $repository,
         ReferenceValidator $validator,
         Event $eventFactory,
         Emitter $emitter

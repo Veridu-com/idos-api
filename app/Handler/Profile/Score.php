@@ -21,7 +21,7 @@ use App\Exception\Update;
 use App\Exception\Validate;
 use App\Factory\Event;
 use App\Handler\HandlerInterface;
-use App\Repository\Profile\ScoreInterface;
+use App\Repository\RepositoryInterface;
 use App\Validator\Profile\Score as ScoreValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
@@ -34,7 +34,7 @@ class Score implements HandlerInterface {
     /**
      * Score Repository instance.
      *
-     * @var \App\Repository\Profile\ScoreInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $repository;
     /**
@@ -79,15 +79,15 @@ class Score implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\Profile\ScoreInterface $repository
-     * @param \App\Validator\Profile\Score           $validator
-     * @param \App\Factory\Event                     $eventFactory
-     * @param \League\Event\Emitter                  $emitter
+     * @param \App\Repository\RepositoryInterface $repository
+     * @param \App\Validator\Profile\Score        $validator
+     * @param \App\Factory\Event                  $eventFactory
+     * @param \League\Event\Emitter               $emitter
      *
      * @return void
      */
     public function __construct(
-        ScoreInterface $repository,
+        RepositoryInterface $repository,
         ScoreValidator $validator,
         Event $eventFactory,
         Emitter $emitter
