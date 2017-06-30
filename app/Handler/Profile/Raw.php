@@ -22,8 +22,7 @@ use App\Exception\Validate;
 use App\Factory\Entity;
 use App\Factory\Event;
 use App\Handler\HandlerInterface;
-use App\Repository\Profile\ProcessInterface;
-use App\Repository\Profile\SourceInterface;
+use App\Repository\RepositoryInterface;
 use App\Validator\Profile\Raw as RawValidator;
 use Illuminate\Support\Collection;
 use Interop\Container\ContainerInterface;
@@ -50,13 +49,13 @@ class Raw implements HandlerInterface {
     /**
      * Source Repository instance.
      *
-     * @var \App\Repository\Profile\SourceInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $sourceRepository;
     /**
      * Process Repository instance.
      *
-     * @var \App\Repository\Profile\ProcessInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $processRepository;
     /**
@@ -158,21 +157,21 @@ class Raw implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param \League\Flysystem\Filesystem             $fileSystem
-     * @param \App\Factory\Entity                      $entityFactory
-     * @param \App\Repository\Profile\SourceInterface  $sourceRepository
-     * @param \App\Repository\Profile\ProcessInterface $processRepository
-     * @param \App\Validator\Profile\Raw               $validator
-     * @param \App\Factory\Event                       $eventFactory
-     * @param \League\Event\Emitter                    $emitter
+     * @param \League\Flysystem\Filesystem        $fileSystem
+     * @param \App\Factory\Entity                 $entityFactory
+     * @param \App\Repository\RepositoryInterface $sourceRepository
+     * @param \App\Repository\RepositoryInterface $processRepository
+     * @param \App\Validator\Profile\Raw          $validator
+     * @param \App\Factory\Event                  $eventFactory
+     * @param \League\Event\Emitter               $emitter
      *
      * @return void
      */
     public function __construct(
         Filesystem $fileSystem,
         Entity $entityFactory,
-        SourceInterface $sourceRepository,
-        ProcessInterface $processRepository,
+        RepositoryInterface $sourceRepository,
+        RepositoryInterface $processRepository,
         RawValidator $validator,
         Event $eventFactory,
         Emitter $emitter
@@ -447,7 +446,6 @@ class Raw implements HandlerInterface {
 
             return $raw;
         } catch (\Exception $exception) {
-            throw $exception;
             if ($inserting) {
                 throw new Create\Profile\RawException('Error while trying to create raw', 500, $exception);
             }

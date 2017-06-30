@@ -10,7 +10,7 @@ namespace App\Controller\Company;
 
 use App\Controller\ControllerInterface;
 use App\Factory\Command;
-use App\Repository\Company\PermissionInterface;
+use App\Repository\RepositoryInterface;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -22,7 +22,7 @@ class Permissions implements ControllerInterface {
     /**
      * Permission Repository instance.
      *
-     * @var \App\Repository\Company\PermissionInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $repository;
     /**
@@ -41,14 +41,14 @@ class Permissions implements ControllerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\Company\PermissionInterface $repository
-     * @param \League\Tactician\CommandBus                $commandBus
-     * @param \App\Factory\Command                        $commandFactory
+     * @param \App\Repository\RepositoryInterface $repository
+     * @param \League\Tactician\CommandBus        $commandBus
+     * @param \App\Factory\Command                $commandFactory
      *
      * @return void
      */
     public function __construct(
-        PermissionInterface $repository,
+        RepositoryInterface $repository,
         CommandBus $commandBus,
         Command $commandFactory
     ) {

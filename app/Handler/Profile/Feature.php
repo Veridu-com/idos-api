@@ -23,9 +23,7 @@ use App\Exception\Validate;
 use App\Extension\RetrieveProcess;
 use App\Factory\Event;
 use App\Handler\HandlerInterface;
-use App\Repository\Profile\FeatureInterface;
-use App\Repository\Profile\ProcessInterface;
-use App\Repository\Profile\SourceInterface;
+use App\Repository\RepositoryInterface;
 use App\Validator\Profile\Feature as FeatureValidator;
 use Illuminate\Support\Collection;
 use Interop\Container\ContainerInterface;
@@ -41,19 +39,19 @@ class Feature implements HandlerInterface {
     /**
      * Feature Repository instance.
      *
-     * @var \App\Repository\Profile\FeatureInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $repository;
     /**
      * Source Repository instance.
      *
-     * @var \App\Repository\Profile\SourceInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $sourceRepository;
     /**
      * Process Repository instance.
      *
-     * @var \App\Repository\Profile\ProcessInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $processRepository;
     /**
@@ -102,19 +100,19 @@ class Feature implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\Profile\FeatureInterface $repository
-     * @param \App\Repository\Profile\SourceInterface  $sourceRepository
-     * @param \App\Repository\Profile\ProcessInterface $processRepository
-     * @param \App\Validator\Profile\Feature           $validator
-     * @param \App\Factory\Event                       $eventFactory
-     * @param \League\Event\Emitter                    $emitter
+     * @param \App\Repository\RepositoryInterface $repository
+     * @param \App\Repository\RepositoryInterface $sourceRepository
+     * @param \App\Repository\RepositoryInterface $processRepository
+     * @param \App\Validator\Profile\Feature      $validator
+     * @param \App\Factory\Event                  $eventFactory
+     * @param \League\Event\Emitter               $emitter
      *
      * @return void
      */
     public function __construct(
-        FeatureInterface $repository,
-        SourceInterface $sourceRepository,
-        ProcessInterface $processRepository,
+        RepositoryInterface $repository,
+        RepositoryInterface $sourceRepository,
+        RepositoryInterface $processRepository,
         FeatureValidator $validator,
         Event $eventFactory,
         Emitter $emitter
@@ -307,9 +305,7 @@ class Feature implements HandlerInterface {
                 ]
             );
 
-            $serialized = $feature->serialize();
-
-            $this->repository->upsert(
+            $feature = $this->repository->upsert(
                 $feature,
                 [
                     'user_id',
@@ -318,18 +314,12 @@ class Feature implements HandlerInterface {
                     'name'
                 ],
                 [
-                    'type'       => $serialized['type'],
-                    'value'      => $serialized['value'],
+                    'type'       => $feature->getRawAttribute('type'),
+                    'value'      => $feature->getRawAttribute('value'),
                     'updated_at' => date('Y-m-d H:i:s')
                 ]
             );
-
-            $feature = $this->repository->findOneByName(
-                $command->name,
-                $command->handler->id,
-                $sourceName,
-                $command->user->id
-            );
+            $feature = $this->repository->hydrateRelations($feature);
 
             $process = $this->getRelatedProcess(
                 $this->processRepository,
@@ -338,25 +328,19 @@ class Feature implements HandlerInterface {
                 $command->source ? $command->source : null
             );
 
+            $eventClass = 'Profile\Feature\Created';
             if ($feature->updatedAt) {
-                $event = $this->eventFactory->create(
-                    'ProfileFeature\Updated',
-                    $feature,
-                    $command->user,
-                    $process,
-                    $command->credential,
-                    $command->source
-                );
-            } else {
-                $event = $this->eventFactory->create(
-                    'Profile\Feature\Created',
-                    $feature,
-                    $command->user,
-                    $process,
-                    $command->credential,
-                    $command->source
-                );
+                $eventClass = 'ProfileFeature\Updated';
             }
+
+            $event = $this->eventFactory->create(
+                $eventClass,
+                $feature,
+                $command->user,
+                $process,
+                $command->credential,
+                $command->source
+            );
 
             $this->emitter->emit($event);
         } catch (\Exception $exception) {
@@ -432,10 +416,7 @@ class Feature implements HandlerInterface {
                     ]
                 );
 
-                $serialized                                      = $entity->serialize();
-                $perSource[$feature['source_id'] ?? 'profile'][] = $entity;
-
-                $this->repository->upsert(
+                $entity = $this->repository->upsert(
                     $entity,
                     [
                         'user_id',
@@ -444,13 +425,15 @@ class Feature implements HandlerInterface {
                         'name'
                     ],
                     [
-                        'type'       => $serialized['type'],
-                        'value'      => $serialized['value'],
+                        'type'       => $entity->getRawAttribute('type'),
+                        'value'      => $entity->getRawAttribute('value'),
                         'updated_at' => date('Y-m-d H:i:s')
                     ]
                 );
+                $entity = $this->repository->hydrateRelations($entity);
 
-                $features[] = $entity;
+                $perSource[$feature['source_id'] ?? 'profile'][] = $entity;
+                $features[]                                      = $entity;
             }
 
             // creates 1 event per source

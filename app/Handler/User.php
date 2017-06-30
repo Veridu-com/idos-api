@@ -13,7 +13,7 @@ use App\Entity\User as UserEntity;
 use App\Exception\Create;
 use App\Exception\Validate;
 use App\Factory\Event;
-use App\Repository\UserInterface;
+use App\Repository\RepositoryInterface;
 use App\Validator\User as UserValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
@@ -26,7 +26,7 @@ class User implements HandlerInterface {
     /**
      * User repository instance.
      *
-     * @var \App\Repository\UserInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $repository;
     /**
@@ -71,15 +71,15 @@ class User implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\UserInterface $repository
-     * @param \App\Validator\User           $validator
-     * @param \App\Factory\Event            $eventFactory
-     * @param \League\Event\Emitter         $emitter
+     * @param \App\Repository\RepositoryInterface $repository
+     * @param \App\Validator\User                 $validator
+     * @param \App\Factory\Event                  $eventFactory
+     * @param \League\Event\Emitter               $emitter
      *
      * @return void
      */
     public function __construct(
-        UserInterface $repository,
+        RepositoryInterface $repository,
         UserValidator $validator,
         Event $eventFactory,
         Emitter $emitter

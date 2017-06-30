@@ -16,7 +16,7 @@ use App\Exception\NotFound;
 use App\Exception\Validate;
 use App\Factory\Event;
 use App\Handler\HandlerInterface;
-use App\Repository\Company\SubscriptionInterface;
+use App\Repository\RepositoryInterface;
 use App\Validator\Company\Subscription as SubscriptionValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
@@ -29,7 +29,7 @@ class Subscription implements HandlerInterface {
     /**
      * Subscription Repository instance.
      *
-     * @var \App\Repository\Company\SubscriptionInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $repository;
     /**
@@ -74,15 +74,15 @@ class Subscription implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\Company\SubscriptionInterface $repository
-     * @param \App\Validator\Company\Subscription           $validator
-     * @param \App\Factory\Event                            $eventFactory
-     * @param \League\Event\Emitter                         $emitter
+     * @param \App\Repository\RepositoryInterface $repository
+     * @param \App\Validator\Company\Subscription $validator
+     * @param \App\Factory\Event                  $eventFactory
+     * @param \League\Event\Emitter               $emitter
      *
      * @return void
      */
     public function __construct(
-        SubscriptionInterface $repository,
+        RepositoryInterface $repository,
         SubscriptionValidator $validator,
         Event $eventFactory,
         Emitter $emitter

@@ -10,7 +10,7 @@ namespace App\Controller\User;
 
 use App\Controller\ControllerInterface;
 use App\Factory\Command;
-use App\Repository\User\RoleAccessInterface;
+use App\Repository\RepositoryInterface;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -22,7 +22,7 @@ class RoleAccess implements ControllerInterface {
     /**
      * RoleAccess Repository instance.
      *
-     * @var \App\Repository\User\RoleAccessInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $repository;
     /**
@@ -41,14 +41,14 @@ class RoleAccess implements ControllerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\User\RoleAccessInterface $repository
-     * @param \League\Tactician\CommandBus             $commandBus
-     * @param \App\Factory\Command                     $commandFactory
+     * @param \App\Repository\RepositoryInterface $repository
+     * @param \League\Tactician\CommandBus        $commandBus
+     * @param \App\Factory\Command                $commandFactory
      *
      * @return void
      */
     public function __construct(
-        RoleAccessInterface $repository,
+        RepositoryInterface $repository,
         CommandBus $commandBus,
         Command $commandFactory
     ) {

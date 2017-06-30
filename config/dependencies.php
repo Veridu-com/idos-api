@@ -243,31 +243,27 @@ $container['log'] = function (ContainerInterface $container) : callable {
 };
 
 // Stash Cache
-$container['cache'] = function (ContainerInterface $container) : Cache\PsrCache\TaggablePool {
+$container['cache'] = function (ContainerInterface $container) : Pool {
     $settings = $container->get('settings');
     if (empty($settings['cache']['driver'])) {
         throw new \RuntimeException('cache:driver is not set');
     }
 
-    if (empty($settings['cache']['options'])) {
-        $settings['cache']['options'] = [];
-    }
-
     switch ($settings['cache']['driver']) {
         case 'filesystem':
-            $driver = new FileSystemCache($settings['cache']['options']);
+            $driver = new FileSystemCache($settings['cache']['options'] ?? []);
             break;
         case 'sqlite':
-            $driver = new Sqlite($settings['cache']['options']);
+            $driver = new Sqlite($settings['cache']['options'] ?? []);
             break;
         case 'apc':
-            $driver = new Apc($settings['cache']['options']);
+            $driver = new Apc($settings['cache']['options'] ?? []);
             break;
         case 'memcache':
-            $driver = new Memcache($settings['cache']['options']);
+            $driver = new Memcache($settings['cache']['options'] ?? []);
             break;
         case 'redis':
-            $driver = new Redis($settings['cache']['options']);
+            $driver = new Redis($settings['cache']['options'] ?? []);
             break;
         case 'ephemeral':
             $driver = new Ephemeral();
@@ -530,8 +526,8 @@ $container['repositoryFactory'] = function (ContainerInterface $container) : Fac
     }
 
     if ((isset($settings['repository']['cached'])) && ($settings['repository']['cached'])) {
-        $strategy = new Repository\CachedStrategy(
-            new Factory\Repository($strategy),
+        return new Factory\Repository(
+            $strategy,
             $container->get('cache')
         );
     }

@@ -16,7 +16,7 @@ use App\Exception\NotFound;
 use App\Exception\Validate;
 use App\Factory\Event;
 use App\Handler\HandlerInterface;
-use App\Repository\Company\PermissionInterface;
+use App\Repository\RepositoryInterface;
 use App\Validator\Company\Permission as PermissionValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
@@ -29,7 +29,7 @@ class Permission implements HandlerInterface {
     /**
      * Permission Repository instance.
      *
-     * @var \App\Repository\Company\PermissionInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $repository;
     /**
@@ -74,15 +74,15 @@ class Permission implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\Company\PermissionInterface $repository
-     * @param \App\Validator\Company\Permission           $validator
-     * @param \App\Factory\Event                          $eventFactory
-     * @param \League\Event\Emitter                       $emitter
+     * @param \App\Repository\RepositoryInterface $repository
+     * @param \App\Validator\Company\Permission   $validator
+     * @param \App\Factory\Event                  $eventFactory
+     * @param \League\Event\Emitter               $emitter
      *
      * @return void
      */
     public function __construct(
-        PermissionInterface $repository,
+        RepositoryInterface $repository,
         PermissionValidator $validator,
         Event $eventFactory,
         Emitter $emitter

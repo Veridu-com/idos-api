@@ -14,7 +14,7 @@ use App\Exception\Create;
 use App\Exception\Validate;
 use App\Factory\Event;
 use App\Handler\HandlerInterface;
-use App\Repository\Profile\RecommendationInterface;
+use App\Repository\RepositoryInterface;
 use App\Validator\Profile\Recommendation as RecommendationValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
@@ -27,7 +27,7 @@ class Recommendation implements HandlerInterface {
     /**
      * Recommendation Repository instance.
      *
-     * @var \App\Repository\Profile\RecommendationInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $repository;
     /**
@@ -71,15 +71,15 @@ class Recommendation implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\Profile\RecommendationInterface $repository
-     * @param \App\Validator\Profile\Recommendation           $validator
-     * @param \App\Factory\Event                              $eventFactory
-     * @param \League\Event\Emitter                           $emitter
+     * @param \App\Repository\RepositoryInterface   $repository
+     * @param \App\Validator\Profile\Recommendation $validator
+     * @param \App\Factory\Event                    $eventFactory
+     * @param \League\Event\Emitter                 $emitter
      *
      * @return void
      */
     public function __construct(
-        RecommendationInterface $repository,
+        RepositoryInterface $repository,
         RecommendationValidator $validator,
         Event $eventFactory,
         Emitter $emitter
@@ -126,22 +126,18 @@ class Recommendation implements HandlerInterface {
                 ]
             );
 
-            $serialized = $recommendation->serialize();
-
-            $this->repository->upsert(
+            $recommendation = $this->repository->upsert(
                 $recommendation,
                 [
                     'user_id'
                 ],
                 [
-                    'result'     => $serialized['result'],
-                    'passed'     => $serialized['passed'],
-                    'failed'     => $serialized['failed'],
+                    'result'     => $recommendation->getRawAttribute('result'),
+                    'passed'     => $recommendation->getRawAttribute('passed'),
+                    'failed'     => $recommendation->getRawAttribute('failed'),
                     'updated_at' => date('Y-m-d H:i:s')
                 ]
             );
-
-            $recommendation = $this->repository->findOne($command->user->id);
 
             if ($recommendation->updatedAt) {
                 $event = $this->eventFactory->create(

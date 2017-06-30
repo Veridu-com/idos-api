@@ -19,8 +19,7 @@ use App\Exception\Update;
 use App\Exception\Validate;
 use App\Factory\Event;
 use App\Handler\HandlerInterface;
-use App\Repository\Company\CredentialInterface;
-use App\Repository\Company\HookInterface;
+use App\Repository\RepositoryInterface;
 use App\Validator\Company\Hook as HookValidator;
 use GuzzleHttp\Client as HttpClient;
 use Interop\Container\ContainerInterface;
@@ -34,13 +33,13 @@ class Hook implements HandlerInterface {
     /**
      * Hook Repository instance.
      *
-     * @var \App\Repository\Company\HookInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $repository;
     /**
      * Credential Repository instance.
      *
-     * @var \App\Repository\Company\CredentialInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $credentialRepository;
     /**
@@ -96,18 +95,18 @@ class Hook implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\Company\HookInterface       $repository
-     * @param \App\Repository\Company\CredentialInterface $credentialRepository
-     * @param \App\Validator\Company\Hook                 $validator
-     * @param \App\Factory\Event                          $eventFactory
-     * @param \League\Event\Emitter                       $emitter
-     * @param \GuzzleHttp\Client                          $httpClient
+     * @param \App\Repository\RepositoryInterface $repository
+     * @param \App\Repository\RepositoryInterface $credentialRepository
+     * @param \App\Validator\Company\Hook         $validator
+     * @param \App\Factory\Event                  $eventFactory
+     * @param \League\Event\Emitter               $emitter
+     * @param \GuzzleHttp\Client                  $httpClient
      *
      * @return void
      */
     public function __construct(
-        HookInterface $repository,
-        CredentialInterface $credentialRepository,
+        RepositoryInterface $repository,
+        RepositoryInterface $credentialRepository,
         HookValidator $validator,
         Event $eventFactory,
         Emitter $emitter,

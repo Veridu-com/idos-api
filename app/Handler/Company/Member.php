@@ -17,7 +17,7 @@ use App\Exception\NotFound;
 use App\Exception\Validate;
 use App\Factory\Event;
 use App\Handler\HandlerInterface;
-use App\Repository\Company\MemberInterface;
+use App\Repository\RepositoryInterface;
 use App\Validator\Company\Member as MemberValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
@@ -30,7 +30,7 @@ class Member implements HandlerInterface {
     /**
      * Member Repository instance.
      *
-     * @var \App\Repository\Company\MemberInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $repository;
     /**
@@ -75,15 +75,15 @@ class Member implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\Company\MemberInterface $repository
-     * @param \App\Validator\Company\Member           $validator
-     * @param \App\Factory\Event                      $eventFactory
-     * @param \League\Event\Emitter                   $emitter
+     * @param \App\Repository\RepositoryInterface $repository
+     * @param \App\Validator\Company\Member       $validator
+     * @param \App\Factory\Event                  $eventFactory
+     * @param \League\Event\Emitter               $emitter
      *
      * @return void
      */
     public function __construct(
-        MemberInterface $repository,
+        RepositoryInterface $repository,
         MemberValidator $validator,
         Event $eventFactory,
         Emitter $emitter

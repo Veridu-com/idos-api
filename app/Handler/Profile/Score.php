@@ -21,7 +21,7 @@ use App\Exception\Update;
 use App\Exception\Validate;
 use App\Factory\Event;
 use App\Handler\HandlerInterface;
-use App\Repository\Profile\ScoreInterface;
+use App\Repository\RepositoryInterface;
 use App\Validator\Profile\Score as ScoreValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
@@ -34,7 +34,7 @@ class Score implements HandlerInterface {
     /**
      * Score Repository instance.
      *
-     * @var \App\Repository\Profile\ScoreInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $repository;
     /**
@@ -79,15 +79,15 @@ class Score implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\Profile\ScoreInterface $repository
-     * @param \App\Validator\Profile\Score           $validator
-     * @param \App\Factory\Event                     $eventFactory
-     * @param \League\Event\Emitter                  $emitter
+     * @param \App\Repository\RepositoryInterface $repository
+     * @param \App\Validator\Profile\Score        $validator
+     * @param \App\Factory\Event                  $eventFactory
+     * @param \League\Event\Emitter               $emitter
      *
      * @return void
      */
     public function __construct(
-        ScoreInterface $repository,
+        RepositoryInterface $repository,
         ScoreValidator $validator,
         Event $eventFactory,
         Emitter $emitter
@@ -242,30 +242,40 @@ class Score implements HandlerInterface {
         try {
             $score = $this->repository->create(
                 [
-                'creator'    => $command->handler->id,
-                'user_id'    => $command->user->id,
-                'attribute'  => $command->attribute,
-                'name'       => $command->name,
-                'value'      => $command->value,
-                'created_at' => date('Y-m-d H:i:s')
+                    'creator'    => $command->handler->id,
+                    'user_id'    => $command->user->id,
+                    'attribute'  => $command->attribute,
+                    'name'       => $command->name,
+                    'value'      => $command->value,
+                    'created_at' => date('Y-m-d H:i:s')
                 ]
             );
 
-            $this->repository->upsert(
-                $score, ['user_id', 'creator', 'name'], [
-                'attribute'  => $command->attribute,
-                'value'      => $command->value,
-                'updated_at' => date('Y-m-d H:i:s')
+            $score = $this->repository->upsert(
+                $score,
+                [
+                    'user_id',
+                    'creator',
+                    'name'
+                ],
+                [
+                    'attribute'  => $score->getRawAttribute('attribute'),
+                    'value'      => $score->getRawAttribute('value'),
+                    'updated_at' => date('Y-m-d H:i:s')
                 ]
             );
+            $score = $this->repository->hydrateRelations($score);
 
-            $score = $this->repository->findOne($command->name, $command->handler->id, $command->user->id);
-
+            $eventClass = 'Profile\Score\Created';
             if ($score->updatedAt) {
-                $event = $this->eventFactory->create('Profile\Score\Updated', $score, $command->credential);
-            } else {
-                $event = $this->eventFactory->create('Profile\Score\Created', $score, $command->credential);
+                $eventClass = 'Profile\Score\Updated';
             }
+
+            $event = $this->eventFactory->create(
+                $eventClass,
+                $score,
+                $command->credential
+            );
 
             $this->emitter->emit($event);
         } catch (\Exception $exception) {

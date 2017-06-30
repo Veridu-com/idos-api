@@ -11,7 +11,7 @@ namespace App\Controller\Profile;
 use App\Controller\ControllerInterface;
 use App\Exception\AppException;
 use App\Factory\Command;
-use App\Repository\Profile\SourceInterface;
+use App\Repository\RepositoryInterface;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -21,15 +21,9 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 class Raw implements ControllerInterface {
     /**
-     * Raw Repository instance.
-     *
-     * @var \App\Repository\Profile\RawInterface
-     */
-    private $repository;
-    /**
      * Source Repository instance.
      *
-     * @var \App\Repository\Profile\SourceInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $sourceRepository;
     /**
@@ -48,14 +42,14 @@ class Raw implements ControllerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\Profile\SourceInterface $sourceRepository
-     * @param \League\Tactician\CommandBus            $commandBus
-     * @param \App\Factory\Command                    $commandFactory
+     * @param \App\Repository\RepositoryInterface $sourceRepository
+     * @param \League\Tactician\CommandBus        $commandBus
+     * @param \App\Factory\Command                $commandFactory
      *
      * @return void
      */
     public function __construct(
-        SourceInterface $sourceRepository,
+        RepositoryInterface $sourceRepository,
         CommandBus $commandBus,
         Command $commandFactory
     ) {
@@ -96,43 +90,6 @@ class Raw implements ControllerInterface {
             'updated' => (
                 $entities->isEmpty() ? time() : max($entities->max('updatedAt'), $entities->max('createdAt'))
             )
-        ];
-
-        $command = $this->commandFactory->create('ResponseDispatch');
-        $command
-            ->setParameter('request', $request)
-            ->setParameter('response', $response)
-            ->setParameter('body', $body);
-
-        return $this->commandBus->handle($command);
-    }
-
-    /**
-     * Retrieves a raw data from the given source.
-     *
-     * @apiEndpointURIFragment string collection collectionName
-     * @apiEndpointResponse 200 schema/raw/rawEntity.json
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \Psr\Http\Message\ResponseInterface      $response
-     *
-     * @see \App\Repository\DBSource::findOne
-     * @see \App\Exception\AppException
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user   = $request->getAttribute('targetUser');
-        $source = $this->sourceRepository->findOne((int) $request->getAttribute('decodedSourceId'), $user->id);
-
-        if ($source->userId !== $user->id) {
-            throw new AppException('Source not found');
-        }
-
-        $raw = $this->repository->findOneBySourceAndCollection($request->getAttribute('collection'), $source);
-
-        $body = [
-            'data' => $raw->toArray()
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');

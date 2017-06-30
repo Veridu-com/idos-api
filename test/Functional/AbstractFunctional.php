@@ -23,6 +23,7 @@ use Slim\Http\Request;
 use Slim\Http\RequestBody;
 use Slim\Http\Response;
 use Slim\Http\Uri;
+use Stash\Pool;
 
 /**
  * AbstractFunctional Class.
@@ -54,6 +55,12 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
      * @var \Illuminate\Database\Connection
      */
     protected static $sqlConnection;
+    /**
+     * Cache Pool instance.
+     *
+     * @var \Stash\Pool
+     */
+    protected static $pool;
     /**
      * Message of the errors of a failed schema assertion.
      *
@@ -127,12 +134,17 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
         if (! self::$sqlConnection) {
             self::$sqlConnection = self::$app->getContainer()->get('sql');
         }
+
+        if (! self::$pool) {
+            self::$pool = self::$app->getContainer()->get('cache');
+        }
     }
 
     /**
      * Starts a SQL database transaction before each test.
      */
     protected function setUp() {
+        self::$pool->clear();
         self::$sqlConnection->beginTransaction();
     }
 
@@ -141,6 +153,7 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
      */
     protected function tearDown() {
         self::$sqlConnection->rollBack();
+        self::$pool->clear();
     }
 
     /**

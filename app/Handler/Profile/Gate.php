@@ -21,8 +21,7 @@ use App\Exception\Update;
 use App\Exception\Validate;
 use App\Factory\Event;
 use App\Handler\HandlerInterface;
-use App\Repository\CategoryInterface;
-use App\Repository\Profile\GateInterface;
+use App\Repository\RepositoryInterface;
 use App\Validator\Profile\Gate as GateValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
@@ -35,13 +34,13 @@ class Gate implements HandlerInterface {
     /**
      * Gate Repository instance.
      *
-     * @var \App\Repository\Profile\GateInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $repository;
     /**
      * Category Repository instance.
      *
-     * @var \App\Repository\CategoryInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $categoryRepository;
     /**
@@ -77,14 +76,19 @@ class Gate implements HandlerInterface {
         try {
             $category = $this->categoryRepository->create(
                 [
-                'display_name' => $name,
-                'name'         => $name,
-                'handler_id'   => $handlerId,
-                'type'         => 'gate'
+                    'display_name' => $name,
+                    'name'         => $name,
+                    'handler_id'   => $handlerId,
+                    'type'         => 'gate'
                 ]
             );
 
-            return $this->categoryRepository->upsert($category);
+            return $this->categoryRepository->upsert(
+                $category,
+                [
+                    'name'
+                ]
+            );
         } catch (\Exception $exception) {
             throw new Update\Profile\GateException('Error while trying to upsert a Gate category', 500, $exception);
         }
@@ -116,17 +120,17 @@ class Gate implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\Profile\GateInterface $repository
-     * @param \App\Repository\CategoryInterface     $categoryRepository
-     * @param \App\Validator\Profile\Gate           $validator
-     * @param \App\Factory\Event                    $eventFactory
-     * @param \League\Event\Emitter                 $emitter
+     * @param \App\Repository\RepositoryInterface $repository
+     * @param \App\Repository\RepositoryInterface $categoryRepository
+     * @param \App\Validator\Profile\Gate         $validator
+     * @param \App\Factory\Event                  $eventFactory
+     * @param \League\Event\Emitter               $emitter
      *
      * @return void
      */
     public function __construct(
-        GateInterface $repository,
-        CategoryInterface $categoryRepository,
+        RepositoryInterface $repository,
+        RepositoryInterface $categoryRepository,
         GateValidator $validator,
         Event $eventFactory,
         Emitter $emitter
@@ -270,23 +274,27 @@ class Gate implements HandlerInterface {
                 ]
             );
 
-            $this->repository->upsert(
+            $entity = $this->repository->upsert(
                 $entity, ['user_id', 'creator', 'name'], [
                 'updated_at'       => date('Y-m-d H:i:s'),
                 'confidence_level' => $entity->confidenceLevel
                 ]
             );
-            $entity = $this->repository->findBySlug($entity->slug, $entity->creator, $entity->userId);
 
             $this->repository->commit();
 
             $entity = $this->repository->hydrateRelations($entity);
 
+            $eventClass = 'Profile\Gate\Created';
             if ($entity->updatedAt) {
-                $event = $this->eventFactory->create('Profile\Gate\Updated', $entity, $command->credential);
-            } else {
-                $event = $this->eventFactory->create('Profile\Gate\Created', $entity, $command->credential);
+                $eventClass = 'Profile\Gate\Updated';
             }
+
+            $event = $this->eventFactory->create(
+                $eventClass,
+                $entity,
+                $command->credential
+            );
 
             $this->emitter->emit($event);
         } catch (\Exception $exception) {

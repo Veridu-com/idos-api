@@ -30,12 +30,7 @@ use App\Exception\Validate\Company\InvitationException;
 use App\Factory\Command;
 use App\Factory\Event;
 use App\Helper\Token;
-use App\Repository\Company\CredentialInterface;
-use App\Repository\Company\InvitationInterface;
-use App\Repository\Company\MemberInterface;
-use App\Repository\CompanyInterface;
-use App\Repository\IdentityInterface;
-use App\Repository\UserInterface;
+use App\Repository\RepositoryInterface;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
 use League\Tactician\CommandBus;
@@ -49,37 +44,37 @@ class Sso implements HandlerInterface {
     /**
      * User Repository instance.
      *
-     * @var \App\Repository\UserInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $userRepository;
     /**
      * Credential Repository instance.
      *
-     * @var \App\Repository\Company\CredentialInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $credentialRepository;
     /**
      * Member Repository instance.
      *
-     * @var \App\Repository\Company\MemberInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $memberRepository;
     /**
      * Company Repository instance.
      *
-     * @var \App\Repository\CompanyInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $companyRepository;
     /**
      * Invitation Repository instance.
      *
-     * @var \App\Repository\Company\InvitationInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $invitationRepository;
     /**
      * Identity Repository instance.
      *
-     * @var \App\Repository\IdentityInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $identityRepository;
     /**
@@ -150,28 +145,27 @@ class Sso implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Factory\Command
-     * @param \App\Repository\UserInterface               $userRepository
-     * @param \App\Repository\Company\CredentialInterface $credentialRepository
-     * @param \App\Repository\Company\MemberInterface     $memberRepository
-     * @param \App\Repository\CompanyInterface            $companyRepository
-     * @param \App\Repository\Company\InvitationInterface $invitationRepository
-     * @param \App\Repository\IdentityInterface           $identityRepository
-     * @param \App\Factory\Event                          $eventFactory
-     * @param \League\Event\Emitter                       $emitter
-     * @param callable                                    $service
-     * @param \League\Tactician\CommandBus                $commandBus
-     * @param \App\Factory\Command                        $commandFactory
+     * @param \App\Repository\RepositoryInterface $userRepository
+     * @param \App\Repository\RepositoryInterface $credentialRepository
+     * @param \App\Repository\RepositoryInterface $memberRepository
+     * @param \App\Repository\RepositoryInterface $companyRepository
+     * @param \App\Repository\RepositoryInterface $invitationRepository
+     * @param \App\Repository\RepositoryInterface $identityRepository
+     * @param \App\Factory\Event                  $eventFactory
+     * @param \League\Event\Emitter               $emitter
+     * @param callable                            $service
+     * @param \League\Tactician\CommandBus        $commandBus
+     * @param \App\Factory\Command                $commandFactory
      *
      * @return void
      */
     public function __construct(
-        UserInterface $userRepository,
-        CredentialInterface $credentialRepository,
-        MemberInterface $memberRepository,
-        CompanyInterface $companyRepository,
-        InvitationInterface $invitationRepository,
-        IdentityInterface $identityRepository,
+        RepositoryInterface $userRepository,
+        RepositoryInterface $credentialRepository,
+        RepositoryInterface $memberRepository,
+        RepositoryInterface $companyRepository,
+        RepositoryInterface $invitationRepository,
+        RepositoryInterface $identityRepository,
         Event $eventFactory,
         Emitter $emitter,
         callable $service,

@@ -51,7 +51,7 @@ $appSettings = [
         'level' => Monolog\Logger::DEBUG
     ],
     'cache' => [
-        'driver' => 'ephemeral'
+        'driver' => Env::asString('IDOS_CACHE_DRIVER', 'ephemeral')
     ],
     'gearman' => [
         'timeout' => 1000,
@@ -64,7 +64,7 @@ $appSettings = [
     ],
     'repository' => [
         'strategy' => 'db',
-        'cached'   => false
+        'cached'   => Env::asString('IDOS_CACHE_DRIVER', 'ephemeral') !== 'ephemeral'
     ],
     'fileSystem' => [
         'adapter' => Env::asString('IDOS_FS_ADAPTER', ''),

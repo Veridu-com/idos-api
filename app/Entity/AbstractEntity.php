@@ -458,6 +458,18 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
     /**
      * {@inheritdoc}
      */
+    public function getRawAttribute(string $key) {
+        $snakeKey = $this->toSnakeCase($key);
+        if (isset($this->attributes[$snakeKey])) {
+            return $this->attributes[$snakeKey];
+        }
+
+        return;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function serialize() : array {
         $return = [];
         foreach ($this->attributes as $key => $value) {

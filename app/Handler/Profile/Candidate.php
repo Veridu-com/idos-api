@@ -16,7 +16,7 @@ use App\Exception\NotFound;
 use App\Exception\Validate;
 use App\Factory\Event;
 use App\Handler\HandlerInterface;
-use App\Repository\Profile\CandidateInterface;
+use App\Repository\RepositoryInterface;
 use App\Validator\Profile\Candidate as CandidateValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
@@ -29,7 +29,7 @@ class Candidate implements HandlerInterface {
     /**
      * Candidate Repository instance.
      *
-     * @var \App\Repository\Profile\CandidateInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $repository;
     /**
@@ -74,15 +74,15 @@ class Candidate implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\Profile\CandidateInterface $repository
-     * @param \App\Validator\Profile\Candidate           $validator
-     * @param \App\Factory\Event                         $eventFactory
-     * @param \League\Event\Emitter                      $emitter
+     * @param \App\Repository\RepositoryInterface $repository
+     * @param \App\Validator\Profile\Candidate    $validator
+     * @param \App\Factory\Event                  $eventFactory
+     * @param \League\Event\Emitter               $emitter
      *
      * @return void
      */
     public function __construct(
-        CandidateInterface $repository,
+        RepositoryInterface $repository,
         CandidateValidator $validator,
         Event $eventFactory,
         Emitter $emitter

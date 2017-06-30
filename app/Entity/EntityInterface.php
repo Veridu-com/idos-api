@@ -29,6 +29,15 @@ interface EntityInterface {
     public function toArray() : array;
 
     /**
+     * Gets the raw value of an attribute.
+     *
+     * @param string $key
+     *
+     * @return mixed
+     */
+    public function getRawAttribute(string $key);
+
+    /**
      * Serialize the entity instance to an array.
      *
      * @return array

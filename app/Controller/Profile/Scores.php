@@ -10,8 +10,7 @@ namespace App\Controller\Profile;
 
 use App\Controller\ControllerInterface;
 use App\Factory\Command;
-use App\Repository\Profile\AttributeInterface;
-use App\Repository\Profile\ScoreInterface;
+use App\Repository\RepositoryInterface;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -23,13 +22,13 @@ class Scores implements ControllerInterface {
     /**
      * Score Repository instance.
      *
-     * @var \App\Repository\Profile\ScoreInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $repository;
     /**
      * Attribute Repository instance.
      *
-     * @var \App\Repository\Profile\AttributeInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $attributeRepository;
     /**
@@ -48,15 +47,16 @@ class Scores implements ControllerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\Profile\ScoreInterface $repository
-     * @param \League\Tactician\CommandBus           $commandBus
-     * @param \App\Factory\Command                   $commandFactory
+     * @param \App\Repository\RepositoryInterface $repository
+     * @param \App\Repository\RepositoryInterface $attributeRepository
+     * @param \League\Tactician\CommandBus        $commandBus
+     * @param \App\Factory\Command                $commandFactory
      *
      * @return void
      */
     public function __construct(
-        ScoreInterface $repository,
-        AttributeInterface $attributeRepository,
+        RepositoryInterface $repository,
+        RepositoryInterface $attributeRepository,
         CommandBus $commandBus,
         Command $commandFactory
     ) {

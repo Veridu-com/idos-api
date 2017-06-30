@@ -10,8 +10,7 @@ namespace App\Controller\Company;
 
 use App\Controller\ControllerInterface;
 use App\Factory\Command;
-use App\Repository\Company\CredentialInterface;
-use App\Repository\Company\SubscriptionInterface;
+use App\Repository\RepositoryInterface;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -23,13 +22,13 @@ class Subscriptions implements ControllerInterface {
     /**
      * Subscription Repository instance.
      *
-     * @var \App\Repository\Company\SubscriptionInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $repository;
     /**
      * Credential Repository instance.
      *
-     * @var \App\Repository\Company\CredentialInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $credentialRepository;
     /**
@@ -48,16 +47,16 @@ class Subscriptions implements ControllerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\Company\SubscriptionInterface $repository
-     * @param \App\Repository\Company\CredentialInterface   $credentialRepository
-     * @param \League\Tactician\CommandBus                  $commandBus
-     * @param \App\Factory\Command                          $commandFactory
+     * @param \App\Repository\RepositoryInterface $repository
+     * @param \App\Repository\RepositoryInterface $credentialRepository
+     * @param \League\Tactician\CommandBus        $commandBus
+     * @param \App\Factory\Command                $commandFactory
      *
      * @return void
      */
     public function __construct(
-        SubscriptionInterface $repository,
-        CredentialInterface $credentialRepository,
+        RepositoryInterface $repository,
+        RepositoryInterface $credentialRepository,
         CommandBus $commandBus,
         Command $commandFactory
     ) {

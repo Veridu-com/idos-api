@@ -8,14 +8,14 @@ declare(strict_types = 1);
 
 namespace App\Helper;
 
-use App\Repository\Company\SettingInterface;
+use App\Repository\RepositoryInterface;
 use Illuminate\Support\Collection;
 
 class SocialSettings {
     /**
      * Setting Repository instance.
      *
-     * @var \App\Repository\Company\SettingInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $settingRepository;
     /**
@@ -83,12 +83,12 @@ class SocialSettings {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\Company\SettingInterface $settingRepository
-     * @param array                                    $localSettings
+     * @param \App\Repository\RepositoryInterface $settingRepository
+     * @param array                               $localSettings
      *
      * @return void
      */
-    public function __construct(SettingInterface $settingRepository, array $localSettings = []) {
+    public function __construct(RepositoryInterface $settingRepository, array $localSettings = []) {
         $this->settingRepository = $settingRepository;
         $this->localSettings     = $localSettings;
     }

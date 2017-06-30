@@ -17,16 +17,6 @@ use Illuminate\Support\Collection;
  */
 interface PermissionInterface extends RepositoryInterface {
     /**
-     * Checks if a $companyId is allowed to access a $routeName.
-     *
-     * @param int    $companyId
-     * @param string $routeName
-     *
-     * @return bool
-     */
-    public function isAllowed(int $companyId, string $routeName) : bool;
-
-    /**
      * Return a permission based on its route name and company id.
      *
      * @param int    $companyId

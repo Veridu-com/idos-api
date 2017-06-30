@@ -10,7 +10,7 @@ namespace App\Handler;
 
 use App\Command\Profile\ListAll;
 use App\Factory\Event;
-use App\Repository\UserInterface;
+use App\Repository\RepositoryInterface;
 use App\Validator\Profile as ProfileValidator;
 use Illuminate\Support\Collection;
 use Interop\Container\ContainerInterface;
@@ -23,7 +23,7 @@ class Profile implements HandlerInterface {
     /**
      * User Repository instance.
      *
-     * @var \App\Repository\UserInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $repository;
     /**
@@ -68,15 +68,15 @@ class Profile implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\UserInterface $repository
-     * @param \App\Validator\Profile        $validator
-     * @param \App\Factory\Event            $eventFactory
-     * @param \League\Event\Emitter         $emitter
+     * @param \App\Repository\RepositoryInterface $repository
+     * @param \App\Validator\Profile              $validator
+     * @param \App\Factory\Event                  $eventFactory
+     * @param \League\Event\Emitter               $emitter
      *
      * @return void
      */
     public function __construct(
-        UserInterface $repository,
+        RepositoryInterface $repository,
         ProfileValidator $validator,
         Event $eventFactory,
         Emitter $emitter

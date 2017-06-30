@@ -319,18 +319,18 @@ abstract class AbstractDBRepository extends AbstractRepository {
      *
      * @return \App\Entity\EntityInterface
      */
-    public function upsert(EntityInterface $entity, $conflictKeys = [], array $updateArray = []) : EntityInterface {
+    public function upsert(
+        EntityInterface $entity,
+        array $conflictKeys = [],
+        array $updateArray = []
+    ) : EntityInterface {
         $serialized  = $entity->serialize();
-        $keys        = $values = [];
+        $keys        = array_keys($serialized);
 
-        foreach ($serialized as $key => $value) {
-            $keys[]   = $key;
-            $values[] = $value;
-        }
-
-        $conflictSQL = 'DO NOTHING';
+        $conflictSQL    = 'DO NOTHING';
+        $newUpdateArray = [];
         if (count($conflictKeys) && count($updateArray)) {
-            $newUpdateArray = $updateSqlArray = [];
+            $updateSqlArray = [];
 
             // updates the updateArray
             // this has to be done because of parameter conflicting using bindParams
@@ -339,49 +339,53 @@ abstract class AbstractDBRepository extends AbstractRepository {
 
                 $updateSqlArray[]             = sprintf('"%s" = :%s', $key, $conflictKey);
                 $newUpdateArray[$conflictKey] = $value;
-
-                // updates entity
-                $entity->$key = $value;
             }
 
-            $updateArray = $newUpdateArray;
-
-            $updateSql  = 'DO UPDATE SET ' . implode(', ', $updateSqlArray);
-            $onConflict = sprintf('(%s)', implode(',', $conflictKeys));
-
-            $conflictSQL = sprintf('%s %s', $onConflict, $updateSql);
+            $conflictSQL = sprintf(
+                '("%s") DO UPDATE SET %s',
+                implode('", "', $conflictKeys),
+                implode(', ', $updateSqlArray)
+            );
         }
-
-        $quotedKeys = array_map(
-            function ($key) {
-                return sprintf('"%s"', $key);
-            }, $keys
-        );
-        $insertKeys = implode(',', $quotedKeys);
 
         $params = array_map(
             function ($key) {
-                return ":$key";
-            }, $keys
+                return sprintf(':%s', $key);
+            },
+            $keys
         );
-        $insertParams = implode(',', $params);
 
         $sql = sprintf(
             'INSERT INTO "%s"
-            (%s)
+            ("%s")
             VALUES (%s)
-            ON CONFLICT %s RETURNING "id" as id',
+            ON CONFLICT %s
+            RETURNING "id"',
             $this->getTableName(),
-            $insertKeys,
-            $insertParams,
+            implode('", "', $keys),
+            implode(', ', $params),
             $conflictSQL
         );
 
-        if ($this->runRaw($sql, array_merge($serialized, $updateArray))) {
-            return $entity;
+        $result = $this->dbConnection->selectFromWriteConnection(
+            $sql,
+            array_merge($serialized, $newUpdateArray)
+        );
+
+        if (count($result)) {
+            return $this->find($result[0]->id);
         }
 
-        throw new \RuntimeException('There was an error when trying to upsert a register.');
+        if (count($conflictKeys)) {
+            $collection = $this->findBy(array_intersect_key($serialized, $conflictKeys));
+            if ($collection->isEmpty()) {
+                throw new \RuntimeException('Failed to retrieve registry.');
+            }
+
+            return $collection->first();
+        }
+
+        throw new \RuntimeException('There was an error when trying to upsert a registry.');
     }
 
     /**

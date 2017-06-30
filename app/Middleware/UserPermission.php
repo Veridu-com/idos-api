@@ -12,7 +12,7 @@ use App\Entity\Role;
 use App\Entity\User\RoleAccess;
 use App\Exception\NotAllowed;
 use App\Exception\NotFound;
-use App\Repository\User\RoleAccessInterface;
+use App\Repository\RepositoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -31,7 +31,7 @@ class UserPermission implements MiddlewareInterface {
     /**
      * Role access repository.
      *
-     * @var \App\Repository\User\RoleAccessInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $roleAccessRepository;
     /**
@@ -67,13 +67,13 @@ class UserPermission implements MiddlewareInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\User\RoleAccessInterface $roleAccessRepository The role access repository
-     * @param string                                   $resource             The resource
-     * @param int                                      $accessLevel          The access level
+     * @param \App\Repository\RepositoryInterface $roleAccessRepository The role access repository
+     * @param string                              $resource             The resource
+     * @param int                                 $accessLevel          The access level
      *
      * @return void
      */
-    public function __construct(RoleAccessInterface $roleAccessRepository, string $resource, int $accessLevel) {
+    public function __construct(RepositoryInterface $roleAccessRepository, string $resource, int $accessLevel) {
         $this->roleAccessRepository = $roleAccessRepository;
         $this->resource             = $resource;
         $this->accessLevel          = $accessLevel;

@@ -10,7 +10,7 @@ namespace App\Listener\Profile\Source;
 
 use App\Listener\AbstractListener;
 use App\Listener\ListenerInterface;
-use App\Repository\Profile\SourceInterface;
+use App\Repository\RepositoryInterface;
 use Interop\Container\ContainerInterface;
 use League\Event\EventInterface;
 
@@ -24,7 +24,7 @@ class AddSourceTagFromCreateFeature extends AbstractListener {
     /**
      * Source repository.
      *
-     * @var \App\Repository\Profile\SourceInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $sourceRepository;
 
@@ -44,11 +44,11 @@ class AddSourceTagFromCreateFeature extends AbstractListener {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\Profile\SourceInterface $sourceRepository The source repository
+     * @param \App\Repository\RepositoryInterface $sourceRepository The source repository
      *
      * @return void
      */
-    public function __construct(SourceInterface $sourceRepository) {
+    public function __construct(RepositoryInterface $sourceRepository) {
         $this->sourceRepository = $sourceRepository;
     }
 

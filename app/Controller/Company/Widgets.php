@@ -10,7 +10,7 @@ namespace App\Controller\Company;
 
 use App\Controller\ControllerInterface;
 use App\Factory\Command;
-use App\Repository\Company\WidgetInterface;
+use App\Repository\RepositoryInterface;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -22,7 +22,7 @@ class Widgets implements ControllerInterface {
     /**
      * Widget Repository instance.
      *
-     * @var \App\Repository\Company\WidgetInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $repository;
     /**
@@ -41,14 +41,14 @@ class Widgets implements ControllerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\Company\WidgetInterface $repository
-     * @param \League\Tactician\CommandBus            $commandBus
-     * @param \App\Factory\Command                    $commandFactory
+     * @param \App\Repository\RepositoryInterface $repository
+     * @param \League\Tactician\CommandBus        $commandBus
+     * @param \App\Factory\Command                $commandFactory
      *
      * @return void
      */
     public function __construct(
-        WidgetInterface $repository,
+        RepositoryInterface $repository,
         CommandBus $commandBus,
         Command $commandFactory
     ) {

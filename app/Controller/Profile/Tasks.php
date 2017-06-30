@@ -10,8 +10,7 @@ namespace App\Controller\Profile;
 
 use App\Controller\ControllerInterface;
 use App\Factory\Command;
-use App\Repository\Profile\ProcessInterface;
-use App\Repository\Profile\TaskInterface;
+use App\Repository\RepositoryInterface;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -23,13 +22,13 @@ class Tasks implements ControllerInterface {
     /**
      * Setting Repository instance.
      *
-     * @var \App\Repository\Profile\TaskInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $repository;
     /**
      * Setting Repository instance.
      *
-     * @var \App\Repository\Profile\ProcessInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $processRepository;
     /**
@@ -48,16 +47,16 @@ class Tasks implements ControllerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\Profile\TaskInterface    $repository
-     * @param \App\Repository\Profile\ProcessInterface $processRepository
-     * @param \League\Tactician\CommandBus             $commandBus
-     * @param \App\Factory\Command                     $commandFactory
+     * @param \App\Repository\RepositoryInterface $repository
+     * @param \App\Repository\RepositoryInterface $processRepository
+     * @param \League\Tactician\CommandBus        $commandBus
+     * @param \App\Factory\Command                $commandFactory
      *
      * @return void
      */
     public function __construct(
-        TaskInterface $repository,
-        ProcessInterface $processRepository,
+        RepositoryInterface $repository,
+        RepositoryInterface $processRepository,
         CommandBus $commandBus,
         Command $commandFactory
     ) {

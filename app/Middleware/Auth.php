@@ -10,11 +10,7 @@ namespace App\Middleware;
 
 use App\Exception\AppException;
 use App\Exception\NotFound;
-use App\Repository\Company\CredentialInterface;
-use App\Repository\CompanyInterface;
-use App\Repository\HandlerInterface;
-use App\Repository\IdentityInterface;
-use App\Repository\UserInterface;
+use App\Repository\RepositoryInterface;
 use Lcobucci\JWT\Parser as JWTParser;
 use Lcobucci\JWT\Signer\Hmac\Sha256 as JWTSigner;
 use Lcobucci\JWT\ValidationData as JWTValidation;
@@ -32,31 +28,31 @@ class Auth implements MiddlewareInterface {
     /**
      * Credential Repository.
      *
-     * @var \App\Repository\Company\CredentialInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $credentialRepository;
     /**
      * User Repository.
      *
-     * @var \App\Repository\UserInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $userRepository;
     /**
      * Company Repository.
      *
-     * @var \App\Repository\CompanyInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $companyRepository;
     /**
      * Service Repository.
      *
-     * @var \App\Repository\HandlerInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $handlerRepository;
     /**
      * Identity Repository.
      *
-     * @var \App\Repository\IdentityInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $identityRepository;
     /**
@@ -488,21 +484,23 @@ class Auth implements MiddlewareInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\Company\CredentialInterface $credentialRepository
-     * @param \App\Repository\UserInterface               $userRepository
-     * @param \App\Repository\CompanyInterface            $companyRepository
-     * @param \App\Repository\HandlerInterface            $handlerRepository
-     * @param \Lcobucci\JWT\Parser                        $jwtParser
-     * @param \Lcobucci\JWT\ValidationData                $jwtValidation
-     * @param \Lcobucci\JWT\Signer\Hmac\Sha256            $jwtSigner
-     * @param int                                         $authorizationRequirement
+     * @param \App\Repository\RepositoryInterface $credentialRepository
+     * @param \App\Repository\RepositoryInterface $userRepository
+     * @param \App\Repository\RepositoryInterface $companyRepository
+     * @param \App\Repository\RepositoryInterface $handlerRepository
+     * @param \Lcobucci\JWT\Parser                $jwtParser
+     * @param \Lcobucci\JWT\ValidationData        $jwtValidation
+     * @param \Lcobucci\JWT\Signer\Hmac\Sha256    $jwtSigner
+     * @param int                                 $authorizationRequirement
+     *
+     * @return void
      */
     public function __construct(
-        CredentialInterface $credentialRepository,
-        IdentityInterface $identityRepository,
-        UserInterface $userRepository,
-        CompanyInterface $companyRepository,
-        HandlerInterface $handlerRepository,
+        RepositoryInterface $credentialRepository,
+        RepositoryInterface $identityRepository,
+        RepositoryInterface $userRepository,
+        RepositoryInterface $companyRepository,
+        RepositoryInterface $handlerRepository,
         JWTParser $jwtParser,
         JWTValidation $jwtValidation,
         JWTSigner $jwtSigner,

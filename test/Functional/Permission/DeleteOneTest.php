@@ -17,21 +17,11 @@ class DeleteOneTest extends AbstractFunctional {
         Traits\RejectsUserToken,
         Traits\RejectsCredentialToken;
 
-    /**
-     * Deleted endpoint property, initialized setUp().
-     */
-    private $deletedEndpoint;
-
     protected function setUp() {
         parent::setUp();
 
-        $this->deletedEndpoint = [
-            'uri'        => '/1.0/companies',
-            'httpMethod' => 'GET',
-            'delete_uri' => '/1.0/companies/veridu-ltd/permissions/companies:listAll'
-        ];
         $this->httpMethod = 'DELETE';
-        $this->uri        = $this->deletedEndpoint['delete_uri'];
+        $this->uri        = '/1.0/companies/veridu-ltd/permissions/companies:listAll';
     }
 
     public function testSuccess() {
@@ -45,8 +35,7 @@ class DeleteOneTest extends AbstractFunctional {
         $response = $this->process($request);
         $this->assertSame(200, $response->getStatusCode());
 
-        $body             = json_decode((string) $response->getBody(), true);
-        $numberOfEntities = count($this->entities); // total number of entities
+        $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
 
@@ -78,23 +67,25 @@ class DeleteOneTest extends AbstractFunctional {
         // tries to fetch the deleted entity to ensure it was successfully deleted
         $getOneEnvironment = $this->createEnvironment(
             [
-                'REQUEST_URI'        => $this->uri,
                 'REQUEST_METHOD'     => 'GET',
                 'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
             ]
         );
 
-        $getOneRequest  = $this->createRequest($getOneEnvironment);
-        $getOneResponse = $this->process($getOneRequest);
-        $this->assertSame(404, $getOneResponse->getStatusCode());
+        $response = $this->process(
+            $this->createRequest(
+                $getOneEnvironment
+            )
+        );
+        $this->assertSame(404, $response->getStatusCode(), (string) $response->getBody());
 
-        $getOneBody = json_decode((string) $getOneResponse->getBody(), true);
+        $getOneBody = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($getOneBody);
 
         $this->assertTrue(
             $this->validateSchema(
                 'error.json',
-                json_decode((string) $getOneResponse->getBody())
+                json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
         );

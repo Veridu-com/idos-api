@@ -9,8 +9,7 @@ declare(strict_types = 1);
 namespace App\Controller;
 
 use App\Factory\Command;
-use App\Repository\Metric\SystemInterface;
-use App\Repository\Metric\UserInterface;
+use App\Repository\RepositoryInterface;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -22,13 +21,13 @@ class Metrics implements ControllerInterface {
     /**
      * System Metrics Repository instance.
      *
-     * @var \App\Repository\Metric\SystemInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $systemMetricsRepository;
     /**
      * User Metrics Repository instance.
      *
-     * @var \App\Repository\Metric\UserInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $userMetricsRepository;
     /**
@@ -47,16 +46,16 @@ class Metrics implements ControllerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\Metric\SystemInterface $systemMetricsRepository
-     * @param \App\Repository\Metric\UserInterface   $userMetricsRepository
-     * @param \League\Tactician\CommandBus           $commandBus
-     * @param \App\Factory\Command                   $commandFactory
+     * @param \App\Repository\RepositoryInterface $systemMetricsRepository
+     * @param \App\Repository\RepositoryInterface $userMetricsRepository
+     * @param \League\Tactician\CommandBus        $commandBus
+     * @param \App\Factory\Command                $commandFactory
      *
      * @return void
      */
     public function __construct(
-        SystemInterface $systemMetricsRepository,
-        UserInterface $userMetricsRepository,
+        RepositoryInterface $systemMetricsRepository,
+        RepositoryInterface $userMetricsRepository,
         CommandBus $commandBus,
         Command $commandFactory
     ) {

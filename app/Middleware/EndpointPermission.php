@@ -10,8 +10,7 @@ namespace App\Middleware;
 
 use App\Entity\Company\Member;
 use App\Exception\NotAllowed;
-use App\Repository\Company\PermissionInterface;
-use App\Repository\CompanyInterface;
+use App\Repository\RepositoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -41,16 +40,16 @@ class EndpointPermission implements MiddlewareInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\Company\PermissionInterface $permissionRepository
-     * @param \App\Repository\CompanyInterface            $companyRepository
-     * @param int                                         $permissionType
-     * @param int                                         $allowedRolesBits
+     * @param \App\Repository\RepositoryInterface $permissionRepository
+     * @param \App\Repository\RepositoryInterface $companyRepository
+     * @param int                                 $permissionType
+     * @param int                                 $allowedRolesBits
      *
      * @return void
      */
     public function __construct(
-        PermissionInterface $permissionRepository,
-        CompanyInterface $companyRepository,
+        RepositoryInterface $permissionRepository,
+        RepositoryInterface $companyRepository,
         int $permissionType = self::SELF_ACTION,
         int $allowedRolesBits = 0x00
     ) {
@@ -126,10 +125,16 @@ class EndpointPermission implements MiddlewareInterface {
         // @FIXME delete this?
         // if (($this->permissionType & self::PRIVATE_ACTION) === self::PRIVATE_ACTION) {
         //     // checks if the $company has access to $routeName
-        //     $allowed = $this->permissionRepository->isAllowed(
-        //         $company->id,
-        //         $routeName
-        //     );
+        //     try {
+        //         $permission = $this->permissionRepository->findOne(
+        //             $company->id,
+        //             $routeName
+        //         );
+        //
+        //         $allowed = true;
+        //     } catch (NotFound $exception) {
+        //         $allowed = false;
+        //     }
         // }
 
         if (($this->permissionType & self::SELF_ACTION) === self::SELF_ACTION) {

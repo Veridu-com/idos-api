@@ -17,8 +17,7 @@ use App\Exception\NotFound;
 use App\Exception\Update;
 use App\Exception\Validate;
 use App\Factory\Event;
-use App\Repository\HandlerServiceInterface;
-use App\Repository\ServiceInterface;
+use App\Repository\RepositoryInterface;
 use App\Validator\Service as ServiceValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
@@ -31,13 +30,13 @@ class Service implements HandlerInterface {
     /**
      * Service Repository instance.
      *
-     * @var \App\Repository\ServiceInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $repository;
     /**
      * HandlerService Repository instance.
      *
-     * @var \App\Repository\HandlerServiceInterface
+     * @var \App\Repository\RepositoryInterface
      */
     private $handlerServiceRepository;
     /**
@@ -85,17 +84,17 @@ class Service implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\ServiceInterface        $repository
-     * @param \App\Repository\HandlerServiceInterface $handlerServiceRepository
-     * @param \App\Validator\Service                  $validator
-     * @param \App\Factory\Event                      $eventFactory
-     * @param \League\Event\Emitter                   $emitter
+     * @param \App\Repository\RepositoryInterface $repository
+     * @param \App\Repository\RepositoryInterface $handlerServiceRepository
+     * @param \App\Validator\Service              $validator
+     * @param \App\Factory\Event                  $eventFactory
+     * @param \League\Event\Emitter               $emitter
      *
      * @return void
      */
     public function __construct(
-        ServiceInterface $repository,
-        HandlerServiceInterface $handlerServiceRepository,
+        RepositoryInterface $repository,
+        RepositoryInterface $handlerServiceRepository,
         ServiceValidator $validator,
         Event $eventFactory,
         Emitter $emitter
