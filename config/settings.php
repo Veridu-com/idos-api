@@ -51,7 +51,11 @@ $appSettings = [
         'level' => Monolog\Logger::DEBUG
     ],
     'cache' => [
-        'driver' => Env::asString('IDOS_CACHE_DRIVER', 'ephemeral')
+        'driver'  => Env::asString('IDOS_CACHE_DRIVER', 'ephemeral'),
+        'options' => [
+            'path'    => Env::asString('IDOS_CACHE_PATH', ''),
+            'servers' => Env::fromJson('IDOS_CACHE_SERVERS', [])
+        ]
     ],
     'gearman' => [
         'timeout' => 1000,
