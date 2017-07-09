@@ -29,6 +29,7 @@ use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
 use League\Flysystem\Filesystem;
 use Respect\Validation\Exceptions\ValidationException;
+use Stash\Pool;
 
 /**
  * Handles Raw commands.
@@ -40,6 +41,12 @@ class Raw implements HandlerInterface {
      * @var \League\Flysystem\Filesystem
      */
     private $fileSystem;
+    /**
+     * Cache instance.
+     *
+     * @var \Stash\Pool
+     */
+    private $pool;
     /**
      * Entity Factory instance.
      *
@@ -138,6 +145,8 @@ class Raw implements HandlerInterface {
             return new \App\Handler\Profile\Raw(
                 $fileSystem('raw'),
                 $container
+                    ->get('cache'),
+                $container
                     ->get('entityFactory'),
                 $repositoryFactory
                     ->create('Profile\Source'),
@@ -158,6 +167,7 @@ class Raw implements HandlerInterface {
      * Class constructor.
      *
      * @param \League\Flysystem\Filesystem        $fileSystem
+     * @param \Stash\Pool                         $pool
      * @param \App\Factory\Entity                 $entityFactory
      * @param \App\Repository\RepositoryInterface $sourceRepository
      * @param \App\Repository\RepositoryInterface $processRepository
@@ -169,6 +179,7 @@ class Raw implements HandlerInterface {
      */
     public function __construct(
         Filesystem $fileSystem,
+        Pool $pool,
         Entity $entityFactory,
         RepositoryInterface $sourceRepository,
         RepositoryInterface $processRepository,
@@ -177,6 +188,7 @@ class Raw implements HandlerInterface {
         Emitter $emitter
     ) {
         $this->fileSystem        = $fileSystem;
+        $this->pool              = $pool;
         $this->entityFactory     = $entityFactory;
         $this->sourceRepository  = $sourceRepository;
         $this->processRepository = $processRepository;
@@ -233,6 +245,12 @@ class Raw implements HandlerInterface {
             $serialized = $raw->serialize();
 
             $this->fileSystem->write($fileName, $serialized['data']);
+
+            $item = $this->pool->getItem($fileName);
+            $item->lock();
+            $item->set($raw);
+            $item->expiresAfter(3600);
+            $this->pool->save($item);
 
             $process = $this->processRepository->findOneBySourceId($command->source->id);
 
@@ -291,7 +309,15 @@ class Raw implements HandlerInterface {
 
             foreach ($sources as $source) {
                 $basePath = $this->getBasePath($source);
-                $affectedRows += count($this->fileSystem->listFiles($basePath));
+                foreach ($this->fileSystem->listFiles($basePath) as $file) {
+                    if (! preg_match('/^[a-zA-Z0-9]+$/', $file['filename'])) {
+                        continue;
+                    }
+
+                    $affectedRows++;
+                    $this->pool->deleteItem($file['path']);
+                }
+
                 $this->fileSystem->deleteDir($basePath);
             }
 
@@ -358,16 +384,28 @@ class Raw implements HandlerInterface {
                     continue;
                 }
 
-                $raw = $this->entityFactory->create(
-                    'Profile\Raw',
-                    [
-                        'source_id'  => $source->getEncodedId(),
-                        'collection' => $file['filename'],
-                        'data'       => $this->fileSystem->read($file['path']),
-                        'created_at' => $this->fileSystem->getTimestamp($file['path']),
-                        'updated_at' => null
-                    ]
-                );
+                $item = $this->pool->getItem($file['path']);
+                $raw  = $item->get();
+                if ($item->isMiss()) {
+                    $item->lock();
+
+                    $raw = $this->entityFactory->create(
+                        'Profile\Raw',
+                        [
+                            'source_id'  => $source->getEncodedId(),
+                            'collection' => $file['filename'],
+                            'data'       => $this->fileSystem->read($file['path']),
+                            'created_at' => $this->fileSystem->getTimestamp($file['path']),
+                            'updated_at' => null
+                        ]
+                    );
+
+                    $item->set($raw);
+                    $item->expiresAfter(3600);
+
+                    $this->pool->save($item);
+                }
+
                 $entities->push($raw);
             }
         }
@@ -425,6 +463,12 @@ class Raw implements HandlerInterface {
             $serialized = $raw->serialize();
 
             $this->fileSystem->put($fileName, $serialized['data']);
+
+            $item = $this->pool->getItem($fileName);
+            $item->lock();
+            $item->set($raw);
+            $item->expiresAfter(3600);
+            $this->pool->save($item);
 
             $process = $this->processRepository->findOneBySourceId($command->source->id);
 
