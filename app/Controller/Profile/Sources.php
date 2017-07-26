@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
+ * Copyright (c) 2012-2017 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
 
@@ -125,6 +125,10 @@ class Sources implements ControllerInterface {
 
         return $this->commandBus->handle($command);
     }
+
+    /**
+     * Retrieves
+     */
 
     /**
      * Creates a new Source for the acting User.
