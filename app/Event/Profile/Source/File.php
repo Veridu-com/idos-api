@@ -50,6 +50,11 @@ class File extends AbstractServiceQueueEvent {
      */
     public $process;
     /**
+     * Event related File Path.
+     *
+     * @var string
+     */
+    /**
      * Event related File Content.
      *
      * @var string
@@ -76,6 +81,7 @@ class File extends AbstractServiceQueueEvent {
      * @param \App\Entity\Company\Credential $credential
      * @param \App\Entity\Company            $company
      * @param \App\Entity\Profile\Process    $process
+     * @param string                         $filePath
      * @param string                         $fileContents
      * @param string                         $fileExtension
      * @param string                         $ipAddr
@@ -88,6 +94,7 @@ class File extends AbstractServiceQueueEvent {
         Credential $credential,
         Company $company,
         Process $process,
+        string $filePath,
         string $fileContents,
         string $fileExtension,
         string $ipAddr
@@ -97,6 +104,7 @@ class File extends AbstractServiceQueueEvent {
         $this->credential    = $credential;
         $this->company       = $company;
         $this->process       = $process;
+        $this->filePath      = $filePath;
         $this->fileContents  = $fileContents;
         $this->fileExtension = $fileExtension;
         $this->ipAddr        = $ipAddr;
@@ -112,6 +120,7 @@ class File extends AbstractServiceQueueEvent {
                 'sourceId'      => $this->source->getEncodedId(),
                 'processId'     => $this->process->getEncodedId(),
                 'userName'      => $this->user->username,
+                'filePath'      => $this->filePath,
                 'fileContents'  => $this->fileContents,
                 'fileExtension' => $this->fileExtension
             ],
