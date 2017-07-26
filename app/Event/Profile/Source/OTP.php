@@ -121,7 +121,8 @@ class OTP extends AbstractServiceQueueEvent {
                 'processId' => $this->process->getEncodedId(),
                 'company'   => $this->company->toArray(),
                 'userName'  => $this->user->username
-            ], $merge
+            ],
+            $merge
         );
     }
 
