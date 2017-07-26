@@ -106,19 +106,16 @@ class File extends AbstractServiceQueueEvent {
      * {inheritdoc}.
      */
     public function getServiceHandlerPayload(array $merge = []) : array {
-        if (property_exists($this->source->tags, 'token_secret')) {
-            $merge['tokenSecret'] = $this->source->tags->token_secret;
-        }
-
         return array_merge(
             [
-            'accessToken'  => $this->source->tags->access_token,
-            'providerName' => $this->source->name,
-            'publicKey'    => $this->credential->public,
-            'sourceId'     => $this->source->getEncodedId(),
-            'processId'    => $this->process->getEncodedId(),
-            'userName'     => $this->user->username
-            ], $merge
+                'publicKey'     => $this->credential->public,
+                'sourceId'      => $this->source->getEncodedId(),
+                'processId'     => $this->process->getEncodedId(),
+                'userName'      => $this->user->username,
+                'fileContents'  => $this->fileContents,
+                'fileExtension' => $this->fileExtension
+            ],
+            $merge
         );
     }
 
