@@ -11,6 +11,7 @@ namespace App\Handler\Profile;
 use App\Command\Profile\Source\CreateNew;
 use App\Command\Profile\Source\DeleteAll;
 use App\Command\Profile\Source\DeleteOne;
+use App\Command\Profile\Source\GetOne;
 use App\Command\Profile\Source\UpdateOne;
 use App\Entity\Profile\Source as SourceEntity;
 use App\Exception\AppException;
@@ -26,6 +27,7 @@ use App\Repository\RepositoryInterface;
 use App\Validator\Profile\Source as SourceValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
+use League\Flysystem\Filesystem;
 use League\Tactician\CommandBus;
 use Respect\Validation\Exceptions\ValidationException;
 
@@ -70,6 +72,12 @@ class Source implements HandlerInterface {
      */
     private $validator;
     /**
+     * File System instance.
+     *
+     * @var \League\Flysystem\Filesystem
+     */
+    private $fileSystem;
+    /**
      * Command factory instance.
      *
      * @var \App\Factory\Command
@@ -95,11 +103,40 @@ class Source implements HandlerInterface {
     private $emitter;
 
     /**
+     * Generates a file path based on source details.
+     *
+     * @param int    $companyId
+     * @param int    $credentialId
+     * @param int    $userId
+     * @param int    $sourceId
+     * @param string $fileExtension
+     *
+     * @return string
+     */
+    private function filePath(
+        int $companyId,
+        int $credentialId,
+        int $userId,
+        int $sourceId,
+        string $fileExtension
+    ) : string {
+        return sprintf(
+            '%s/%s/%s/%s.%s',
+            $companyId,
+            $credentialId,
+            $userId,
+            $sourceId,
+            $fileExtension
+        );
+    }
+
+    /**
      * {@inheritdoc}
      */
     public static function register(ContainerInterface $container) : void {
         $container[self::class] = function (ContainerInterface $container) : HandlerInterface {
             $repositoryFactory = $container->get('repositoryFactory');
+            $fileSystem        = $container->get('fileSystem');
 
             return new \App\Handler\Profile\Source(
                 $repositoryFactory
@@ -115,6 +152,7 @@ class Source implements HandlerInterface {
                 $container
                     ->get('validatorFactory')
                     ->create('Profile\Source'),
+                $fileSystem('source'),
                 $container
                     ->get('commandFactory'),
                 $container
@@ -136,6 +174,7 @@ class Source implements HandlerInterface {
      * @param \App\Repository\RepositoryInterface $settingRepository  The setting    repository
      * @param \App\Repository\RepositoryInterface $companyRepository  The company    repository
      * @param \App\Validator\Profile\Source       $validator          The validator
+     * @param \League\Flysystem\Filesystem        $fileSystem
      * @param \App\Factory\Command                $commandFactory     The command    factory
      * @param \League\Tactician\CommandBus        $commandBus         The command    bus        instance.
      * @param \App\Factory\Event                  $eventFactory       The event      factory
@@ -148,6 +187,7 @@ class Source implements HandlerInterface {
         RepositoryInterface $settingRepository,
         RepositoryInterface $companyRepository,
         SourceValidator $validator,
+        Filesystem $fileSystem,
         CommandFactory $commandFactory,
         CommandBus $commandBus,
         Event $eventFactory,
@@ -159,6 +199,7 @@ class Source implements HandlerInterface {
         $this->settingRepository  = $settingRepository;
         $this->companyRepository  = $companyRepository;
         $this->validator          = $validator;
+        $this->fileSystem         = $fileSystem;
         $this->commandFactory     = $commandFactory;
         $this->commandBus         = $commandBus;
         $this->eventFactory       = $eventFactory;
@@ -332,6 +373,18 @@ class Source implements HandlerInterface {
         $this->emitter->emit($event);
 
         if ($sendFile) {
+            $filePath = $this->filePath(
+                $company->id,
+                $command->credential->id,
+                $command->user->id,
+                $source->id,
+                $fileExtension
+            );
+            $this->fileSystem->write(
+                $filePath,
+                $fileContents
+            );
+
             $this->emitter->emit(
                 $this->eventFactory->create(
                     'Profile\Source\File',
@@ -340,6 +393,7 @@ class Source implements HandlerInterface {
                     $command->credential,
                     $company,
                     $processEntity,
+                    $filePath,
                     $fileContents,
                     $fileExtension,
                     $command->ipaddr
@@ -377,6 +431,54 @@ class Source implements HandlerInterface {
     }
 
     /**
+     * Gets a source.
+     *
+     * @param \App\Command\Profile\Source\GetOne $command
+     *
+     * @throws \App\Exception\AppException
+     * @throws \App\Exception\NotFound\Profile\SourceException
+     * @throws \App\Exception\Validate\Profile\SourceException
+     *
+     * @return \App\Entity\Profile\Source
+     */
+    public function handleGetOne(GetOne $command) : SourceEntity {
+        try {
+            $this->validator->assertUser($command->user, 'user');
+            $this->validator->assertCredential($command->credential, 'credential');
+            $this->validator->assertId($command->sourceId, 'sourceId');
+            $this->validator->assertBoolean($command->includePicture, 'includePicture');
+        } catch (ValidationException $exception) {
+            throw new Validate\Profile\SourceException(
+                $exception->getFullMessage(),
+                400,
+                $exception
+            );
+        }
+
+        $source = $this->repository->findOne($command->sourceId, $command->user->id);
+
+        if ((property_exists($source->tags, 'file_sha1')) && ($command->includePicture)) {
+            $filePath = $this->filePath(
+                $command->credential->companyId,
+                $command->credential->id,
+                $command->user->id,
+                $source->id,
+                $source->tags->extension
+            );
+
+            if (! $this->fileSystem->has($filePath)) {
+                throw new NotFound\Profile\SourceException('Picture could not be found');
+            }
+
+            $tags           = $source->tags;
+            $tags->contents = base64_encode($this->fileSystem->read($filePath));
+            $source->tags   = $tags;
+        }
+
+        return $source;
+    }
+
+    /**
      * Updates a source.
      *
      * @param \App\Command\Profile\Source\UpdateOne $command
@@ -391,6 +493,7 @@ class Source implements HandlerInterface {
     public function handleUpdateOne(UpdateOne $command) : SourceEntity {
         try {
             $this->validator->assertUser($command->user, 'user');
+            $this->validator->assertCredential($command->credential, 'credential');
             $this->validator->assertId($command->user->id, 'userId');
             $this->validator->assertSource($command->source, 'source');
             $this->validator->assertId($command->source->id, 'sourceId');
@@ -400,8 +503,6 @@ class Source implements HandlerInterface {
             foreach ($command->tags as $key => $value) {
                 $this->validator->assertString($key, sprintf('tags.%s', $key));
             }
-
-            $this->validator->assertCredential($command->credential, 'credential');
         } catch (ValidationException $exception) {
             throw new Validate\Profile\SourceException(
                 $exception->getFullMessage(),

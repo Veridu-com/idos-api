@@ -20,7 +20,6 @@ use App\Listener\Manager\ScrapeScheduler;
 use App\Listener\Manager\ServiceScheduler;
 use App\Listener\MetricGenerator;
 use App\Listener\Profile\Source\Logout;
-use App\Listener\Profile\Source\SaveFileToStorage;
 use App\Provider\AbstractProvider;
 use Interop\Container\ContainerInterface;
 use Refinery29\Event\LazyListener;
@@ -99,7 +98,7 @@ class Source extends AbstractProvider {
                     $container
                 ),
                 LazyListener::fromAlias(
-                    SaveFileToStorage::class,
+                    ServiceScheduler::class,
                     $container
                 )
             ],

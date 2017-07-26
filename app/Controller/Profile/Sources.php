@@ -108,10 +108,18 @@ class Sources implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user     = $request->getAttribute('targetUser');
-        $sourceId = (int) $request->getAttribute('decodedSourceId');
+        $credential = $request->getAttribute('credential');
+        $user       = $request->getAttribute('targetUser');
+        $sourceId   = (int) $request->getAttribute('decodedSourceId');
 
-        $source = $this->repository->findOne($sourceId, $user->id);
+        $command = $this->commandFactory->create('Profile\Source\GetOne');
+        $command
+            ->setParameters($request->getQueryParams() ?: [])
+            ->setParameter('credential', $credential)
+            ->setParameter('user', $user)
+            ->setParameter('sourceId', $sourceId);
+
+        $source = $this->commandBus->handle($command);
 
         $body = [
             'data' => $source->toArray()
@@ -125,10 +133,6 @@ class Sources implements ControllerInterface {
 
         return $this->commandBus->handle($command);
     }
-
-    /**
-     * Retrieves
-     */
 
     /**
      * Creates a new Source for the acting User.
