@@ -458,13 +458,13 @@ $container['fileSystem'] = function (ContainerInterface $container) : callable {
             case 's3':
                 $adapter = new AwsS3Adapter(
                     $container->get('S3Client'),
-                    sprintf('idOS-%s', $bucketName)
+                    sprintf('idos-%s', $bucketName)
                 );
                 break;
             case 'local':
                 $adapter = new Local(
                     sprintf(
-                        '%s/idOS-%s',
+                        '%s/idos-%s',
                         rtrim(
                             $settings['fileSystem']['path'] ?? '/tmp',
                             '/'
@@ -485,7 +485,7 @@ $container['fileSystem'] = function (ContainerInterface $container) : callable {
                 $adapter,
                 new Cache(
                     $container->get('cache'),
-                    sprintf('idOS-%s', $bucketName),
+                    sprintf('idos-%s', $bucketName),
                     300
                 )
             );
